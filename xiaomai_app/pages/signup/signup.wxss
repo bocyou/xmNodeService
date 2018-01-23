@@ -1,0 +1,37 @@
+/* pages/signup/signup.wxss */
+page{
+  overflow:hidden;
+}
+.header .imgbox{
+  width:100rpx;
+  height:100rpx;
+  border-radius:6rpx;
+  border:2rpx solid #f7f7f7;
+  margin:70rpx auto 10rpx;
+}
+.header .h3{
+  text-align:center;
+  margin-bottom:20rpx;
+}
+.header .description{
+  color:#717171;
+  font-size:24rpx;
+  text-align:center;
+  width:90%;
+  margin:0 auto;
+  padding-bottom:60rpx;
+  border-bottom:1px solid #f7f7f7;
+}
+
+.form{
+  padding:40rpx 30rpx 40rpx;
+  font-size:24rpx;
+}
+.input-group{
+  margin:30rpx 0;
+}
+
+.signup{
+  width:80%;
+  margin:0 auto;
+}

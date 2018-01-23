@@ -1,0 +1,16 @@
+.gh-editor .btn{
+  margin-bottom:16px;
+}
+.label{
+  cursor:pointer;
+}
+.price{
+  color:#d73925;
+  font-weight: bold;
+  font-size:16px;
+}
+a{
+  cursor:pointer;
+}
+
+

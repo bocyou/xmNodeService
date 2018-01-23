@@ -1,0 +1,6 @@
+/* pages/shop_game/shop_game.wxss */
+.bt-img{
+  width:20rpx;
+  height:20rpx;
+  background-color: #000;
+}
