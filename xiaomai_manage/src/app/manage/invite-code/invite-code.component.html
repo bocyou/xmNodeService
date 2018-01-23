@@ -1,0 +1,43 @@
+<section class="content-header">
+  <h1>
+    小麦
+    <small>邀请码管理</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+    <li class="active">Here</li>
+  </ol>
+</section>
+
+
+<section class="content container-fluid">
+  <div class="box">
+    <div class="box-header">
+      <h3 class="box-title">邀请码列表</h3>
+      <span class="badge bg-light-blue" (click)="createInvite($event)">点击生成5个邀请码</span>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body no-padding">
+      <table class="table table-striped">
+        <tbody><tr>
+          <th style="width: 40px">#</th>
+          <th>邀请码</th>
+          <th>状态</th>
+          <th>创建时间</th>
+        </tr>
+        <tr *ngFor="let item of all_list;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{item.code}}</td>
+
+          <td><span class="badge bg-red">{{item.status}}</span></td>
+          <td>
+            {{item.create_time}}
+          </td>
+        </tr>
+
+        </tbody></table>
+    </div>
+    <!-- /.box-body -->
+  </div>
+
+</section>
