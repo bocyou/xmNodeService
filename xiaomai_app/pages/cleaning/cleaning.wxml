@@ -1,0 +1,26 @@
+<!--pages/cleaning/cleaning.wxml-->
+<navigator open-type="navigateTo" class="app-entry" url="../clean_manage/clean_manage"><button wx:if="{{isAdmin}}">进入管理页面</button></navigator>
+
+<view wx:if="{{isPost}}"> 
+ 当前剩余任务
+   <view wx:for="{{remainingTasks}}" wx:key="item">
+ 
+      <text>{{item.name}}</text>
+      <text>{{item.money}}</text>
+      <text>{{item.task_time}}</text>
+      <text bindtap='drawWork' data-id="{{item.work_id}}" data-status="{{item.status}}">点击领取</text>
+   </view>
+我领取的任务
+   <view wx:for="{{myWork}}" wx:key="item">
+      <text>{{item.name}}</text>
+      <text>{{item.money}}</text>
+      <text>{{item.task_time}}</text>
+
+      <text wx:if="{{item.status=='yilingqu'}}" bindtap='finishWork' data-id="{{item.work_id}}" data-status="{{item.status}}">点击完成</text>
+      <text wx:elif="{{item.status=='pending'}}">待审核</text>
+      <text wx:elif="{{item.status=='passed'}}">审核通过</text>
+      <text wx:else></text>
+   </view>
+ </view>
+
+<view wx:else> 任务尚未分发 </view>

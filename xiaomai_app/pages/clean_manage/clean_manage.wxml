@@ -1,0 +1,42 @@
+<!--pages/clean_manage/clean_manage.wxml-->
+  <view wx:if="{{isPost}}">
+    分发任务
+    <checkbox-group bindchange="checkboxChange">
+       <view class="checkbox" wx:for="{{workData}}" wx:key="item">
+         <checkbox value="{{item.work_id}},{{item.name}},{{item.money}}" checked="{{true}}"/>
+           <text>{{item.name}} </text>
+           <text>{{item.work_id}} </text>
+           <text>{{item.status}} </text>
+       </view>
+    </checkbox-group>
+ <button bindtap='postWork'>分发</button>
+
+ </view>
+ <button bindtap='addWork'>添加临时任务</button>
+ <button bindtap='overWork'>结束今天任务</button>
+<view>
+待审核的任务
+<view  wx:for="{{pendingData}}" wx:key="item">
+  <text>{{item.name}}</text>
+  <text>{{item.money}}</text>
+  <text>{{item.receiver[1]}}</text>
+  <text bindtap='passedClick' data-id="{{item.work_id}}" data-status="{{item.status}}" data-receiver_id="{{item.receiver_id}}">点击通过</text>
+</view>
+</view>
+
+
+
+<view>
+其它任务情况
+<view  wx:for="{{otherData}}" wx:key="item">
+  <text>{{item.name}}</text>
+  <text>{{item.money}}</text>
+  <text>{{item.receiver[1]}}</text>
+   <text wx:if="{{item.status=='yilingqu'}}" >已领取</text>
+      <text wx:elif="{{item.status=='passed'}}">审核通过</text>
+      <text wx:elif="{{item.status=='yifenfa'}}">尚未领取</text>
+      <text wx:else></text>
+
+</view>
+</view>
+
