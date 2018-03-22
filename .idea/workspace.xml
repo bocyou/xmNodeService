@@ -2,8 +2,147 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e9830d5f-34a9-464b-90d5-ef361c32193c" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/xiaomai_server" afterPath="$PROJECT_DIR$/xiaomai_server" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/app.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/app.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/app.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/clean_manage/clean_manage.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/clean_manage/clean_manage.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/clean_manage/clean_manage.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/clean_manage/clean_manage.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/cleaning/cleaning.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/cleaning/cleaning.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/cleaning/cleaning.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/cleaning/cleaning.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/dinner/dinner.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/dinner/dinner.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/dinner/dinner.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/dinner/dinner.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/index/index.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/index/index.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/index/index.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/indextest/indextest.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/indextest/indextest.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/indextest/indextest.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/indextest/indextest.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/login/login.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/login/login.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/login/login.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/login/login.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/lucky_draw/lucky_draw.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/lucky_draw/lucky_draw.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/lucky_draw/lucky_draw.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/lucky_draw/lucky_draw.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/manage/manage.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/manage/manage.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/manage/manage.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/manage/manage.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/me/me.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/me/me.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/me/me.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/me/me.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/new_index/new_index.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/new_index/new_index.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/new_index/new_index.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/new_index/new_index.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/shop_game/shop_game.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/shop_game/shop_game.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/shop_game/shop_game.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/shop_game/shop_game.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/signup/signup.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/signup/signup.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/signup/signup.wxml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/pages/signup/signup.wxss" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/project.config.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_app/utils/util.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/.angular-cli.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/.editorconfig" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/.gitignore" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/README.md" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/e2e/app.e2e-spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/e2e/app.po.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/e2e/tsconfig.e2e.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/karma.conf.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/package.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/protractor.conf.js" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/proxy.conf.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/app-routing.module.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/app.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/app.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/app.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/app.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/app.module.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/content/content.component.css" afterPath="$PROJECT_DIR$/test.js" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/content/content.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/content/content.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/content/content.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/dinner.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/dinner.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/dinner.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/dinner.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/manage/manage.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/manage/manage.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/manage/manage.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/dinner/manage/manage.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/footer/footer.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/footer/footer.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/footer/footer.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/footer/footer.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/header/header.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/header/header.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/header/header.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/header/header.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/login/login.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/login/login.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/login/login.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/login/login.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/invite-code/invite-code.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/invite-code/invite-code.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/invite-code/invite-code.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/invite-code/invite-code.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/manage.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/manage.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/manage.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/manage/manage.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/menu/menu.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/menu/menu.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/menu/menu.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/menu/menu.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-filter.pipe.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-filter.pipe.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-manage/dinner-manage.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-manage/dinner-manage.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-manage/dinner-manage.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-manage/dinner-manage.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-statistics/dinner-statistics.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-statistics/dinner-statistics.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-statistics/dinner-statistics.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/order-dinner/dinner-statistics/dinner-statistics.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/page404/page404.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/page404/page404.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/page404/page404.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/page404/page404.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/pipe/user-dinner-list.pipe.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/pipe/user-dinner-list.pipe.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/sidebar/sidebar.component.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/sidebar/sidebar.component.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/sidebar/sidebar.component.spec.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/app/sidebar/sidebar.component.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/assets/.gitkeep" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/environments/environment.prod.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/environments/environment.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/favicon.ico" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/index.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/main.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/polyfills.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/styles.css" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/test.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/tsconfig.app.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/tsconfig.spec.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/src/typings.d.ts" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/tsconfig.json" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/xiaomai_manage/tslint.json" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,17 +156,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
-              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -36,6 +192,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/test.js" />
       </list>
     </option>
   </component>
@@ -45,9 +202,8 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-1882" />
-    <option name="y" value="110" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="830" />
   </component>
@@ -71,8 +227,8 @@
         <subPane>
           <expand>
             <path>
-              <item name="xmNodeService" type="b2602c69:ProjectViewProjectNode" />
-              <item name="xmNodeService" type="462c0819:PsiDirectoryNode" />
+              <item name="xiaomai" type="b2602c69:ProjectViewProjectNode" />
+              <item name="xiaomai" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -113,6 +269,7 @@
       <updated>1516099619850</updated>
       <workItem from="1516099621286" duration="1030000" />
       <workItem from="1516670128728" duration="2047000" />
+      <workItem from="1521717441506" duration="694000" />
     </task>
     <task id="LOCAL-00001" summary="code">
       <created>1516671598599</created>
@@ -125,19 +282,20 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3077000" />
+    <option name="totallyTimeSpent" value="3771000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1882" y="110" width="1440" height="830" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="830" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24947146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24947146" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33061224" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33061224" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -172,90 +330,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/lucky_draw.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/lucky_draw.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/login.js" />
+    <entry file="file://$PROJECT_DIR$/routes/lucky_draw.js" />
+    <entry file="file://$PROJECT_DIR$/routes/login.js" />
+    <entry file="file://$PROJECT_DIR$/routes/lucky_draw.js" />
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="67" lean-forward="true" selection-start-line="13" selection-start-column="67" selection-end-line="13" selection-end-column="67" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xiaomai_server/config/default.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="25" lean-forward="true" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xiaomai_server/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/xiaomai_server/config/default.js" />
+    <entry file="file://$PROJECT_DIR$/xiaomai_server/README.md" />
+    <entry file="file://$PROJECT_DIR$/xiaomai_server/index.js" />
+    <entry file="file://$PROJECT_DIR$/xiaomai_server/package-lock.json" />
+    <entry file="file://$PROJECT_DIR$/xiaomai_server/package.json" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xiaomai_server/index.js">
+    <entry file="file://$PROJECT_DIR$/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="41" column="34" lean-forward="false" selection-start-line="41" selection-start-column="34" selection-end-line="41" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xiaomai_server/package-lock.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3362">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/xiaomai_server/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="22" column="26" lean-forward="true" selection-start-line="22" selection-start-column="26" selection-end-line="22" selection-end-column="26" />
+        <state relative-caret-position="150">
+          <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
           <folding />
         </state>
       </provider>
