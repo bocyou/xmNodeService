@@ -2,7 +2,7 @@
     "apps":[
         {
             "name":"xiaomai",
-            "script":"test.js",//启动脚本
+            "script":"index.js",//启动脚本
             "env":{     //启动时传入的变量
                "COMMON_VARIABLE":"true"
             },
