@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>api is working</h3>
+<button class="getuser">获取users</button>
+<script src="/introduce/jQuery-3.1.1.js"></script>
+<script>
+    $('.getuser').click(function(){
+        $.post('/api/get_all_user',function(data){
+            console.log(data);
+        });
+    });
+</script>
+</body>
+</html>
