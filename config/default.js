@@ -1,5 +1,5 @@
 module.exports={
-	part:3000,
+	part:8080,
 	session:{
 		secret:'xiaomai',
 		key:'xiaomai',
