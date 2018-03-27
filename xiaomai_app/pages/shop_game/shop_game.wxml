@@ -1,8 +1,0 @@
-<!--pages/shop_game/shop_game.wxml-->
-
-  <view class="v-canvas">
-        <canvas canvas-id="canvas_wi" style="{{canvas_style}}" class="myCanvas"/>
-    </view>
-    <view class="v-img">
-        <view  class="bt-img" bindtap="onClickImage" style="{{style_img}}"></view>
-    </view>
