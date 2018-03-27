@@ -57,6 +57,8 @@ router.post('/get_current_userinfo',checkSession, function (req, res, next) {
 
 router.post('/check_current_user', function (req, res, next) {
     console.log(req);
+    console.log(req.headers);
+    console.log(req.headers.sessionkey);
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
             res.send(200, {code: 200, result: true, message: "该用户合法"})
