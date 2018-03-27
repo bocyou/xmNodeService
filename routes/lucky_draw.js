@@ -136,7 +136,7 @@ router.post('/sum_user_draw_money', function (req, res, next) {
 
 
 router.post('/check_current_user', function (req, res, next) {
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
             res.send(200, {code: 200, result: true, message: "该用户合法"})
         } else {
@@ -150,7 +150,7 @@ router.post('/check_current_user', function (req, res, next) {
 //如果没有人刮奖则重置lucky_ary
 router.post('/get_user_draw_list', function (req, res, next) {
 
-    getCurrentSession(req.headers.session_key, function (user_info) {
+    getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var area = user_info[0].area;
             //取得用户所在地区
@@ -175,7 +175,7 @@ router.post('/get_user_draw_list', function (req, res, next) {
 //返回姓名，钱数，用户头像，地区
 router.post('/month_top_list', function (req, res, next) {
 
-    getCurrentSession(req.headers.session_key, function (user_info) {
+    getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var area = user_info[0].area;
             mysql.findMonth('lucky_user_list', 'area="' + area + '"', function (result, err) {
@@ -228,7 +228,7 @@ router.post('/month_top_list', function (req, res, next) {
 //获取今日，各地区刮出0，8，6的人员
 router.post('/get_user_special_list', function (req, res, next) {
 
-    getCurrentSession(req.headers.session_key, function (user_info) {
+    getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var area = user_info[0].area;
             mysql.findToday('lucky_user_list', 'area="' + area + '"', function (result, err) {
@@ -254,7 +254,7 @@ router.post('/get_user_special_list', function (req, res, next) {
 //检查当前用户是否刮奖
 router.post('/check_current_user_draw', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.session_key, function (user_info) {
+    getUserInfo(req.headers.sessionkey, function (user_info) {
         if (user_info) {
             mysql.findToday('lucky_user_list', 'user_id="' + user_info[0].id + '"', function (result, err) {
                 if (result && result.length > 0) {
@@ -274,7 +274,7 @@ router.post('/check_current_user_draw', function (req, res, next) {
 //保存用户刮奖数据
 router.post('/save_user_draw', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
             var money = lucky.draw(userInfo[0].area);
             var bar = {

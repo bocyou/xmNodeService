@@ -57,7 +57,7 @@ router.post('/get_current_userinfo',checkSession, function (req, res, next) {
 
 router.post('/check_current_user', function (req, res, next) {
     console.log(req);
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
             res.send(200, {code: 200, result: true, message: "该用户合法"})
         } else {
@@ -381,7 +381,7 @@ router.post('/test2', function (req, res, next) {
 router.post('/get_all_user', function (req, res, next) {
     //获取所有用户表
     console.log(res.session);
-    console.log(req.headers.session_key);
+    console.log(req.headers.sessionkey);
     mysql.search(req, res, next, 'users', function (rows, fields) {
         if (fields) {
             res.send(200, {code: 200, result: {"users": rows}})
@@ -391,7 +391,7 @@ router.post('/get_all_user', function (req, res, next) {
 });
 router.post('/get_current_user', function (req, res, next) {
 //获取当前用户信息
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo&&userInfo.length > 0) {
             var user_info={
                 wx_name:userInfo[0].wx_name,
@@ -486,7 +486,7 @@ router.post('/post_work', checkSession, function (req, res, next) {
 router.post('/draw_work_status', function (req, res, next) {
     //更改任务状态,领取任务
     var getData = req.body;
-    getUserInfo(req.headers.session_key, function (result) {
+    getUserInfo(req.headers.sessionkey, function (result) {
         if (result) {
             console.log();
             var userName = result[0].name;
@@ -509,7 +509,7 @@ router.post('/draw_work_status', function (req, res, next) {
 router.post('/pending_work_status', function (req, res, next) {
     //更改任务状态,个人完成任务
     var getData = req.body;
-    getUserInfo(req.headers.session_key, function (result) {
+    getUserInfo(req.headers.sessionkey, function (result) {
         if (result) {
             var userName = result[0].name;
             var userId = result[0].id;
@@ -532,7 +532,7 @@ router.post('/passed_work_status', function (req, res, next) {
     //更改任务状态,管理员审核通过
     //通过后给领取人加钱
     var getData = req.body;
-    getUserInfo(req.headers.session_key, function (result) {
+    getUserInfo(req.headers.sessionkey, function (result) {
         //获取当前用户信息
         if (result) {
 

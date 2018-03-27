@@ -176,12 +176,12 @@ router.post('/finish_dinner',checkSession, function (req, res, next) {
 
 //获取分发的菜单 order_fooding  同时检查用户是否刮卡
 router.post('/get_dinner_list', function (req, res, next) {
-    /*  getUserInfo(req.headers.session_key,function(userInfo){
+    /*  getUserInfo(req.headers.sessionkey,function(userInfo){
           console.log(userInfo);
         });*/
 
 
-    getCurrentSession(req.headers.session_key, function (user_info) {
+    getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
             console.log(user_info);
@@ -218,7 +218,7 @@ router.post('/get_dinner_list', function (req, res, next) {
 
 //保存用客户订餐信息order_food_user
 router.post('/save_user_dinnerlist', function (req, res, next) {
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo) {
             var dinner_list = req.body.dinner_list;
             console.log(dinner_list);
@@ -245,7 +245,7 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
 
 //检查用户是否订餐根据ID查找(查找当日该用户当天最新的记录)
 router.post('/check_currentuser_dinner', function (req, res, next) {
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
 
         if (userInfo) {
             var user_id = userInfo[0].id;
@@ -268,7 +268,7 @@ router.post('/check_currentuser_dinner', function (req, res, next) {
 //取消该用户订餐
 router.post('/cancel_currentuser_dinner', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.session_key, function (userInfo) {
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo) {
             var user_id = userInfo[0].id;
             var menu_id = req.body.menu_id;
