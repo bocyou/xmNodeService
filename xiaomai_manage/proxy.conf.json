@@ -1,0 +1,17 @@
+{
+  "/order_food":{
+    "target":"http://localhost:8080"
+  },
+  "/lucky_draw":{
+    "target":"http://localhost:8080"
+  },
+  "/invite":{
+    "target":"http://localhost:8080"
+  },
+  "/angular":{
+    "target":"http://localhost:8080"
+  },
+  "/api":{
+    "target":"http://localhost:8080"
+  }
+}
