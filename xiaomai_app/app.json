@@ -1,0 +1,18 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/me/me",
+    "pages/dinner/dinner",
+    "pages/lucky_draw/lucky_draw",
+    "pages/login/login",
+    "pages/signup/signup",
+    "pages/indextest/indextest",
+    "pages/shop_game/shop_game"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  }
+}

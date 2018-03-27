@@ -1,0 +1,13 @@
+<!--pages/me/me.wxml-->
+<view class="header">
+  <view class="img-box">
+    <image mode="widthFix" src="{{user_info.wx_img}}"></image>
+  </view>
+  <view class="info">
+    <view>  {{user_info.user_name}}</view>
+    <view class="area">{{user_area[user_info.area]}}校区</view>
+  </view>
+</view>
+<view class="content">
+
+</view>

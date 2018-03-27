@@ -4,8 +4,10 @@
 var mysql = require('../lib/mysql');
 module.exports = {
     getUserInfo: function(session,callback,res){
+        console.log(session);
 
     mysql.find_one('custom_session','session_key',[session], function (result) {
+        console.log('...........');
          console.log(result);
         if (result&&result.length>0) {
             var openId=result[0].open_id;

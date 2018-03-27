@@ -1,0 +1,336 @@
+/* pages/dinner/dinner.wxss */
+
+/*未刮卡区域start*/
+.no-draw{
+  background-image: url("http://official-web.oss-cn-beijing.aliyuncs.com/xiaomai/dinner_bg.gif");
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center;
+  background-color:#141133;
+
+}
+.no-draw-block{
+  position:fixed;
+  bottom:200rpx;
+  width:100%;
+  left:0;
+  text-align:center;
+  color:#fff;
+}
+.no-draw-block .tip{
+  color:#f7f7f7;
+  font-size:24rpx;
+  margin-top:30rpx;
+}
+.go-draw{
+   background-color:#3c2075;
+   width:400rpx;
+   margin:0 auto;
+   border-radius:100px;
+   text-align:center;
+   line-height:80rpx;
+   font-size: 36rpx;
+}
+
+/*未刮卡区域end*/
+
+
+/*订餐未开始start*/
+.snow-draw{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index: 100;
+}
+.go-back{
+  position:relative;
+  z-index: 1000;
+  text-align:center;
+  font-size: 30rpx;
+    font-weight: 400;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.6;
+  
+    margin-top:180rpx;
+
+
+}
+.go-back navigator{
+ display: inline;
+ border-bottom: 1px dashed rgba(93, 115, 153, 0.5);
+}
+.weikaishi{
+      height: 100%;
+      width:100%;
+    position: relative;
+    z-index: 1;
+    background-color: #d2e1ec;
+    background-image: -webkit-linear-gradient(top, #bbcfe1 0%, #e8f2f6 80%);
+    background-image: linear-gradient(to bottom, #bbcfe1 0%, #e8f2f6 80%);
+    overflow: hidden;
+}
+.tree{
+    height: 320rpx;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #f6f9fa;
+    box-shadow: 0 0 10px 10px #f6f9fa;
+}
+/*bg*/
+.tree:before {
+    right: 50%;
+    margin-right: -228rpx;
+    box-shadow: 305px -295px 15px #bac4d5, 595px -605px 15px #8e9eba, 875px -925px 15px #8496b4, 1230px -1170px 15px #b7c1d3, 1520px -1480px 15px #8798b6, 1805px -1795px 15px #b7c1d3, 2135px -2065px 15px #94a3be, 2380px -2420px 15px #a4b1c8, 2735px -2665px 15px #b7c1d3, 3025px -2975px 15px #8798b6, 3290px -3310px 15px #7e90b0, 3590px -3610px 15px #a4b1c8, 3935px -3865px 15px #8496b4, 4215px -4185px 15px #9aa9c2, 4535px -4465px 15px #8496b4, 4840px -4760px 15px #b0bccf;
+}
+.tree:before, .tree:after {
+    content: '';
+    display: block;
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: -62.5px;
+    z-index: -1;
+    background: transparent;
+    -webkit-transform: scaleX(0.2) rotate(45deg);
+    transform: scaleX(0.2) rotate(45deg);
+}
+.tree:after {
+    left: 50%;
+    margin-left: -188rpx;
+    box-shadow: -345px 255px 15px #adb9cd, -625px 575px 15px #8798b6, -905px 895px 15px #8496b4, -1225px 1175px 15px #91a1bc, -1480px 1520px 15px #8496b4, -1760px 1840px 15px #b0bccf, -2055px 2145px 15px #b0bccf, -2385px 2415px 15px #8798b6, -2675px 2725px 15px #bac4d5, -3020px 2980px 15px #97a6c0, -3250px 3350px 15px #a1aec6, -3610px 3590px 15px #a1aec6, -3890px 3910px 15px #94a3be, -4200px 4200px 15px #8496b4, -4505px 4495px 15px #9dabc4, -4765px 4835px 15px #91a1bc;
+}
+.tree:before, .tree:after {
+    content: '';
+    display: block;
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: -62.5px;
+    z-index: -1;
+    background: transparent;
+    -webkit-transform: scaleX(0.2) rotate(45deg);
+    transform: scaleX(0.2) rotate(45deg);
+}
+
+/*地面*/
+
+.ground {
+   
+    font-weight: 800;
+    font-size: 180px;
+    text-align: center;
+    color: #dd4040;
+    pointer-events: none;
+}
+.ground:before {
+    content: '';
+    display: block;
+    width: 900rpx;
+    height: 400rpx;
+    position: absolute;
+    left: 50%;
+    margin-left: -450rpx;
+    top: 50px;
+    z-index: 1;
+    border-radius: 100%;
+    background-color: #e8f2f6;
+    background-image: -webkit-linear-gradient(top, #dee8f1, #f6f9fa 60px);
+    background-image: linear-gradient(to bottom, #dee8f1, #f6f9fa 60px);
+}
+
+.ground:after {
+content:'';
+display:block;
+width:28px;
+height:6px;
+position:absolute;
+left:50%;
+margin-left:-23px;
+top:54px;
+z-index:2;
+
+    background: #dd4040;
+    border-radius: 100%;
+    -webkit-transform: rotate(-15deg);
+    transform: rotate(-15deg);
+    box-shadow: -56px 12px 0 1px #dd4040, -126px 6px 0 2px #dd4040, -196px 24px 0 3px #dd4040;
+}
+
+.not-start-txt{
+  color: #dd4040;
+    pointer-events: none;
+    font-size:120rpx;
+    text-align:center;
+    position:absolute;
+    top:-6rpx;
+    width:100%;
+    left:0;
+    transform: rotate(4deg);
+}
+.content-txt{
+   color: #5d7399;
+   font-size:50rpx;
+   padding:240rpx 60rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-txt .name{
+  margin-bottom:20rpx;
+   font-size:60rpx;
+}
+/*订餐未开始end*/
+.all-tip{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:100rpx;
+  z-index: 100;
+  background-color:#494949;
+   color:#f7f7f7;
+   display: flex;
+}
+.all-tip .left{
+   flex:2;
+    color:#fff;
+    padding-left:30rpx;
+}
+.all-tip .left .tip{
+  
+    color:#D7D7D7;
+    font-size:20rpx;
+}
+.all-tip .left .spread{
+  margin:10rpx 0 0;
+}
+.all-tip .submit{
+   flex:1;
+   background-color:#e79723;
+   text-align:center;
+  line-height:100rpx;
+  
+}
+.menu-list{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#717171;
+  font-size:28rpx;
+  padding:20rpx 0;
+}
+.menu-list .img-box{
+  margin-right:50rpx;
+}
+.menu-list .txt-main{
+   width:400rpx;
+}
+.menu-list .title{
+   font-size:36rpx;
+   margin-bottom:18rpx;
+   color:#000;
+}
+.menu-list .price{
+  color:#f94f42;
+  text-align:left;
+  font-size:32rpx;
+  font-weight: bold;
+}
+.menu-list .editor{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+ 
+}
+.cancel-btn-box{
+  position:fixed;
+  bottom:16rpx;
+  left:0;
+  width:100%;
+  z-index:100;
+}
+.cancel-btn{
+  width:90%;
+  margin:0 auto;
+}
+
+.banner{
+  height:300rpx;
+  width:100%;
+  background-color:#D7D7D7;
+}
+.number{
+  font-size:36rpx;
+  color:#616161; 
+  padding:0 12rpx;
+}
+.editor-group{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.rudius{
+  width:47rpx;
+  height:47rpx;
+  border-radius:100px;
+  border:1px solid #c9c9c9;
+  color:#fff;
+  text-align:center;
+  line-height:42rpx;
+  font-size:45rpx;
+}
+.down-num{
+ color:#c9c9c9;
+}
+.add-num{
+  background-color:#e79723;
+  border-color:#e79723;
+}
+.code{
+  width:600rpx;
+  display: block;
+  margin:20rpx auto;
+}
+.tip-txt{
+  text-align:center;
+  font-size:24rpx;
+  color:#717171;
+}
+.tip-txt text{
+  font-size:36rpx;
+  font-weight: bold;
+}
+
+
+/* 只对北京开放*/
+.area-disable{
+ background-color:#01245d;
+ height:100%;
+ overflow:hidden;
+}
+.area-disable .top{
+  height:40vh;
+}
+.area-disable .bottom{
+  padding-top:200rpx;
+}
+.area-disable .bottom .txt{
+  color:#d3e4ef;
+  font-size:28rpx;
+  text-align:center;
+}
+.area-disable .bottom .return-home{
+  background-color:#032a6e;
+  color:#fff;
+  text-align:center;
+  line-height:100rpx;
+  width:400rpx;
+  border-radius:100px;
+  margin:60rpx auto 0;
+  font-size:30rpx;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}

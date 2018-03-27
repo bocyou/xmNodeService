@@ -1,0 +1,129 @@
+/* pages/lucky_draw/lucky_draw.wxss */
+
+.code{
+  width:600rpx;
+  display: block;
+  margin:20rpx auto;
+}
+.tip-txt{
+  text-align:center;
+  font-size:24rpx;
+  color:#717171;
+}
+.tip-txt text{
+  font-size:36rpx;
+  font-weight: bold;
+}
+/*刮奖区*/
+.draw-area{
+ height:260rpx;
+ display:flex;
+  align-items:center;
+  justify-content:center;
+
+}
+.draw-area .draw-btn{
+  margin:30rpx;
+  background-color:#f7f7f7;
+  height:200rpx;
+  border-radius:8rpx;
+  text-align:center;
+  line-height:200rpx;
+}
+
+/*已刮卡用户列表start*/
+
+
+.draw-user-header{
+   background: #333658;
+   color:#aeb1d8;
+   text-align:center;
+   line-height: 100rpx;
+   font-size:30rpx;
+}
+
+.border-color{
+  width:180rpx;
+  height:170rpx;
+
+}
+
+.border-color image{
+  width:180rpx;
+  height:170rpx;
+}
+.list-title{
+  padding:0 30rpx;
+  color:#717171;
+  font-size:36rpx;
+  font-weight:bold;
+  margin:36rpx 0;
+}
+
+.bar{
+  display:flex;
+  align-items: center;
+  justify-content:space-between;
+  margin:0 30rpx;
+  border-top:1px solid #f7f7f7;
+
+}
+.bar .user{
+  display:flex;
+  align-items: center;
+  justify-content:flex-start;
+  padding-left:30rpx;
+  width:280rpx;
+}
+.bar .user .user-img{
+    width:100rpx;
+  height:100rpx;
+  border-radius: 100px;
+  overflow:hidden;
+}
+.bar .user .name{
+  color:#717171;
+  font-size:36rpx;
+  margin-left:20rpx;
+}
+.bar .money-img{
+
+
+}
+.bar .money-img image{
+  display:block;
+  width:100rpx;
+}
+
+.bar .txt{
+   margin-top:10rpx;
+   color:#919191;
+   font-size:30rpx;
+}
+/*已刮卡用户列表end*/
+
+/* 特殊奖项start*/
+.special-bg{
+  width:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+}
+.special-content{
+  position:relative;
+  top:0;
+  left:0;
+  margin-bottom:-10rpx;
+}
+.special-content .name{
+  position:absolute;
+  right:260rpx;
+  top:165rpx;
+  color:#fff;
+  font-size:43rpx;
+
+}
+
+
+
+/* 特殊奖项end*/
