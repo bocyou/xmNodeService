@@ -272,6 +272,7 @@ router.post('/check_current_user_draw', function (req, res, next) {
 })
 
 //保存用户刮奖数据
+//同时存入该用户的钱数
 router.post('/save_user_draw', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     getUserInfo(req.headers.sessionkey, function (userInfo) {
@@ -284,7 +285,16 @@ router.post('/save_user_draw', function (req, res, next) {
                 create_time: new Date(),
                 area: userInfo[0].area,
                 user_img: JSON.parse(userInfo[0].wx_info).avatarUrl
-            }
+            };
+      /*      mysql.insert_one('user_bill', bar, function (result, err) {
+
+                if (result) {
+                    res.send(200, {code: 200, result: money, message: "保存成功"})
+                } else {
+                    res.send(200, {code: 500, result: '', message: '保存失败'})
+                }
+            });*/
+
             mysql.insert_one('lucky_user_list', bar, function (result, err) {
 
                 if (result) {

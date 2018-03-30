@@ -58,7 +58,7 @@ var  request=function(opt){
     data: opt.param,
     header: {
       'content-type': 'application/json', // 默认值
-      'session_key': userInfo.session
+      'sessionkey': userInfo.session
     },
     success: function (res) {
 

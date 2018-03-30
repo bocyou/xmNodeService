@@ -9,5 +9,34 @@
   </view>
 </view>
 <view class="content">
+  <view class="bill">
+    <view class="money">¥ {{bill_money}}</view>
+    <view class="txt">
+      本周已花费
+    </view>
+  </view>
+    <view class="bill-list">
+      <block wx:if="{{bill_ary.length>0}}">
+        <view class="">本周账单已出</view>
+        <view class="tip">请于周一前付款给王老师</view>
+      </block>
 
+      <block wx:else>
+        <view class="">本周账单尚未出</view>
+        <view class="">每周六账单日</view>
+      </block>
+
+    </view>
 </view>
+
+
+<block wx:if="{{bill_ary.length>0}}">
+<view class="bill-content" >
+  <view class="title">已出账单</view>
+  <view class="bar" wx:for="{{bill_ary}}" wx:key="i">
+    <view>{{item.create_time}}</view>
+    <view>{{item.money}}</view>
+    <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">点击确认付钱</view>
+  </view>
+</view>
+</block>

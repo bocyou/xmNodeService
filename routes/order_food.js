@@ -221,6 +221,7 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo) {
             var dinner_list = req.body.dinner_list;
+            var spread_money=req.body.spread_money;
             console.log(dinner_list);
             mysql.insert_one('order_food_user', {
                 area: userInfo[0].area,
@@ -228,7 +229,8 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
                 user_id: userInfo[0].id,
                 dinner_list: dinner_list,
                 create_time: new Date(),
-                status: 1
+                status: 1,
+                spread_money:spread_money
             }, function (result, err) {
                 if (result) {
                     res.send(200, {code: 200, result: true, message: '订餐成功'})

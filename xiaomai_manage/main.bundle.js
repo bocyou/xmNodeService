@@ -30,12 +30,14 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__manage_invite_code_invite_code_component__ = __webpack_require__("../../../../../src/app/manage/invite-code/invite-code.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__manage_manage_component__ = __webpack_require__("../../../../../src/app/manage/manage.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__user_bill_user_bill_component__ = __webpack_require__("../../../../../src/app/user-bill/user-bill.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -55,7 +57,8 @@ var routes = [
             { path: 'dinner/menu', component: __WEBPACK_IMPORTED_MODULE_3__order_dinner_dinner_manage_dinner_manage_component__["a" /* DinnerManageComponent */] },
             { path: 'dinner/statistics', component: __WEBPACK_IMPORTED_MODULE_4__order_dinner_dinner_statistics_dinner_statistics_component__["a" /* DinnerStatisticsComponent */] },
             { path: 'invite', component: __WEBPACK_IMPORTED_MODULE_5__manage_invite_code_invite_code_component__["a" /* InviteCodeComponent */] },
-            { path: 'dinner/statistics', component: __WEBPACK_IMPORTED_MODULE_4__order_dinner_dinner_statistics_dinner_statistics_component__["a" /* DinnerStatisticsComponent */] }
+            { path: 'dinner/statistics', component: __WEBPACK_IMPORTED_MODULE_4__order_dinner_dinner_statistics_dinner_statistics_component__["a" /* DinnerStatisticsComponent */] },
+            { path: 'userbill', component: __WEBPACK_IMPORTED_MODULE_8__user_bill_user_bill_component__["a" /* UserBillComponent */] }
         ] },
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_6__login_login_component__["a" /* LoginComponent */] },
     { path: '**', component: __WEBPACK_IMPORTED_MODULE_2__page404_page404_component__["a" /* Page404Component */] }
@@ -158,6 +161,11 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__manage_invite_code_invite_code_component__ = __webpack_require__("../../../../../src/app/manage/invite-code/invite-code.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__manage_manage_component__ = __webpack_require__("../../../../../src/app/manage/manage.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__user_bill_user_bill_component__ = __webpack_require__("../../../../../src/app/user-bill/user-bill.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pipe_bill_json_pipe__ = __webpack_require__("../../../../../src/app/pipe/bill-json.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__user_bill_bill_status_pipe__ = __webpack_require__("../../../../../src/app/user-bill/bill-status.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__scratch_card_scratch_card_component__ = __webpack_require__("../../../../../src/app/scratch-card/scratch-card.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__shared_change_menu_service__ = __webpack_require__("../../../../../src/app/shared/change-menu.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -169,6 +177,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  //数据请求模块
  //表单模块
  //添加后会在路由中加入#
+
+
+
+
+
 
 
 
@@ -206,6 +219,10 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_17__pipe_user_dinner_list_pipe__["a" /* UserDinnerListPipe */],
             __WEBPACK_IMPORTED_MODULE_18__manage_invite_code_invite_code_component__["a" /* InviteCodeComponent */],
             __WEBPACK_IMPORTED_MODULE_19__login_login_component__["a" /* LoginComponent */],
+            __WEBPACK_IMPORTED_MODULE_21__user_bill_user_bill_component__["a" /* UserBillComponent */],
+            __WEBPACK_IMPORTED_MODULE_22__pipe_bill_json_pipe__["a" /* BillJsonPipe */],
+            __WEBPACK_IMPORTED_MODULE_23__user_bill_bill_status_pipe__["a" /* BillStatusPipe */],
+            __WEBPACK_IMPORTED_MODULE_24__scratch_card_scratch_card_component__["a" /* ScratchCardComponent */],
             __WEBPACK_IMPORTED_MODULE_20__manage_manage_component__["a" /* ManageComponent */],
             __WEBPACK_IMPORTED_MODULE_14__order_dinner_dinner_filter_pipe__["a" /* DinnerFilterPipe */]
         ],
@@ -217,7 +234,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* JsonpModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* ReactiveFormsModule */]
         ],
-        providers: [{ provide: __WEBPACK_IMPORTED_MODULE_4__angular_common__["g" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_4__angular_common__["d" /* HashLocationStrategy */], }],
+        providers: [{ provide: __WEBPACK_IMPORTED_MODULE_4__angular_common__["g" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_4__angular_common__["d" /* HashLocationStrategy */], }, __WEBPACK_IMPORTED_MODULE_25__shared_change_menu_service__["a" /* ChangeMenuService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -430,7 +447,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"main-header\">\n\n  <!-- Logo -->\n  <a href=\"index2.html\" class=\"logo\">\n    <!-- mini logo for sidebar mini 50x50 pixels -->\n    <span class=\"logo-mini\"><b>小</b>麦</span>\n    <!-- logo for regular state and mobile devices -->\n    <span class=\"logo-lg\"><b>小麦</b>后台管理</span>\n  </a>\n\n  <!-- Header Navbar -->\n  <nav class=\"navbar navbar-static-top\" role=\"navigation\">\n    <!-- Sidebar toggle button-->\n    <a href=\"#\" class=\"sidebar-toggle\" data-toggle=\"push-menu\" role=\"button\">\n      <span class=\"glyphicon glyphicon-list\"></span>\n    </a>\n    <!-- Navbar Right Menu -->\n    <div class=\"navbar-custom-menu\">\n      <ul class=\"nav navbar-nav\">\n        <!-- Messages: style can be found in dropdown.less-->\n     <!--   <li class=\"dropdown messages-menu\">\n          &lt;!&ndash; Menu toggle button &ndash;&gt;\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i class=\"fa fa-envelope-o\"></i>\n            <span class=\"label label-success\">4</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li class=\"header\">You have 4 messages</li>\n            <li>\n              &lt;!&ndash; inner menu: contains the messages &ndash;&gt;\n              <ul class=\"menu\">\n                <li>&lt;!&ndash; start message &ndash;&gt;\n                  <a href=\"#\">\n                    <div class=\"pull-left\">\n                      &lt;!&ndash; User Image &ndash;&gt;\n                      <img src=\"\" class=\"img-circle\" alt=\"User Image\">\n                    </div>\n                    &lt;!&ndash; Message title and timestamp &ndash;&gt;\n                    <h4>\n                      Support Team\n                      <small><i class=\"fa fa-clock-o\"></i> 5 mins</small>\n                    </h4>\n                    &lt;!&ndash; The message &ndash;&gt;\n                    <p>Why not buy a new awesome theme?</p>\n                  </a>\n                </li>\n                &lt;!&ndash; end message &ndash;&gt;\n              </ul>\n              &lt;!&ndash; /.menu &ndash;&gt;\n            </li>\n            <li class=\"footer\"><a href=\"#\">See All Messages</a></li>\n          </ul>\n        </li>-->\n        <!-- /.messages-menu -->\n\n        <!-- Notifications Menu -->\n      <!--  <li class=\"dropdown notifications-menu\">\n          &lt;!&ndash; Menu toggle button &ndash;&gt;\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i class=\"fa fa-bell-o\"></i>\n            <span class=\"label label-warning\">10</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li class=\"header\">You have 10 notifications</li>\n            <li>\n              &lt;!&ndash; Inner Menu: contains the notifications &ndash;&gt;\n              <ul class=\"menu\">\n                <li>&lt;!&ndash; start notification &ndash;&gt;\n                  <a href=\"#\">\n                    <i class=\"fa fa-users text-aqua\"></i> 5 new members joined today\n                  </a>\n                </li>\n                &lt;!&ndash; end notification &ndash;&gt;\n              </ul>\n            </li>\n            <li class=\"footer\"><a href=\"#\">View all</a></li>\n          </ul>\n        </li>-->\n        <!-- Tasks Menu -->\n      <!--  <li class=\"dropdown tasks-menu\">\n          &lt;!&ndash; Menu Toggle Button &ndash;&gt;\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i class=\"fa fa-flag-o\"></i>\n            <span class=\"label label-danger\">9</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li class=\"header\">You have 9 tasks</li>\n            <li>\n              &lt;!&ndash; Inner menu: contains the tasks &ndash;&gt;\n              <ul class=\"menu\">\n                <li>&lt;!&ndash; Task item &ndash;&gt;\n                  <a href=\"#\">\n                    &lt;!&ndash; Task title and progress text &ndash;&gt;\n                    <h3>\n                      Design some buttons\n                      <small class=\"pull-right\">20%</small>\n                    </h3>\n                    &lt;!&ndash; The progress bar &ndash;&gt;\n                    <div class=\"progress xs\">\n                      &lt;!&ndash; Change the css width attribute to simulate progress &ndash;&gt;\n                      <div class=\"progress-bar progress-bar-aqua\" style=\"width: 20%\" role=\"progressbar\"\n                           aria-valuenow=\"20\" aria-valuemin=\"0\" aria-valuemax=\"100\">\n                        <span class=\"sr-only\">20% Complete</span>\n                      </div>\n                    </div>\n                  </a>\n                </li>\n                &lt;!&ndash; end task item &ndash;&gt;\n              </ul>\n            </li>\n            <li class=\"footer\">\n              <a href=\"#\">View all tasks</a>\n            </li>\n          </ul>\n        </li>-->\n        <!-- User Account Menu -->\n        <li class=\"dropdown user user-menu\">\n          <!-- Menu Toggle Button -->\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <!-- The user image in the navbar-->\n            <img [src]=\"user_info.user_img\" class=\"user-image\">\n            <!-- hidden-xs hides the username on small devices so only the image appears. -->\n            <span class=\"hidden-xs\">{{user_info.user_name}}</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <!-- The user image in the menu -->\n            <li class=\"user-header\">\n              <img src=\"{{user_info.user_img}}\" class=\"img-circle\" alt=\"User Image\">\n\n              <p>\n                管理员\n                <small>欢迎进入小麦后台管理</small>\n              </p>\n            </li>\n            <!-- Menu Body -->\n        <!--    <li class=\"user-body\">\n              <div class=\"row\">\n                <div class=\"col-xs-4 text-center\">\n                  <a href=\"#\">Followers</a>\n                </div>\n                <div class=\"col-xs-4 text-center\">\n                  <a href=\"#\">Sales</a>\n                </div>\n                <div class=\"col-xs-4 text-center\">\n                  <a href=\"#\">Friends</a>\n                </div>\n              </div>\n              &lt;!&ndash; /.row &ndash;&gt;\n            </li>-->\n            <!-- Menu Footer-->\n            <li class=\"user-footer\">\n              <div class=\"pull-left\">\n                <a href=\"#\" class=\"btn btn-default btn-flat\">test</a>\n              </div>\n              <div class=\"pull-right\">\n                <a href=\"#\" class=\"btn btn-default btn-flat\" (click)=\"signOut()\">退出</a>\n              </div>\n            </li>\n          </ul>\n        </li>\n        <!-- Control Sidebar Toggle Button -->\n        <li>\n          <a href=\"#\" data-toggle=\"control-sidebar\"><i class=\"fa fa-gears\"></i></a>\n        </li>\n      </ul>\n    </div>\n  </nav>\n</header>\n"
+module.exports = "<header class=\"main-header\">\n\n  <!-- Logo -->\n  <a href=\"index2.html\" class=\"logo\">\n    <!-- mini logo for sidebar mini 50x50 pixels -->\n    <span class=\"logo-mini\"><b>小</b>麦</span>\n    <!-- logo for regular state and mobile devices -->\n    <span class=\"logo-lg\"><b>小麦</b>后台管理</span>\n  </a>\n\n  <!-- Header Navbar -->\n  <nav class=\"navbar navbar-static-top\" role=\"navigation\">\n    <!-- Sidebar toggle button-->\n    <a href=\"#\" class=\"sidebar-toggle\" data-toggle=\"push-menu\" role=\"button\">\n      <span class=\"glyphicon glyphicon-list\"></span>\n    </a>\n    <!-- Navbar Right Menu -->\n    <div class=\"navbar-custom-menu\">\n      <ul class=\"nav navbar-nav\">\n        <!-- Messages: style can be found in dropdown.less-->\n     <!--   <li class=\"dropdown messages-menu\">\n          &lt;!&ndash; Menu toggle button &ndash;&gt;\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i class=\"fa fa-envelope-o\"></i>\n            <span class=\"label label-success\">4</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li class=\"header\">You have 4 messages</li>\n            <li>\n              &lt;!&ndash; inner menu: contains the messages &ndash;&gt;\n              <ul class=\"menu\">\n                <li>&lt;!&ndash; start message &ndash;&gt;\n                  <a href=\"#\">\n                    <div class=\"pull-left\">\n                      &lt;!&ndash; User Image &ndash;&gt;\n                      <img src=\"\" class=\"img-circle\" alt=\"User Image\">\n                    </div>\n                    &lt;!&ndash; Message title and timestamp &ndash;&gt;\n                    <h4>\n                      Support Team\n                      <small><i class=\"fa fa-clock-o\"></i> 5 mins</small>\n                    </h4>\n                    &lt;!&ndash; The message &ndash;&gt;\n                    <p>Why not buy a new awesome theme?</p>\n                  </a>\n                </li>\n                &lt;!&ndash; end message &ndash;&gt;\n              </ul>\n              &lt;!&ndash; /.menu &ndash;&gt;\n            </li>\n            <li class=\"footer\"><a href=\"#\">See All Messages</a></li>\n          </ul>\n        </li>-->\n        <!-- /.messages-menu -->\n\n        <!-- Notifications Menu -->\n      <!--  <li class=\"dropdown notifications-menu\">\n          &lt;!&ndash; Menu toggle button &ndash;&gt;\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i class=\"fa fa-bell-o\"></i>\n            <span class=\"label label-warning\">10</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li class=\"header\">You have 10 notifications</li>\n            <li>\n              &lt;!&ndash; Inner Menu: contains the notifications &ndash;&gt;\n              <ul class=\"menu\">\n                <li>&lt;!&ndash; start notification &ndash;&gt;\n                  <a href=\"#\">\n                    <i class=\"fa fa-users text-aqua\"></i> 5 new members joined today\n                  </a>\n                </li>\n                &lt;!&ndash; end notification &ndash;&gt;\n              </ul>\n            </li>\n            <li class=\"footer\"><a href=\"#\">View all</a></li>\n          </ul>\n        </li>-->\n        <!-- Tasks Menu -->\n      <!--  <li class=\"dropdown tasks-menu\">\n          &lt;!&ndash; Menu Toggle Button &ndash;&gt;\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i class=\"fa fa-flag-o\"></i>\n            <span class=\"label label-danger\">9</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li class=\"header\">You have 9 tasks</li>\n            <li>\n              &lt;!&ndash; Inner menu: contains the tasks &ndash;&gt;\n              <ul class=\"menu\">\n                <li>&lt;!&ndash; Task item &ndash;&gt;\n                  <a href=\"#\">\n                    &lt;!&ndash; Task title and progress text &ndash;&gt;\n                    <h3>\n                      Design some buttons\n                      <small class=\"pull-right\">20%</small>\n                    </h3>\n                    &lt;!&ndash; The progress bar &ndash;&gt;\n                    <div class=\"progress xs\">\n                      &lt;!&ndash; Change the css width attribute to simulate progress &ndash;&gt;\n                      <div class=\"progress-bar progress-bar-aqua\" style=\"width: 20%\" role=\"progressbar\"\n                           aria-valuenow=\"20\" aria-valuemin=\"0\" aria-valuemax=\"100\">\n                        <span class=\"sr-only\">20% Complete</span>\n                      </div>\n                    </div>\n                  </a>\n                </li>\n                &lt;!&ndash; end task item &ndash;&gt;\n              </ul>\n            </li>\n            <li class=\"footer\">\n              <a href=\"#\">View all tasks</a>\n            </li>\n          </ul>\n        </li>-->\n        <li class=\"dropdown tasks-menu\" (click)=\"postBill()\"> <a>\n          <i class=\"fa fa-flag-o\">分发本周账单</i>\n\n        </a></li>\n        <!-- User Account Menu -->\n        <li class=\"dropdown user user-menu\">\n          <!-- Menu Toggle Button -->\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <!-- The user image in the navbar-->\n            <img [src]=\"user_info.user_img\" class=\"user-image\">\n            <!-- hidden-xs hides the username on small devices so only the image appears. -->\n            <span class=\"hidden-xs\">{{user_info.user_name}}</span>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <!-- The user image in the menu -->\n            <li class=\"user-header\">\n              <img src=\"{{user_info.user_img}}\" class=\"img-circle\" alt=\"User Image\">\n\n              <p>\n                管理员\n                <small>欢迎进入小麦后台管理</small>\n              </p>\n            </li>\n            <!-- Menu Body -->\n        <!--    <li class=\"user-body\">\n              <div class=\"row\">\n                <div class=\"col-xs-4 text-center\">\n                  <a href=\"#\">Followers</a>\n                </div>\n                <div class=\"col-xs-4 text-center\">\n                  <a href=\"#\">Sales</a>\n                </div>\n                <div class=\"col-xs-4 text-center\">\n                  <a href=\"#\">Friends</a>\n                </div>\n              </div>\n              &lt;!&ndash; /.row &ndash;&gt;\n            </li>-->\n            <!-- Menu Footer-->\n            <li class=\"user-footer\">\n              <div class=\"pull-left\">\n                <!--<a href=\"#\" class=\"btn btn-default btn-flat\">test</a>-->\n              </div>\n              <div class=\"pull-right\">\n                <a href=\"#\" class=\"btn btn-default btn-flat\" (click)=\"signOut()\">退出</a>\n              </div>\n            </li>\n          </ul>\n        </li>\n        <!-- Control Sidebar Toggle Button -->\n        <li>\n          <a href=\"#\" data-toggle=\"control-sidebar\"><i class=\"fa fa-gears\"></i></a>\n        </li>\n      </ul>\n    </div>\n  </nav>\n</header>\n"
 
 /***/ }),
 
@@ -469,9 +486,7 @@ var HeaderComponent = (function () {
         this.http.post("/api/get_current_userinfo", "")
             .map(function (response) { return response.json(); }).subscribe(function (data) {
             if (data.code == 200 && JSON.stringify(data.result) != '{}') {
-                console.log(data);
                 _this.user_info = data.result;
-                console.log(_this.user_info);
             }
             else if (data.code == 502) {
                 _this.router.navigate(['/login']);
@@ -493,6 +508,25 @@ var HeaderComponent = (function () {
             }
             else {
                 alert('退出失败');
+            }
+        });
+    };
+    HeaderComponent.prototype.postBill = function () {
+        var _this = this;
+        this.http.post("me/get_all_user_bill", "")
+            .map(function (response) { return response.json(); }).subscribe(function (data) {
+            if (data.code == 200 && JSON.stringify(data.result) != '{}') {
+                alert(' 分发成功');
+            }
+            else if (data.code == 501) {
+                alert('本周账单已分发');
+            }
+            else if (data.code == 502) {
+                _this.router.navigate(['/login']);
+                //window.location.href='/login';
+            }
+            else {
+                alert('分发失败');
             }
         });
     };
@@ -574,8 +608,6 @@ var LoginComponent = (function () {
     LoginComponent.prototype.siginIn = function () {
         var _this = this;
         var self = this;
-        console.log(self.user_name);
-        console.log(self.password);
         if (self.user_name == '' || self.password == '') {
             alert('请输入完整');
         }
@@ -684,7 +716,6 @@ var InviteCodeComponent = (function () {
         var _this = this;
         this.http.post("/invite/create_invite", { num: 5 })
             .map(function (response) { return response.json(); }).subscribe(function (data) {
-            console.log(data);
             if (data.code == 200 && data.result == 1) {
                 _this.getAllList();
                 alert('生成成功');
@@ -796,7 +827,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<aside class=\"main-sidebar\">\n\n  <!-- sidebar: style can be found in sidebar.less -->\n  <section class=\"sidebar\">\n\n    <!-- Sidebar user panel (optional) -->\n  <!--  <div class=\"user-panel\">\n      <div class=\"pull-left image\">\n        <img src=\"dist/img/user2-160x160.jpg\" class=\"img-circle\" alt=\"User Image\">\n      </div>\n      <div class=\"pull-left info\">\n        <p>Alexander Pierce</p>\n        &lt;!&ndash; Status &ndash;&gt;\n        <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> Online</a>\n      </div>\n    </div>-->\n\n    <!-- search form (Optional) -->\n    <form action=\"#\" method=\"get\" class=\"sidebar-form\">\n      <div class=\"input-group\">\n        <input [formControl]=\"searchInput\" type=\"text\" name=\"q\" class=\"form-control\" placeholder=\"Search...\">\n          <span class=\"input-group-btn\">\n              <button type=\"submit\" name=\"search\" id=\"search-btn\" class=\"btn btn-flat\"><i class=\"fa fa-search\"></i>\n              </button>\n            </span>\n      </div>\n    </form>\n    <!-- /.search form -->\n\n    <!-- Sidebar Menu -->\n    <ul class=\"sidebar-menu\" data-widget=\"tree\">\n      <li class=\"header\">HEADER</li>\n      <!-- Optionally, you can add icons to the links -->\n      <li class=\"treeview active\">\n        <a href=\"#\"><i class=\"fa fa-link\"></i> <span>订餐系统</span>\n            <span class=\"pull-right-container\">\n                <i class=\"fa fa-angle-left pull-right\"></i>\n              </span>\n        </a>\n        <ul class=\"treeview-menu\">\n          <li class=\"active\" [routerLink]=\"['/manage/dinner/menu']\"><a href=\"#\">今日菜单</a></li>\n          <li><a [routerLink]=\"['/manage/dinner/statistics']\">今日统计</a></li>\n        </ul>\n      </li>\n      <li><a href=\"#\" [routerLink]=\"['/manage/invite']\"><i class=\"fa fa-link\"></i> <span>邀请码管理</span></a></li>\n  <!--    <li class=\"treeview\">\n        <a href=\"#\"><i class=\"fa fa-link\"></i> <span>小麦快跑</span>\n            <span class=\"pull-right-container\">\n                <i class=\"fa fa-angle-left pull-right\"></i>\n              </span>\n        </a>\n        <ul class=\"treeview-menu\">\n          <li><a href=\"#\">Link in level 2</a></li>\n          <li><a href=\"#\">Link in level 2</a></li>\n        </ul>\n      </li>-->\n      <li><a href=\"#\"><i class=\"fa fa-link\"></i> <span>刮刮卡统计</span></a></li>\n    </ul>\n    <!-- /.sidebar-menu -->\n  </section>\n  <!-- /.sidebar -->\n</aside>\n"
+module.exports = "<aside class=\"main-sidebar\">\n\n  <!-- sidebar: style can be found in sidebar.less -->\n  <section class=\"sidebar\">\n\n    <!-- Sidebar user panel (optional) -->\n  <!--  <div class=\"user-panel\">\n      <div class=\"pull-left image\">\n        <img src=\"dist/img/user2-160x160.jpg\" class=\"img-circle\" alt=\"User Image\">\n      </div>\n      <div class=\"pull-left info\">\n        <p>Alexander Pierce</p>\n        &lt;!&ndash; Status &ndash;&gt;\n        <a href=\"#\"><i class=\"fa fa-circle text-success\"></i> Online</a>\n      </div>\n    </div>-->\n\n    <!-- search form (Optional) -->\n    <form action=\"#\" method=\"get\" class=\"sidebar-form\">\n      <div class=\"input-group\">\n        <input [formControl]=\"searchInput\" type=\"text\" name=\"q\" class=\"form-control\" placeholder=\"Search...\">\n          <span class=\"input-group-btn\">\n              <button type=\"submit\" name=\"search\" id=\"search-btn\" class=\"btn btn-flat\"><i class=\"fa fa-search\"></i>\n              </button>\n            </span>\n      </div>\n    </form>\n    <!-- /.search form -->\n\n    <!-- Sidebar Menu -->\n    <ul class=\"sidebar-menu\" data-widget=\"tree\">\n      <li class=\"header\">HEADER</li>\n      <!-- Optionally, you can add icons to the links -->\n      <li class=\"treeview active\">\n        <a href=\"#\"><i class=\"fa fa-link\"></i> <span>订餐系统</span>\n            <span class=\"pull-right-container\">\n                <i class=\"fa fa-angle-left pull-right\"></i>\n              </span>\n        </a>\n        <ul class=\"treeview-menu\">\n          <li  (click)=\"change('1')\" [ngClass]=\"{active:currentActive==1}\" [routerLink]=\"['/manage/dinner/menu']\"><a href=\"#\">今日菜单</a></li>\n          <li (click)=\"change('2')\" [ngClass]=\"{active:currentActive==2}\"><a [routerLink]=\"['/manage/dinner/statistics']\">今日统计</a></li>\n          <li (click)=\"change(3)\" [ngClass]=\"{active:currentActive==3}\"><a [routerLink]=\"['/manage/userbill']\">用户账单</a></li>\n        </ul>\n      </li>\n      <li (click)=\"change(4)\" [ngClass]=\"{active:currentActive==4}\"><a href=\"#\" [routerLink]=\"['/manage/invite']\"><i class=\"fa fa-link\"></i> <span>邀请码管理</span></a></li>\n  <!--    <li class=\"treeview\">\n        <a href=\"#\"><i class=\"fa fa-link\"></i> <span>小麦快跑</span>\n            <span class=\"pull-right-container\">\n                <i class=\"fa fa-angle-left pull-right\"></i>\n              </span>\n        </a>\n        <ul class=\"treeview-menu\">\n          <li><a href=\"#\">Link in level 2</a></li>\n          <li><a href=\"#\">Link in level 2</a></li>\n        </ul>\n      </li>-->\n      <!--<li><a href=\"#\"><i class=\"fa fa-link\"></i> <span>刮刮卡统计</span></a></li>-->\n    </ul>\n    <!-- /.sidebar-menu -->\n  </section>\n  <!-- /.sidebar -->\n</aside>\n"
 
 /***/ }),
 
@@ -827,6 +858,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var MenuComponent = (function () {
     function MenuComponent() {
         var _this = this;
+        this.currentActive = 1;
         this.searchInput = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormControl */]();
         __WEBPACK_IMPORTED_MODULE_1_rxjs__["Observable"].from([{ name: 1 }, { name: 2 }])
             .filter(function (e) { return e.name == 1; })
@@ -838,12 +870,13 @@ var MenuComponent = (function () {
     }
     MenuComponent.prototype.ngOnInit = function () {
     };
+    MenuComponent.prototype.change = function (kind) {
+        this.currentActive = kind;
+    };
     MenuComponent.prototype.doOnInput = function (event) {
-        console.log(event.target.value);
         console.log(event.target.getAttribute('name'));
     };
     MenuComponent.prototype.getInputValue = function (value) {
-        console.log(value);
     };
     return MenuComponent;
 }());
@@ -998,7 +1031,6 @@ var DinnerManageComponent = (function () {
     DinnerManageComponent.prototype.startDinner = function (event) {
         var _this = this;
         //开始订餐
-        console.log(event);
         if (this.is_start == 0) {
             //尚未开启订餐
             var list = this.allList.filter(function (item) {
@@ -1012,10 +1044,8 @@ var DinnerManageComponent = (function () {
             var param = {
                 list: JSON.stringify(list)
             };
-            console.log(param);
             this.http.post("/order_food/start_dinner", param)
                 .map(function (response) { return response.json(); }).subscribe(function (data) {
-                console.log(data);
                 if (data.code == 200 && data.result == true) {
                     alert('分发成功');
                     _this.getList();
@@ -1046,7 +1076,6 @@ var DinnerManageComponent = (function () {
             else {
                 alert('结束失败');
             }
-            console.log(data);
         });
     };
     DinnerManageComponent.prototype.selectMenu = function (menu) {
@@ -1089,7 +1118,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/order-dinner/dinner-statistics/dinner-statistics.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"content-header\">\n  <h1>\n   小麦\n    <small>今日订餐统计</small>\n  </h1>\n  <ol class=\"breadcrumb\">\n    <li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> Level</a></li>\n    <li class=\"active\">Here</li>\n  </ol>\n</section>\n\n\n<section class=\"content container-fluid\">\n\n\n<div class=\"box box-danger\">\n  <div class=\"box-header with-border\">\n    <h3 class=\"box-title\">今日应收{{lucky_all_money+sum_price}}</h3>\n\n    <div class=\"box-tools pull-right\">\n      <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n      </button>\n      <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n    </div>\n  </div>\n\n  <div class=\"box-footer no-padding\">\n    <ul class=\"nav nav-pills nav-stacked\">\n      <li><a class=\" text-red\">\n        刮刮卡\n        <span class=\"pull-right\"><i class=\"fa fa-angle-down\"></i> {{lucky_all_money}}</span></a>\n      </li>\n\n      <li><a class=\"text-blue\" >\n        订餐\n        <span class=\"pull-right \"><i class=\"fa fa-angle-left\"></i> {{sum_price}}</span></a>\n      </li>\n    </ul>\n  </div>\n  <!-- /.box-body -->\n</div>\n\n<div class=\"box box-primary\">\n  <div class=\"box-header with-border\">\n    <h3 class=\"box-title\">订餐统计</h3>\n\n    <div class=\"box-tools pull-right\">\n      <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n      </button>\n      <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n    </div>\n  </div>\n  <!-- /.box-header -->\n  <div class=\"box-body\" style=\"\">\n    <ul class=\"products-list product-list-in-box\">\n      <li class=\"item\" *ngFor=\"let item of today_list_all  let i=index\">\n        <div class=\"product-img\">\n          <img src=\"{{item.info.img}}\" alt=\"Product Image\">\n        </div>\n        <div class=\"product-info\">\n          <a href=\"javascript:void(0)\" class=\"product-title\">{{item.info.name}}\n            <span class=\"label label-warning pull-right\">{{item.sum_num}}</span></a>\n                    <span class=\"product-description\">\n                          {{item.info.kind}}\n                          单价：{{item.info.price}}\n                        </span>\n        </div>\n      </li>\n\n      <!-- /.item -->\n    </ul>\n  </div>\n  <!-- /.box-body -->\n  <div class=\"box-footer text-center\" style=\"\">\n    <!-- <a href=\"javascript:void(0)\" class=\"uppercase\">View All Products</a>-->\n  </div>\n  <!-- /.box-footer -->\n</div>\n\n\n<div class=\"box\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">订餐人员详细信息</h3>\n  </div>\n  <!-- /.box-header -->\n  <div class=\"box-body no-padding\">\n    <table class=\"table table-striped\">\n      <thead>\n      <tr>\n        <th style=\"width: 10px\">#</th>\n        <th>姓名</th>\n        <th>订餐时间</th>\n        <th>订餐信息</th>\n        <th>需补差价</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let item of allList  let i=index\">\n        <td>{{i+1}}</td>\n        <td>{{item.user_name}}</td>\n        <td>{{item.create_time|date:\"MM/dd HH:mm\"}}</td>\n        <td>\n          <div *ngFor=\"let item2 of item.dinner_list.food_list; \">\n            <div>{{item2.list.name}}（¥{{item2.list.price}}）</div>\n            <div>{{item2.num}}</div>\n          </div>\n        </td>\n        <td>{{(item.dinner_list.sum_price-20<0?0:item.dinner_list.sum_price-20)}}</td>\n      </tr>\n\n      </tbody>\n    </table>\n  </div>\n  <!-- /.box-body -->\n</div>\n</section>\n\n\n\n"
+module.exports = "<section class=\"content-header\">\n  <h1>\n   小麦\n    <small>今日订餐统计</small>\n  </h1>\n  <ol class=\"breadcrumb\">\n    <!--<li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> Level</a></li>\n    <li class=\"active\">Here</li>-->\n  </ol>\n</section>\n\n\n<section class=\"content container-fluid\">\n\n  <div class=\"row\">\n    <div class=\"col-md-6\">\n      <div class=\"box box-danger\">\n        <div class=\"box-header with-border\">\n          <h3 class=\"box-title\">今日应收{{lucky_all_money+sum_price}}</h3>\n\n          <div class=\"box-tools pull-right\">\n            <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n            </button>\n            <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n          </div>\n        </div>\n\n        <div class=\"box-footer no-padding\">\n          <ul class=\"nav nav-pills nav-stacked\">\n            <li><a class=\" text-red\">\n              刮刮卡\n              <span class=\"pull-right\"><i class=\"fa fa-angle-down\"></i> {{lucky_all_money}}</span></a>\n            </li>\n\n            <li><a class=\"text-blue\" >\n              订餐\n              <span class=\"pull-right \"><i class=\"fa fa-angle-left\"></i> {{sum_price}}</span></a>\n            </li>\n          </ul>\n        </div>\n        <!-- /.box-body -->\n      </div>\n    </div>\n    <div class=\"col-md-6\">\n      <div class=\"box box-primary\">\n        <div class=\"box-header with-border\">\n          <h3 class=\"box-title\">订餐统计</h3>\n\n          <div class=\"box-tools pull-right\">\n            <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n            </button>\n            <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n          </div>\n        </div>\n        <!-- /.box-header -->\n        <div class=\"box-body\" style=\"\">\n          <ul class=\"products-list product-list-in-box\">\n            <li class=\"item\" *ngFor=\"let item of today_list_all  let i=index\">\n              <div class=\"product-img\">\n                <img src=\"{{item.info.img}}\" alt=\"Product Image\">\n              </div>\n              <div class=\"product-info\">\n                <a href=\"javascript:void(0)\" class=\"product-title\">{{item.info.name}}\n                  <span class=\"label label-warning pull-right\">{{item.sum_num}}</span></a>\n                <span class=\"product-description\">\n                          {{item.info.kind}}\n                          单价：{{item.info.price}}\n                        </span>\n              </div>\n            </li>\n\n            <!-- /.item -->\n          </ul>\n        </div>\n        <!-- /.box-body -->\n        <div class=\"box-footer text-center\" style=\"\">\n          <!-- <a href=\"javascript:void(0)\" class=\"uppercase\">View All Products</a>-->\n        </div>\n        <!-- /.box-footer -->\n      </div>\n    </div>\n  </div>\n\n\n\n\n\n<div class=\"box\">\n  <div class=\"box-header\">\n    <h3 class=\"box-title\">订餐人员详细信息</h3>\n  </div>\n  <!-- /.box-header -->\n  <div class=\"box-body no-padding\">\n    <table class=\"table table-striped\">\n      <thead>\n      <tr>\n        <th style=\"width: 10px\">#</th>\n        <th>姓名</th>\n        <th>订餐时间</th>\n        <th>订餐信息</th>\n        <th>需补差价</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let item of allList  let i=index\">\n        <td>{{i+1}}</td>\n        <td>{{item.user_name}}</td>\n        <td>{{item.create_time|date:\"MM/dd HH:mm\"}}</td>\n        <td>\n          <div *ngFor=\"let item2 of item.dinner_list.food_list; \">\n            <div>{{item2.list.name}}（¥{{item2.list.price}}）</div>\n            <div>{{item2.num}}</div>\n          </div>\n        </td>\n        <td>{{(item.dinner_list.sum_price-20<0?0:item.dinner_list.sum_price-20)}}</td>\n      </tr>\n\n      </tbody>\n    </table>\n  </div>\n  <!-- /.box-body -->\n</div>\n</section>\n\n\n\n"
 
 /***/ }),
 
@@ -1132,7 +1161,6 @@ var DinnerStatisticsComponent = (function () {
                 .map(function (response) { return response.json(); });
         this.http.post("/lucky_draw/sum_user_draw_money", "")
             .map(function (response) { return response.json(); }).subscribe(function (data) {
-            console.log(data);
             if (data.code == 200) {
                 _this.lucky_all_money = data.result;
             }
@@ -1155,7 +1183,6 @@ var DinnerStatisticsComponent = (function () {
             else {
                 _this.allList = data.result.list_info;
                 _this.today_list_all = data.result.list_all;
-                console.log(_this.allList);
                 //统计今天差价总数
                 data.result.list_info.forEach(function (item, idx) {
                     var price = (item.dinner_list.sum_price - 20);
@@ -1244,6 +1271,37 @@ Page404Component = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/pipe/bill-json.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BillJsonPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var BillJsonPipe = (function () {
+    function BillJsonPipe() {
+    }
+    BillJsonPipe.prototype.transform = function (value, args) {
+        return JSON.parse(value);
+    };
+    return BillJsonPipe;
+}());
+BillJsonPipe = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* Pipe */])({
+        name: 'billJson'
+    })
+], BillJsonPipe);
+
+//# sourceMappingURL=bill-json.pipe.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/pipe/user-dinner-list.pipe.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1280,6 +1338,100 @@ UserDinnerListPipe = __decorate([
 ], UserDinnerListPipe);
 
 //# sourceMappingURL=user-dinner-list.pipe.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/scratch-card/scratch-card.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/scratch-card/scratch-card.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  scratch-card works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/scratch-card/scratch-card.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScratchCardComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ScratchCardComponent = (function () {
+    function ScratchCardComponent() {
+    }
+    ScratchCardComponent.prototype.ngOnInit = function () {
+    };
+    return ScratchCardComponent;
+}());
+ScratchCardComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-scratch-card',
+        template: __webpack_require__("../../../../../src/app/scratch-card/scratch-card.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/scratch-card/scratch-card.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], ScratchCardComponent);
+
+//# sourceMappingURL=scratch-card.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/change-menu.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChangeMenuService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ChangeMenuService = (function () {
+    function ChangeMenuService() {
+    }
+    ChangeMenuService.prototype.changeMenu = function (str) {
+        return str;
+    };
+    return ChangeMenuService;
+}());
+ChangeMenuService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [])
+], ChangeMenuService);
+
+//# sourceMappingURL=change-menu.service.js.map
 
 /***/ }),
 
@@ -1341,6 +1493,179 @@ SidebarComponent = __decorate([
 ], SidebarComponent);
 
 //# sourceMappingURL=sidebar.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/user-bill/bill-status.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BillStatusPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var BillStatusPipe = (function () {
+    function BillStatusPipe() {
+    }
+    BillStatusPipe.prototype.transform = function (value, args) {
+        var tip_txt = '';
+        if (value == 1) {
+            tip_txt = '尚未交纳';
+        }
+        else {
+            tip_txt = '已经交纳';
+        }
+        return tip_txt;
+    };
+    return BillStatusPipe;
+}());
+BillStatusPipe = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["X" /* Pipe */])({
+        name: 'billStatus'
+    })
+], BillStatusPipe);
+
+//# sourceMappingURL=bill-status.pipe.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/user-bill/user-bill.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".bill-content .user-face{\n  display:inline-block;\n  width:50px;\n  height:50px;\n  border-radius: 50px;\n  margin-right:10px;\n}\n.bill-content .active{\n  background-color:#dd4b39!important;\n}\ntable td{\n  vertical-align: center!important;\n}\n.notbill-user-face{\n  width:50px;\n  height:50px;\n  display:inline-block;\n  margin-right:10px;\n  border-radius: 50px;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/user-bill/user-bill.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<section class=\"content-header\">\n  <h1>\n    小麦\n    <small>用户账单</small>\n  </h1>\n  <ol class=\"breadcrumb\">\n    <li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> </a></li>\n    <li class=\"active\"></li>\n  </ol>\n</section>\n\n\n<section class=\"content container-fluid\">\n  <div class=\"box box-info\">\n    <div class=\"box-header with-border\">\n      <h3 class=\"box-title\">本周账单 应收{{all_user_money}}</h3>\n\n      <div class=\"box-tools pull-right\">\n        <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n        </button>\n        <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n      </div>\n    </div>\n    <!-- /.box-header -->\n    <div class=\"box-body bill-content\">\n      <div class=\"table-responsive\">\n        <table class=\"table no-margin\">\n          <thead>\n          <tr>\n            <th>用户</th>\n            <th>金额</th>\n            <th>交纳状态</th>\n\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let item of user_bill_list ;let i=index\">\n            <td><img class=\"user-face\" src=\"{{(item.wx_info|billJson).avatarUrl}}\">{{item.user_name}}</td>\n            <td><b>{{item.money}}</b></td>\n            <td><span class=\"label label-success\" [ngClass]=\"{active:item.status==1}\">{{item.status|billStatus}}</span>\n            </td>\n\n          </tr>\n\n          </tbody>\n        </table>\n      </div>\n      <!-- /.table-responsive -->\n    </div>\n    <!-- /.box-body -->\n\n    <!-- /.box-footer -->\n  </div>\n\n\n  <div class=\"box\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">截止目前尚未交纳账用户</h3>\n    </div>\n    <!-- /.box-header -->\n    <div class=\"box-body no-padding\">\n      <table class=\"table table-striped\">\n        <tbody>\n        <tr>\n          <th style=\"width: 10px\">#</th>\n          <th>用户</th>\n          <th>账单时间</th>\n          <th style=\"width: 40px\">费用</th>\n        </tr>\n        <tr *ngFor=\"let item of all_user_bill_list;let i=index\">\n          <td>{{i+1}}.</td>\n          <td><img class=\"notbill-user-face\" src=\"{{(item.wx_info|billJson).avatarUrl}}\" alt=\"User Image\">{{item.user_name}}</td>\n          <td>\n            {{item.create_time|date:\"MM/dd HH:mm\"}}\n          </td>\n          <td><span class=\"badge bg-red\">{{item.money}}</span></td>\n        </tr>\n\n        </tbody>\n      </table>\n    </div>\n    <!-- /.box-body -->\n  </div>\n\n</section>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/user-bill/user-bill.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserBillComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_change_menu_service__ = __webpack_require__("../../../../../src/app/shared/change-menu.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var UserBillComponent = (function () {
+    /*  @Output()
+      changeMenu:EventEmitter<String>=new EventEmitter();*/
+    function UserBillComponent(http, jsonp, router, changeMenu) {
+        this.http = http;
+        this.jsonp = jsonp;
+        this.router = router;
+        this.changeMenu = changeMenu;
+        this.user_bill_list = [];
+        this.all_user_money = 0;
+        this.all_user_bill_list = [];
+        this.getUserBillList();
+        this.getAllUserNotBill();
+    }
+    UserBillComponent.prototype.ngOnInit = function () {
+        //this.changeMenu.emit("zhangdan");
+        console.log(this.changeMenu.changeMenu('zhangdan'));
+    };
+    UserBillComponent.prototype.getAllUserNotBill = function () {
+        var _this = this;
+        var self = this;
+        this.http.post('/me/get_all_user_bill_list', '').map(function (res) { return res.json(); }).subscribe(function (data) {
+            if (data.code == 200) {
+                /*      var rest_ary=data.result;
+                      var result_ary=[];
+                      rest_ary.sort(function(a,b){
+                        return a.user_id-b.user_id;
+                      });
+                     for (var i = 0; i < rest_ary.length;) {
+                       var count = 0;
+                       var sum_money:number=0;
+                       for (var j = i; j < rest_ary.length; j++) {
+                         if (rest_ary[i].user_id == rest_ary[j].user_id) {
+                           count++;
+                           sum_money+=parseInt(rest_ary[j].money);
+                         }
+                       }
+                       result_ary.push({name:rest_ary[i],num:count,sum_money:sum_money});
+                       i += count;
+                     }
+                     console.log(result_ary);*/
+                _this.all_user_bill_list = data.result.sort(function (a, b) {
+                    return a.user_id - b.user_id;
+                });
+            }
+            else if (data.code == 502) {
+                _this.router.navigate(['/login']);
+            }
+            else {
+                alert('获取数据失败');
+            }
+        });
+    };
+    UserBillComponent.prototype.getUserBillList = function () {
+        var _this = this;
+        var self = this;
+        this.http.post("/me/get_user_bill_list", '')
+            .map(function (response) { return response.json(); }).subscribe(function (data) {
+            if (data.code == 200) {
+                _this.user_bill_list = data.result;
+                data.result.forEach(function (item, idx) {
+                    self.all_user_money += parseInt(item.money);
+                });
+            }
+            else if (data.code == 502) {
+                _this.router.navigate(['/login']);
+            }
+            else {
+                alert('获取数据失败');
+            }
+        });
+    };
+    return UserBillComponent;
+}());
+UserBillComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-user-bill',
+        template: __webpack_require__("../../../../../src/app/user-bill/user-bill.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/user-bill/user-bill.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Jsonp */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Jsonp */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__shared_change_menu_service__["a" /* ChangeMenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_change_menu_service__["a" /* ChangeMenuService */]) === "function" && _d || Object])
+], UserBillComponent);
+
+var _a, _b, _c, _d;
+//# sourceMappingURL=user-bill.component.js.map
 
 /***/ }),
 

@@ -423,9 +423,10 @@ Page({
         result[i].list.img = encodeURIComponent(result[i].list.img);
       }
       console.log(result);
+      console.log(self.data.spread);
       //保存订餐信息
       util.request({
-        url: util.api+'/order_food/save_user_dinnerlist', param: { dinner_list: JSON.stringify(result)}, complete: function (res) {
+        url: util.api+'/order_food/save_user_dinnerlist', param: {spread_money:self.data.spread, dinner_list: JSON.stringify(result)}, complete: function (res) {
           var data = res.data;
           if (data.code == 200&&data.result==true) {
              //订餐成功进入二维码页面

@@ -29,6 +29,7 @@
   border-radius:8rpx;
   text-align:center;
   line-height:200rpx;
+  width:100%;
 }
 
 /*已刮卡用户列表start*/

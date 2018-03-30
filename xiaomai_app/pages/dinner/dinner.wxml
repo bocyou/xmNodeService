@@ -41,7 +41,7 @@
  <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight-50}}">
  <view wx:if="{{!isCancel}}">今日订餐已结束</view>
  <view wx:if="{{havedinner_price>0}}">
- <view><image class="code" mode="aspectFit" src="https://official-web.oss-cn-beijing.aliyuncs.com/xiaomai/WechatIMG1.jpeg"></image></view>
+ <view><!--<image class="code" mode="aspectFit" src="https://official-web.oss-cn-beijing.aliyuncs.com/xiaomai/WechatIMG1.jpeg"></image>--></view>
  <view class="tip-txt">需补差价： <text>{{havedinner_price}}</text></view>
  </view>
  <view>您当前的订餐</view>
@@ -49,7 +49,7 @@
        <block  wx:for="{{have_dinner}}" wx:key="item">
      <view class="menu-list">
      <view class="img-box">
-        <image style="width: 200rpx; height: 200rpx; background-color: #eeeeee;" mode="scaleToFill" src="{{item.list.img}}"></image>
+        <image style="width: 200rpx; height: 200rpx; background-color: #eeeeee;" mode="widthFix" src="https:{{item.list.img}}"></image>
      </view>
      <view class="txt-main">
         <view class="title">{{item.list.name}}</view>
@@ -82,7 +82,7 @@
     <block  wx:for="{{dinner_list}}" wx:key="item">
      <view class="menu-list">
      <view class="img-box">
-        <image style="width: 200rpx; height: 200rpx; background-color: #eeeeee;" mode="scaleToFill" src="{{item.img}}"></image>
+        <image style="width: 200rpx; height: 200rpx; background-color: #eeeeee;" mode="widthFix" src="https:{{item.img}}"></image>
      </view>
      <view class="txt-main">
         <view class="title">{{item.name}}</view>

@@ -35,6 +35,12 @@
 					"name": "刮奖",
 					"pathName": "pages/lucky_draw/lucky_draw",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我",
+					"pathName": "pages/me/me",
+					"query": ""
 				}
 			]
 		}

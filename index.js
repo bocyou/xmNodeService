@@ -36,7 +36,7 @@ app.use('/order_food',require('./routes/order_food'));
 app.use('/lucky_draw',require('./routes/lucky_draw'));
 app.use('/invite',require('./routes/invite'));
 app.use('/angular/login',require('./routes/login'));
-
+app.use('/me',require('./routes/me'));
 
 
 app.listen(config.part,function(){

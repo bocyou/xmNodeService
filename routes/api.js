@@ -69,6 +69,21 @@ router.post('/check_current_user', function (req, res, next) {
 
 });
 
+/*我start*/
+
+router.post('/get_current_not_pay', function (req, res, next) {
+
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
+        if (userInfo.length > 0) {
+            res.send(200, {code: 200, result: true, message: "该用户合法"})
+        } else {
+            res.send(200, {code: 200, result: false, message: "用户不合法"})
+        }
+    }, res);
+
+});
+/*我end*/
+
 
 //登录成功返回session,下次登录
 router.post('/user_login', function (req, res, next) {

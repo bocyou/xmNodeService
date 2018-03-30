@@ -32,3 +32,39 @@
   box-sizing: inherit;
   transform: initial;
 }
+.content{
+    padding:60rpx 30rpx 0;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.bill{
+
+}
+.bill-list .tip{
+    color:#717171;
+    font-size:28rpx;
+}
+.bill .money{
+    font-size:60rpx;
+    font-weight:bold;
+    margin-bottom:20rpx;
+}
+.bill .txt{
+    font-size:24rpx;
+    color:#717171;
+}
+
+.bill-content .bar{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+}
+.bill-content .bar .pay-money{
+    background-color:red;
+    color:#fff;
+    display:inline-block;
+    padding:15rpx 30rpx;
+    border-radius: 8rpx;
+    font-size:24rpx;
+}
