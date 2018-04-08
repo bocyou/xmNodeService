@@ -44,7 +44,7 @@
  <view><!--<image class="code" mode="aspectFit" src="https://official-web.oss-cn-beijing.aliyuncs.com/xiaomai/WechatIMG1.jpeg"></image>--></view>
  <view class="tip-txt">需补差价： <text>{{havedinner_price}}</text></view>
  </view>
- <view>您当前的订餐</view>
+ <view class="dinner-over-title">您当前的订餐</view>
  <view>
        <block  wx:for="{{have_dinner}}" wx:key="item">
      <view class="menu-list">

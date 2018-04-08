@@ -33,12 +33,10 @@ router.post('/get_today_dinner',checkSession, function (req, res, next) {
                 var sum_price = 0;
                 dinner_all_list = dinner_all_list.concat(dinner_list.food_list);
                 dinner_list.food_list.forEach(function (item2, idx2) {
-                    console.log(item2);
                     sum_price += (item2.list.price * item2.num);
                 });
                 dinner_list.sum_price = sum_price;
                 item.dinner_list = dinner_list;
-                console.log(item.dinner_list);
             });
 
 
@@ -54,8 +52,8 @@ router.post('/get_today_dinner',checkSession, function (req, res, next) {
                 for (var j = i; j < dinner_all_list.length; j++) {
 
                     if (dinner_all_list[i].list.id == dinner_all_list[j].list.id) {
-                        console.log(dinner_all_list[i].num);
-                        sum_num += dinner_all_list[i].num;
+
+                        sum_num += dinner_all_list[j].num;
                         repeat_num++;
 
                     }
@@ -110,7 +108,6 @@ router.post('/all_dinner_list',checkSession, function (req, res, next) {
                 i += count;
             }
             mysql.findToday('order_fooding', 'status="start"', function (result, err) {
-                console.log(err);
                 if (result && result.length > 0) {
                     res.send(200, {
                         code: 200,
@@ -142,7 +139,6 @@ router.post('/all_dinner_list',checkSession, function (req, res, next) {
 //分发菜单,开启订餐
 router.post('/start_dinner',checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.body);
     var list_obj = req.body;
     list_obj.create_time = new Date();
     list_obj.status = "start";
@@ -184,11 +180,9 @@ router.post('/get_dinner_list', function (req, res, next) {
     getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
-            console.log(user_info);
             if (user_info[0].area == 'bj') {
                 //检查用户是否刮卡
                 mysql.findToday('lucky_user_list', 'user_id="' + user_id + '"', function (result, err) {
-                    console.log(err);
                     if (result && result.length > 0) {
                         //获取当天最新的一条菜单
                         mysql.findMaxTime('order_fooding', 'create_time', function (result, err) {
@@ -222,7 +216,6 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
         if (userInfo) {
             var dinner_list = req.body.dinner_list;
             var spread_money=req.body.spread_money;
-            console.log(dinner_list);
             mysql.insert_one('order_food_user', {
                 area: userInfo[0].area,
                 user_name: userInfo[0].user_name,
@@ -252,7 +245,6 @@ router.post('/check_currentuser_dinner', function (req, res, next) {
         if (userInfo) {
             var user_id = userInfo[0].id;
             mysql.findMaxTimeCondition('order_food_user', 'create_time', 'status=1 AND to_days(create_time) = to_days(now()) AND user_id=' + user_id, function (result, err) {
-                console.log(err);
                 if (result.length > 0) {
                     res.send(200, {code: 200, result: result[0], message: '获取订餐列表成功！'});
                 } else {

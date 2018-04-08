@@ -299,10 +299,15 @@ z-index:2;
   text-align:center;
   font-size:24rpx;
   color:#717171;
+    height:100rpx;
+    padding-top:40rpx;
 }
 .tip-txt text{
   font-size:36rpx;
   font-weight: bold;
+}
+.dinner-over-title{
+    padding-left:30rpx;
 }
 
 

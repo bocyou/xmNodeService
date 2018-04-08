@@ -8,6 +8,6 @@
 
 <view class="bottom">
   <view class="h3">顶上小麦</view>
-<view class="signup" bindtap='userLogin'>使用微信登录</view>
+<view class="signup" bindtap='userLogin'>登录</view>
 </view>
 

@@ -67,7 +67,9 @@ Page({
   },
    userLogin: function () {
     var self = this;
-     
+       wx.showLoading({
+           title: '登录中……'
+       })
           wx.login({
             success: function (res) {
               if (res.code) {
@@ -89,6 +91,7 @@ Page({
                       },
                       success: function (res) {
                         var data = res.data;
+                          wx.hideLoading();
                         if (data.code == 200 &&data.result==-1){
                           //该用户尚未注册
                           wx.redirectTo({
@@ -99,7 +102,7 @@ Page({
                          
                           //缓存后台传来的sessionKey
                           var userInfo = app.globalData.userInfo;
-                          userInfo.session = data.session
+                          userInfo.session = data.session;
                           wx.setStorageSync('userInfo', userInfo);
                           wx.switchTab({
                             url: '../index/index'
@@ -112,6 +115,7 @@ Page({
                     })
                   },
                   fail:function(res){
+                      wx.hideLoading();
                     wx.showModal({
                       title: '',
                       content: '检测到您没有打开小麦的用户信息权限，是否去设置打开？',

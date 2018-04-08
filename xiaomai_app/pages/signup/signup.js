@@ -159,13 +159,13 @@ Page({
                     //返回登录页面
                     wx.showToast({
                       title: '该用户已存在,请授权登录',
-                      icon: 'loading',
+                      icon: 'none',
                       duration: 1000
                     });
                   } else {
                     wx.showToast({
                       title: '创建失败',
-                      icon: 'loading',
+                      icon: 'none',
                       duration: 1000
                     });
                   }
@@ -187,7 +187,7 @@ Page({
     } else {
       wx.showToast({
         title: '请填写完整',
-        icon: 'loading',
+        icon: 'none',
         duration: 1000
       });
     }

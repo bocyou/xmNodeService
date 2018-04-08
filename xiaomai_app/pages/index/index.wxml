@@ -5,8 +5,7 @@
        <text class="user-motto">{{motto}}</text>
      </view>-->
     <view class="userinfo">
-        <button wx:if="{{!hasUserInfo && canIUse}}" bindtap="userLogin"> 使用微信登陆</button>
-        <block wx:else>
+
             <!-- <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
              <text class="userinfo-nickname">{{userInfo.nickName}}</text>-->
             <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight}}">
@@ -15,7 +14,7 @@
                     <view class="content">
                         <div class="txt">
                             <view class="title">刮刮卡</view>
-                            <view class="description">一些描述一些描述一些描述</view>
+
                         </div>
                     </view>
 
@@ -26,7 +25,7 @@
                         <view class="txt">
 
                             <view class="title">订餐系统</view>
-                            <view class="description">一些描述一些描述一些描述</view>
+
 
 
                         </view>
@@ -34,7 +33,7 @@
 
                 </navigator>
             </scroll-view>
-        </block>
+
     </view>
 
 </view>
