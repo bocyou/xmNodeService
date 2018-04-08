@@ -244,13 +244,27 @@ router.post('/check_currentuser_dinner', function (req, res, next) {
 
         if (userInfo) {
             var user_id = userInfo[0].id;
-            mysql.findMaxTimeCondition('order_food_user', 'create_time', 'status=1 AND to_days(create_time) = to_days(now()) AND user_id=' + user_id, function (result, err) {
+            console.log(user_id);
+            mysql.sql('SELECT * FROM order_food_user WHERE to_days(create_time) = to_days(now()) AND status=1 And user_id='+ user_id,function(err,result){
+                console.log(err);
+                if(err==null){
+                    if (result.length > 0) {
+                        res.send(200, {code: 200, result: result[0], message: '获取订餐列表成功！'});
+                    } else {
+                        res.send(200, {code: 200, result: {}, message: '订餐尚未开始'});
+                    }
+                }else{
+                    res.send(200, {code: 200, result: [], message: '获取该用户信息失败'});
+                }
+            })
+         /*   mysql.findMaxTimeCondition('order_food_user', 'create_time', 'status=1 AND to_days(create_time) = to_days(now()) AND user_id=' + user_id, function (result, err) {
+                console.log(result);
                 if (result.length > 0) {
                     res.send(200, {code: 200, result: result[0], message: '获取订餐列表成功！'});
                 } else {
                     res.send(200, {code: 200, result: {}, message: '订餐尚未开始'});
                 }
-            });
+            });*/
 
         } else {
             res.send(200, {code: 200, result: [], message: '获取该用户信息失败'});
