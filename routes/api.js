@@ -11,7 +11,6 @@ var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
-var emoji=require('node-emoji');
 
 
 router.get('/', function (req, res) {
