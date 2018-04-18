@@ -20,6 +20,7 @@ app.set('view engine', 'html');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'xiaomai_manage')));//设置静态文件路径
 app.use(session({
     secret: config.session.secret,// 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改 建议使用 128 个字符的随机字符串
@@ -35,6 +36,7 @@ app.use('/api',require('./routes/api'));
 app.use('/order_food',require('./routes/order_food'));
 app.use('/lucky_draw',require('./routes/lucky_draw'));
 app.use('/invite',require('./routes/invite'));
+app.use('/invite_code',require('./routes/invite_code'));
 app.use('/angular/login',require('./routes/login'));
 app.use('/me',require('./routes/me'));
 

@@ -21,7 +21,7 @@
 
 
 //获取邀请码列表
-router.post('/get_invite_list',checkSession, function (req, res, next) {
+router.post('/get_invite_list', function (req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
 
     mysql.conditionSearch('invite_code','status="1"', function (result, err) {

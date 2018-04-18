@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>小麦邀请码</title>
+    <style>
+        li{
+          color:#717171;
+            margin:10px 0;
+        }
+    </style>
+</head>
+<body>
+<h3>当前可用的邀请码<small>（不得外传）</small></h3>
+<ul class="j-code">
+
+</ul>
+<script src="/introduce/jQuery-3.1.1.js"></script>
+<script>
+    $.post('/invite/get_invite_list',function(data){
+        console.log(data);
+        if(data.code==200){
+            if(data.result.length==0){
+                alert('无可用邀请码！请联系王老师');
+            }else{
+                var str='';
+                data.result.forEach(function(item){
+                    str+='<li>'+item.code+'</li>';
+                });
+                $('.j-code').html(str);
+            }
+        }else{
+            alert('获取邀请码列表失败');
+        }
+    });
+</script>
+</body>
+</html>
