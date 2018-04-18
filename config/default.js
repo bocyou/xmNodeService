@@ -1,5 +1,5 @@
 module.exports={
-	part:8080,
+	part:8081,
 	session:{
 		secret:'xiaomai',
 		key:'xiaomai',
@@ -10,7 +10,8 @@ module.exports={
 		user     : 'dbuser4test_dsxm',
 		password : 'dbuser4test_dsxm_20171014',
 		port:'3306',
-		database : 'ts_xiaomai'
+		database : 'ts_xiaomai',
+        charset:'UTF8MB4_GENERAL_CI'
 	/*	schema: {
 			tableName: 'custom_sessions_table_name',
 			columnNames: {

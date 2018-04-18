@@ -11,6 +11,7 @@ var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
+var emoji=require('node-emoji');
 
 
 router.get('/', function (req, res) {
@@ -167,7 +168,7 @@ router.post('/user_sign_up', function (req, res, next) {
     mysql.conditionSearch('invite_code', 'code="' + req_data.invite + '" AND status="1"', function (result) {
 
         if (result && result.length > 0) {
-            console.log(result);
+
             //邀请码有效,向微信服务器获取openid
             var invite_id = result[0].id;
             request.post({
@@ -181,6 +182,7 @@ router.post('/user_sign_up', function (req, res, next) {
                 if (err) {
                     res.send(200, {code: 200, result: '获取openid失败'});
                 } else {
+
                     //生成randomSession用于和小程序关联信息
                     var wxSession = JSON.parse(body);
 

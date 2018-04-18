@@ -208,10 +208,13 @@ Page({
   },
   startDraw:function(){
     var self=this;
+    console.log(1);
     util.request({
       url: util.api+'/lucky_draw/save_user_draw', complete: function (res) {
         var data = res.data;
+        console.log(res);
         if(data.code==200){
+          console.log('发送');
           self.getAllList();
           self.getTopList();
           self.getSpecialList();
