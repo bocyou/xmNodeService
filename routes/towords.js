@@ -6,7 +6,6 @@ var router=express.Router();
 var wordBook = require('../lib/mongoose').wordBook;
 var userAnswer = require('../lib/mongoose').userAnswer;
 router.post('/get_book_list', function (req, res, next) {
-    console.log(req.body);//接收请求数据
     //获取所有单词
     wordBook.find({},null,{/*limit:20*/},function(error,doc){
         if(doc){
@@ -46,7 +45,6 @@ router.post('/save_user_answer', function (req, res, next) {
 
 });
 router.post('/get_answer_list', function (req, res, next) {
-    console.log(req.body);//接收请求数据
     //获取所有单词
     userAnswer.find({},null,{/*limit:20*/},function(error,doc){
         if(doc){

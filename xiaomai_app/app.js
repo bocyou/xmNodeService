@@ -35,7 +35,6 @@ App({
                       })*/
                     } else {
                       // 不存在
-                        console.log('不存在此用户');
                       wx.redirectTo({
                         url: '/pages/login/login'
                       })

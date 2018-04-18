@@ -4,7 +4,6 @@
 //后台登陆session检查
 module.exports = {
     checkSession: function checkLogin(req, res, next) {
-        console.log(req.session);
        // next();
         if(req.session.user){
             next();
@@ -30,5 +29,14 @@ module.exports = {
         }
         next();*/
         //res.redirect('http://google.com');
+    },
+    checkAppSession:function(req, res, next){
+
+        if(req.headers.sessionkey){
+            next();
+        }else{
+            //res.redirect('http://localhost:4200/login');
+            res.send(200,{code:502,result:null,massage:'session异常'});
+        }
     }
 };

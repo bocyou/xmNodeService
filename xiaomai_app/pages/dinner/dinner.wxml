@@ -39,7 +39,7 @@
 <block wx:elif="{{dinner_status=='yidingcan'}}">
  <view class="cancel-btn-box" wx:if="{{isCancel}}"><button class="cancel-btn" bindtap="cancelDinner">取消</button></view>
  <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight-50}}">
- <view wx:if="{{!isCancel}}">今日订餐已结束</view>
+ <view wx:if="{{!isCancel}}" class="over-title">今日订餐已结束</view>
  <view wx:if="{{havedinner_price>0}}">
  <view><!--<image class="code" mode="aspectFit" src="https://official-web.oss-cn-beijing.aliyuncs.com/xiaomai/WechatIMG1.jpeg"></image>--></view>
  <view class="tip-txt">需补差价： <text>{{havedinner_price}}</text></view>
@@ -104,7 +104,7 @@
      </view>
      </view>
     </block>
-  
+      <view style="height:60px;"></view>
   </scroll-view>
 </block>
 
@@ -113,7 +113,7 @@
 <!--订餐结束 -->
 
 <block wx:elif="{{dinner_status=='over'}}">
- <view>订餐已结束</view>
+ <view >订餐已结束</view>
 </block>
 
 <!--用户不属于北京 -->

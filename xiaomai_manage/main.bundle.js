@@ -1186,7 +1186,7 @@ var DinnerStatisticsComponent = (function () {
                 //统计今天差价总数
                 data.result.list_info.forEach(function (item, idx) {
                     var price = (item.dinner_list.sum_price - 20);
-                    if (price - 20 < 0) {
+                    if (price < 0) {
                         price = 0;
                     }
                     self.sum_price += price;

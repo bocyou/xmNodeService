@@ -4,11 +4,8 @@
 var mysql = require('../lib/mysql');
 module.exports = {
     getUserInfo: function(session,callback,res){
-        console.log(session);
 
     mysql.find_one('custom_session','session_key',[session], function (result) {
-        console.log('...........');
-         console.log(result);
         if (result&&result.length>0) {
             var openId=result[0].open_id;
             //根据openid 获取用户信息
@@ -21,7 +18,7 @@ module.exports = {
             });
 
         }else{
-            res.send(200, {code: 501, result: result,massage:'获取此用户的openid失败'})
+            res.send(200, {code: 502, result: [],massage:'session失效'})
         }
 
     });
@@ -33,7 +30,7 @@ getCurrentSession:function(session,callback,res){
            callback(result);
 
         }else{
-            res.send(200, {code: 501, result: result,massage:'获取此用户的openid失败'})
+            res.send(200, {code: 502, result: result,massage:'session失效'})
         }
 
     });

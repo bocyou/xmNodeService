@@ -6,7 +6,7 @@ var request = require('request');
 var router = express.Router();
 var mysql = require('../lib/mysql');
 var session = require('express-session');
-var checkSession = require('../middlewares/check_session').checkSession;
+var checkSession = require('../middlewares/check_session').checkAppSession;
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
@@ -53,7 +53,7 @@ var lucky = {
                 return Math.random() > .5 ? -1 : 1;
             });
 
-        };
+        }
 
     },
 
@@ -89,27 +89,7 @@ router.get('/', function (req, res) {
     res.render('api', {title: ''});
 
 });
-/*var getUserInfo=function(session,callback){
 
-    mysql.find_one('custom_session','session_key',[session], function (result) {
-
-        if (result&&result.length>0) {
-            var openId=result[0].open_id;
-            //根据openid 获取用户信息
-            mysql.find_one('users','open_id',[openId], function (result) {
-                if(result.length>0){
-                    callback(result);
-                }else{
-                 callback(false);
-             }
-         });
-
-        }else{
-            res.send(200, {code: 501, result: result,massage:'session已过期'})
-        }
-
-    });
-}*/
 
 
 //管理列表计算今天获得的钱数(仅北京地区)
@@ -173,7 +153,7 @@ router.post('/get_user_draw_list', function (req, res, next) {
 
 //获取本月，用户地区所有人员的刮卡记录前三名并根据id计算所有人员的总钱数
 //返回姓名，钱数，用户头像，地区
-router.post('/month_top_list', function (req, res, next) {
+router.post('/month_top_list', checkSession,function (req, res, next) {
 
     getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
@@ -275,11 +255,9 @@ router.post('/check_current_user_draw', function (req, res, next) {
 
 router.post('/save_user_draw', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.headers.sessionkey);
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
             var money = lucky.draw(userInfo[0].area);
-            console.log(userInfo);
             var bar = {
                 user_id: userInfo[0].id,
                 user_name: userInfo[0].user_name,

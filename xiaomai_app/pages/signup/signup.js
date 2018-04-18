@@ -175,7 +175,7 @@ Page({
             }
 
             param.userInfo = app.globalData.userInfo;
-            console.log(param.userInfo);
+
             postData(param);
 
           } else {

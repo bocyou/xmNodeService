@@ -42,8 +42,6 @@ router.get('/', function (req, res) {
 //后台管理获取用户信息
 router.post('/get_current_userinfo',checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.body);
-    /*req.session.user = {};*/
 
     res.send(200, {code: 200, result: req.session.user, message: "获取当前用户信息成功"})
 
@@ -56,9 +54,6 @@ router.post('/get_current_userinfo',checkSession, function (req, res, next) {
 
 
 router.post('/check_current_user', function (req, res, next) {
-    console.log(req);
-    console.log(req.headers);
-    console.log(req.headers.sessionkey);
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
             res.send(200, {code: 200, result: true, message: "该用户合法"})
@@ -89,7 +84,6 @@ router.post('/get_current_not_pay', function (req, res, next) {
 router.post('/user_login', function (req, res, next) {
     var reqData = req.body;
     reqData.userInfo = JSON.parse(reqData.userInfo);
-    console.log(reqData);
     //获取微信code后获取openid
     if (reqData.wx_code != '') {
         /*  request('https://api.weixin.qq.com/sns/jscode2session?appid=wxff898caf09a11846&secret=6f8b1e6559774ab25c0e6ec3b5b1ee26&js_code='+req.body.wx_code+'&grant_type=authorization_code', function (error, response, body) {
@@ -211,8 +205,6 @@ router.post('/user_sign_up', function (req, res, next) {
                             mysql.updateData('invite_code', 'id="' + invite_id + '"', 'status="0"', function (result, err) {
                                 if (result) {
                                     mysql.insertOne(addUser, function (result, err) {
-                                        console.log(result);
-                                        console.log(err);
                                         if (result) {
 
                                             mysql.insert_one('custom_session', {
@@ -279,7 +271,6 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
 
     try {
         // 解密
-        console.log('ok');
         var decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
         // 设置自动 padding 为 true，删除填充补位
         decipher.setAutoPadding(true)
@@ -302,7 +293,6 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
 
 router.post('/test', function (req, res, next) {
     var req_data = req.body;
-    console.log(req_data);
 
 
     request.post({
@@ -318,7 +308,6 @@ router.post('/test', function (req, res, next) {
         } else {
             //生成randomSession用于和小程序关联信息
             var wxSession = JSON.parse(body);
-            console.log(wxSession);
             var randomSession = 'se' + new Date().getTime() + req_data.code;//生成随机session
 
             var userInfo = Object.assign(wxSession, req_data.userInfo);//session和微信基本信息合并
@@ -335,7 +324,6 @@ router.post('/test', function (req, res, next) {
 
             var data = pc.decryptData(encryptedData, iv)
 
-            console.log('解密后 data: ', data);
 
 
             res.send(200, {code: 200, result: data});
@@ -350,7 +338,6 @@ router.post('/test', function (req, res, next) {
 
 router.post('/test2', function (req, res, next) {
     var req_data = req.body;
-    console.log(req_data);
 
 
     request.post({
@@ -366,7 +353,6 @@ router.post('/test2', function (req, res, next) {
         } else {
             //生成randomSession用于和小程序关联信息
             var wxSession = JSON.parse(body);
-            console.log(wxSession);
             var randomSession = 'se' + new Date().getTime() + req_data.code;//生成随机session
 
             var userInfo = Object.assign(wxSession, req_data.userInfo);//session和微信基本信息合并
@@ -383,7 +369,6 @@ router.post('/test2', function (req, res, next) {
 
             var data = pc.decryptData(encryptedData, iv)
 
-            console.log('解密后 data: ', data);
 
 
             res.send(200, {code: 200, result: data});
@@ -398,8 +383,6 @@ router.post('/test2', function (req, res, next) {
 
 router.post('/get_all_user', function (req, res, next) {
     //获取所有用户表
-    console.log(res.session);
-    console.log(req.headers.sessionkey);
     mysql.search(req, res, next, 'users', function (rows, fields) {
         if (fields) {
             res.send(200, {code: 200, result: {"users": rows}})
@@ -459,7 +442,6 @@ router.post('/get_clean_list', function (req, res, next) {
 
 router.post('/update_clean_list', function (req, res, next) {
     mysql.update(req, res, next, '', function (result) {
-        console.log(1);
         if (result) {
             res.send(200, {code: 200, result: result})
         }
@@ -486,7 +468,6 @@ router.post('/finish_work', function (req, res, next) {
 router.post('/post_work', checkSession, function (req, res, next) {
 //分发任务
     var usr = req.body.works;
-    console.log(usr);
     for (var i = 0; i < usr.length; i++) {
         usr[i][3] = 'yifenfa';
         usr[i][4] = new Date();
@@ -506,7 +487,6 @@ router.post('/draw_work_status', function (req, res, next) {
     var getData = req.body;
     getUserInfo(req.headers.sessionkey, function (result) {
         if (result) {
-            console.log();
             var userName = result[0].name;
             var userId = result[0].id;
 

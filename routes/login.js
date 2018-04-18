@@ -18,7 +18,6 @@ router.get('/', function (req, res) {
 //后台登陆
 router.post('/user_login', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.body);
     /*req.session.user = {};*/
     mysql.conditionSearch('users', 'user_name="'+req.body.user_name+'" AND role="admin" AND password="'+req.body.password+'"', function (result,err) {
 

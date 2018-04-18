@@ -258,9 +258,12 @@ z-index:2;
 }
 
 .banner{
-  height:300rpx;
+  height:360rpx;
   width:100%;
-  background-color:#D7D7D7;
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/stock-pho.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .number{
   font-size:36rpx;
@@ -339,3 +342,14 @@ z-index:2;
   font-size:30rpx;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
+
+/*订餐结束*/
+.over-title{
+    text-align:center;
+    margin:60rpx auto 80rpx;
+}
+.dinner-over-title{
+    font-size:26rpx;
+    color:#717171;
+}
+

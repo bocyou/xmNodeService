@@ -41,7 +41,6 @@ router.post('/get_invite_list', function (req, res, next) {
 //生成邀请码
 router.post('/create_invite',checkSession, function (req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
-   console.log(req.body);
    var num=req.body.num;//生成
    var val=[];
    for(var i=0;i<num;i++){
@@ -55,7 +54,6 @@ router.post('/create_invite',checkSession, function (req, res, next) {
    }
 
    mysql.insert_more('invite_code(`code`, `create_time`,`status`,`expire_time`)',[val], function ( result,err) {
-    console.log(result)
         if (result) {
              res.send(200, {code: 200, result: 1,message:"生成邀请码成功"})
             

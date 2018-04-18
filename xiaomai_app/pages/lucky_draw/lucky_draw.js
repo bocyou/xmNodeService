@@ -1,12 +1,14 @@
 // pages/lucky_draw/lucky_draw.js
 const app = getApp();
 const util = require('../../utils/util.js');
+var is_draw=true;//默认可刮奖
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    is_loading:1,
      random_ary:[8,6,0,0,1,2],
      status:0,//0表示未刮奖，1表示已刮奖
      current_user_money:0,
@@ -20,11 +22,11 @@ Page({
    */
   onLoad: function (options) {
     var self=this;
-    wx.showLoading();
+      self.checkCurrentUserDraw();
     self.getAllList();
     self.getSpecialList();
     self.getTopList();
-    self.checkCurrentUserDraw();
+
   },
 
   /**
@@ -159,20 +161,19 @@ Page({
     util.request({
       url: util.api+'/lucky_draw/check_current_user_draw', complete: function (res) {
         var data = res.data;
-        console.log(data);
-        wx.hideLoading();
+
         if(data.code==200&&data.result){
            //已经刮卡
-            console.log('已刮卡');
            self.setData({
              status:1,
+               is_loading:0,
              current_user_money:data.result.money
            });
         }else{
           //没有刮卡
-            console.log('未刮卡');
           self.setData({
-            status: 0
+            status: 0,
+              is_loading:0
           });
         }
         
@@ -208,22 +209,23 @@ Page({
   },
   startDraw:function(){
     var self=this;
-    console.log(1);
-    util.request({
-      url: util.api+'/lucky_draw/save_user_draw', complete: function (res) {
-        var data = res.data;
-        console.log(res);
-        if(data.code==200){
-          console.log('发送');
-          self.getAllList();
-          self.getTopList();
-          self.getSpecialList();
-          self.checkCurrentUserDraw();
-        } else{
-        }
+    if(is_draw){
+        is_draw=false;
+        util.request({
+            url: util.api+'/lucky_draw/save_user_draw', complete: function (res) {
+                var data = res.data;
+                if(data.code==200){
 
+                    self.getAllList();
+                    self.getTopList();
+                    self.getSpecialList();
+                    self.checkCurrentUserDraw();
+                } else{
+                }
+                is_draw=true;
+            }
+        });
+    }
 
-      }
-    });
   }
-})
+});
