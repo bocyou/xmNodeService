@@ -1,13 +1,10 @@
 <!--index.wxml-->
 
 <view>
-    <!-- <view class="usermotto">
-       <text class="user-motto">{{motto}}</text>
-     </view>-->
+
     <view class="userinfo">
 
-            <!-- <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-             <text class="userinfo-nickname">{{userInfo.nickName}}</text>-->
+
             <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight}}">
 
                 <navigator open-type="navigateTo" class="app-entry shop-manage" url="../lucky_draw/lucky_draw">

@@ -266,15 +266,29 @@ router.post('/save_user_draw', function (req, res, next) {
                 area: userInfo[0].area,
                 user_img: JSON.parse(userInfo[0].wx_info).avatarUrl
             };
+            //先检查该用户今天是否刮卡
 
-            mysql.insert_one('lucky_user_list', bar, function (result, err) {
+            mysql.sql('SELECT * FROM lucky_user_list WHERE to_days(create_time) = to_days(now()) AND user_id='+userInfo[0].id,function(err,result){
+                if(err){
+                    res.send(200, {code: 500, result: '', message: '获取刮卡状态失败'})
+                }else{
+                    if(result.length<=0){
+                        mysql.insert_one('lucky_user_list', bar, function (result, err) {
 
-                if (result) {
-                    res.send(200, {code: 200, result: money, message: "保存成功"})
-                } else {
-                    res.send(200, {code: 500, result: '', message: '保存失败'})
+                            if (err) {
+                                res.send(200, {code: 500, result: '', message: '保存失败'})
+                            } else {
+                                res.send(200, {code: 200, result: money, message: "保存成功"})
+                            }
+                        });
+                    }else{
+                        res.send(200, {code: 500, result: result, message: '您已刮卡，点一次就行了'});
+                    }
+
                 }
             });
+
+         /* */
 
         } else {
             res.send(200, {code: 502, result: false, message: "用户不合法"})

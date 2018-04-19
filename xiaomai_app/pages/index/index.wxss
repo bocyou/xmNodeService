@@ -57,7 +57,9 @@ page{
 .app-entry .txt .title{
   font-weight:bold;
   color:#fff;
+  font-size:48rpx;
   text-shadow: 0 0 4px rgba(0,0,0,.5);
+  letter-spacing: 4rpx;
 }
 .app-entry .txt .description{
   font-size:24rpx;

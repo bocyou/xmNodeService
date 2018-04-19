@@ -11,7 +11,7 @@ Page({
     area: [
       { name: 'bj', value: '北京', checked: 'true' },
       { name: 'sh', value: '上海' },
-      { name: 'nj', value: '南京' },
+      { name: 'nj', value: '南京' }
     ],
     select_area: 'bj',//默认为北京
     user_name: null,
@@ -22,37 +22,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //统计数组中重复项及个数
-    var ary = [1, 2, 2, 11, 1];
-    var res = [];
-    ary.sort();
-    for (var i = 0; i < ary.length;) {
-      var count = 0;
-      for (var j = i; j < ary.length; j++) {
-        if (ary[i] == ary[j]) {
-          count++;
-        }
-      }
-      res.push({ name: ary[i], num: count });
-      i += count;
-    }
-    //[{"name":1,"num":2},{"name":11,"num":1},{"name":2,"num":2}]
-    console.log(JSON.stringify(res));
-    //按首字母排序
-    var arr = [{ name: "zlw", age: 24 }, { name: "wlz", age: 25 }, { name: "alz", age: 25 }, { name: "blz", age: 25 }];
-    var compare = function (obj1, obj2) {
-      var val1 = obj1.name;
-      var val2 = obj2.name;
-      if (val1 < val2) {
-        return -1;
-      } else if (val1 > val2) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
-    //[{"name":"alz","age":25},{"name":"blz","age":25},{"name":"wlz","age":25},{"name":"zlw","age":24}]
-    console.log(JSON.stringify(arr.sort(compare)));
+
   },
 
   /**
@@ -137,7 +107,6 @@ Page({
               util.request({
                 url: util.api+'/api/user_sign_up', param: param, complete: function (res) {
                   var data = res.data;
-                  console.log(data);
                   if (data.code == 200 && data.result == true) {
                     //返回首页
                     //缓存后台传来的sessionKey
@@ -150,24 +119,38 @@ Page({
                       url: '../index/index'
                     })
                   } else if (data.code == 200 && data.result == 3) {
-                    wx.showToast({
-                      title: '您输入的邀请码无效，请更换后再次注册',
-                      icon: 'loading',
-                      duration: 1000
-                    });
+                      wx.showModal({
+                          title: '',
+                          content: '您输入的邀请码无效，请更换后再次注册',
+                          success: function(res) {
+                              if (res.confirm) {
+                              } else if (res.cancel) {
+                              }
+                          }
+                      })
                   } else if (data.code == 200 && data.result == 2) {
                     //返回登录页面
-                    wx.showToast({
-                      title: '该用户已存在,请授权登录',
-                      icon: 'none',
-                      duration: 1000
-                    });
+
+                      wx.showModal({
+                          title: '',
+                          content: '该用户已存在,请授权登录',
+                          success: function(res) {
+                              if (res.confirm) {
+                              } else if (res.cancel) {
+                              }
+                          }
+                      })
                   } else {
-                    wx.showToast({
-                      title: '创建失败',
-                      icon: 'none',
-                      duration: 1000
-                    });
+
+                      wx.showModal({
+                          title: '',
+                          content: '创建失败，截图联系郭浩',
+                          success: function(res) {
+                              if (res.confirm) {
+                              } else if (res.cancel) {
+                              }
+                          }
+                      })
                   }
 
                 }

@@ -22,10 +22,15 @@ Page({
    */
   onLoad: function (options) {
     var self=this;
-      self.checkCurrentUserDraw();
-    self.getAllList();
-    self.getSpecialList();
-    self.getTopList();
+      util.checkPermission(function(userInfo){
+          self.checkCurrentUserDraw();
+          self.getSpecialList();
+          self.getTopList();
+          self.getAllList();
+
+
+      });
+    
 
   },
 
@@ -214,15 +219,26 @@ Page({
         util.request({
             url: util.api+'/lucky_draw/save_user_draw', complete: function (res) {
                 var data = res.data;
+                setInterval(function(){
+                    is_draw=true;
+                },2000);
                 if(data.code==200){
-
                     self.getAllList();
                     self.getTopList();
                     self.getSpecialList();
                     self.checkCurrentUserDraw();
                 } else{
+                  wx.showModal({
+                      title: '',
+                      content: data.message,
+                      success: function (res) {
+                          if (res.confirm) {
+                          } else if (res.cancel) {
+                          }
+                      }
+                  });
+
                 }
-                is_draw=true;
             }
         });
     }

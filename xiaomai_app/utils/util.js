@@ -1,4 +1,4 @@
-const app = getApp();
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -17,16 +17,39 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+var checkPermission=function(callback){
+    var userInfo = wx.getStorageSync('userInfo');
 
+    if(userInfo){
+        callback(userInfo);
+        //获取当前用户数据
+  /*      util.request({
+            url: util.api + '/api/check_current_user', complete: function (res) {
+                var data = res.data;
+                if (data.code == 200 && data.result == true) {
+
+                } else {
+                    // 不存在
+                    wx.redirectTo({url: '/pages/login/login'})
+                }
+            }
+        })*/
+    }else{
+        console.log('跳到登录页面');
+        wx.redirectTo({url: '/pages/login/login'})
+    }
+};
 
 
 
 var getScreen=function(callBack){
-  wx.getSystemInfo({
-    success: function (res) {
-      callBack(res);
-    }
-  })
+
+    wx.getSystemInfo({
+        success: function (res) {
+            callBack(res);
+        }
+    })
+
 }
 
 
@@ -117,11 +140,14 @@ var checkAuthorize=function(){
 }
 
 
+
+
 module.exports = {
   customDate: customDate,
   formatTime: formatTime,
   getScreen: getScreen,
   request: request,
   checkRepeat: checkRepeat,
-    api:api
+    api:api,
+    checkPermission:checkPermission
 }

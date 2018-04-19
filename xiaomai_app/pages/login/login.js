@@ -80,13 +80,13 @@ Page({
                 wx.getUserInfo({
                   success: res => {
                     app.globalData.userInfo = res.userInfo;
-                    param.userInfo = JSON.stringify(app.globalData.userInfo);
+                    param.userInfo = JSON.stringify(res.userInfo);
                     wx.request({
                       url: util.api+'/api/user_login', //仅为示例，并非真实的接口地址
                       method: 'POST',
                       data: param,
                       header: {
-                        'content-type': 'application/json', // 默认值
+                        'content-type': 'application/json' // 默认值
 
                       },
                       success: function (res) {

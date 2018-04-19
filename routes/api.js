@@ -17,6 +17,38 @@ router.get('/', function (req, res) {
     res.render('api', {title: ''});
 
 });
+//解密获取用户信息
+function WXBizDataCrypt(appId, sessionKey) {
+    this.appId = appId
+    this.sessionKey = sessionKey
+}
+
+WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
+    // base64 decode
+    var sessionKey = new Buffer(this.sessionKey, 'base64')
+    encryptedData = new Buffer(encryptedData, 'base64')
+    iv = new Buffer(iv, 'base64')
+
+    try {
+        // 解密
+        var decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
+        // 设置自动 padding 为 true，删除填充补位
+        decipher.setAutoPadding(true)
+        var decoded = decipher.update(encryptedData, 'binary', 'utf8')
+        decoded += decipher.final('utf8')
+
+        decoded = JSON.parse(decoded)
+
+    } catch (err) {
+        throw new Error('Illegal Buffer')
+    }
+
+    if (decoded.watermark.appid !== this.appId) {
+        throw new Error('Illegal Buffer')
+    }
+
+    return decoded
+}
 /* var getUserInfo=function(session,callback,res){
 
     mysql.find_one('custom_session','session_key',[session], function (result) {
@@ -80,19 +112,13 @@ router.post('/get_current_not_pay', function (req, res, next) {
 /*我end*/
 
 
-//登录成功返回session,下次登录
+//登录成功返回session及用户信息,下次登录
 router.post('/user_login', function (req, res, next) {
     var reqData = req.body;
     reqData.userInfo = JSON.parse(reqData.userInfo);
     //获取微信code后获取openid
     if (reqData.wx_code != '') {
-        /*  request('https://api.weixin.qq.com/sns/jscode2session?appid=wxff898caf09a11846&secret=6f8b1e6559774ab25c0e6ec3b5b1ee26&js_code='+req.body.wx_code+'&grant_type=authorization_code', function (error, response, body) {
-         console.log(error);
-         console.log(response);
-         if (!error && response.statusCode == 200) {
-         res.send(200, {code: 200, result: JSON.parse(body)});
-         }
-     })*/
+
         request.post({
             url: 'https://api.weixin.qq.com/sns/jscode2session', formData: {
                 js_code: reqData.wx_code,
@@ -145,11 +171,7 @@ router.post('/user_login', function (req, res, next) {
     } else {
         res.send(200, {code: 200, result: '参数错误'});
     }
-    /* console.log(req.session.user);
-     res.send(200,{code:200,result:req.session.user});
-     if(req.session.user){}else{
 
-     }*/
 });
 
 //注册
@@ -258,37 +280,7 @@ router.post('/user_sign_up', function (req, res, next) {
 })
 
 
-function WXBizDataCrypt(appId, sessionKey) {
-    this.appId = appId
-    this.sessionKey = sessionKey
-}
 
-WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
-    // base64 decode
-    var sessionKey = new Buffer(this.sessionKey, 'base64')
-    encryptedData = new Buffer(encryptedData, 'base64')
-    iv = new Buffer(iv, 'base64')
-
-    try {
-        // 解密
-        var decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
-        // 设置自动 padding 为 true，删除填充补位
-        decipher.setAutoPadding(true)
-        var decoded = decipher.update(encryptedData, 'binary', 'utf8')
-        decoded += decipher.final('utf8')
-
-        decoded = JSON.parse(decoded)
-
-    } catch (err) {
-        throw new Error('Illegal Buffer')
-    }
-
-    if (decoded.watermark.appid !== this.appId) {
-        throw new Error('Illegal Buffer')
-    }
-
-    return decoded
-}
 
 
 router.post('/test', function (req, res, next) {

@@ -1,5 +1,6 @@
 // pages/dinner/dinner.js
 const util = require('../../utils/util.js');
+const app = getApp();
 var user_today_id = null;
 var snow={
   ctx:null,
@@ -112,12 +113,20 @@ Page({
    */
   onLoad: function (options) {
     var self=this;
-    util.getScreen(function (screenInfo) {
-      self.setData({
-        screenInfo: screenInfo
-      })
-    });
-    self.checkDinnerStatus();
+
+       
+      util.getScreen(function(screenInfo){
+          self.setData({
+              screenInfo: screenInfo
+          })
+      });
+   
+      
+  
+      util.checkPermission(function(userInfo){
+          self.checkDinnerStatus();
+      });
+  
  
   },
 
@@ -166,7 +175,23 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+      if (res.from === 'button') {
+          // 来自页面内转发按钮
+      }
+      return {
+          title: ' 吃饭了',
+          path: 'pages/dinner/dinner',
+          imageUrl: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/dinner_share.png',
+          success: function (res) {
+              // 转发成功
+
+
+          },
+          fail: function (res) {
+              // 转发失败
+          }
+      }
   
   },
   snow:function(){

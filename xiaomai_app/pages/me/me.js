@@ -35,50 +35,53 @@ Page({
    */
   onShow: function () {
       var self=this;
-      util.request({
-          url: util.api+'/api/get_current_user', param: '', complete: function (res) {
-              //获取当前用户信息
-              var data = res.data;
-              if (data.code == 200 && JSON.stringify(data.result)!='{}') {
-                  self.setData({
-                      user_info: data.result
-                  });
-              }else{
-                  wx.showToast({
-                      title: '获取数据失败',
-                      icon: 'none',
-                      duration: 2000
-                  })
+      util.checkPermission(function(userInfo){
+          util.request({
+              url: util.api+'/api/get_current_user', param: '', complete: function (res) {
+                  //获取当前用户信息
+                  var data = res.data;
+                  if (data.code == 200 && JSON.stringify(data.result)!='{}') {
+                      self.setData({
+                          user_info: data.result
+                      });
+                  }else{
+                      wx.showToast({
+                          title: '获取数据失败',
+                          icon: 'none',
+                          duration: 2000
+                      })
+                  }
               }
-          }
+          });
+
+          util.request({
+              url: util.api+'/me/get_user_not_pay', param: '', complete: function (res) {
+                  //获取当前用户账单
+                  var data = res.data;
+                  if (data.code == 200 && JSON.stringify(data.result)!='{}') {
+                      console.log(data.result);
+                      var sun_money=0;
+                      data.result.dinner.forEach(function(item,idx){
+                          sun_money+=parseInt(item.spread_money);
+                      });
+                      data.result.lucky.forEach(function(item,idx){
+                          sun_money+=parseInt(item.money);
+                      })
+                      self.setData({
+                          bill_money:sun_money
+                      });
+                  }else{
+                      wx.showToast({
+                          title: '获取数据失败',
+                          icon: 'none',
+                          duration: 2000
+                      })
+                  }
+              }
+          });
+          self.getBill();
       });
 
-      util.request({
-          url: util.api+'/me/get_user_not_pay', param: '', complete: function (res) {
-              //获取当前用户账单
-              var data = res.data;
-              if (data.code == 200 && JSON.stringify(data.result)!='{}') {
-                  console.log(data.result);
-                  var sun_money=0;
-                  data.result.dinner.forEach(function(item,idx){
-                      sun_money+=parseInt(item.spread_money);
-                  });
-                  data.result.lucky.forEach(function(item,idx){
-                      sun_money+=parseInt(item.money);
-                  })
-                  self.setData({
-                      bill_money:sun_money
-                  });
-              }else{
-                  wx.showToast({
-                      title: '获取数据失败',
-                      icon: 'none',
-                      duration: 2000
-                  })
-              }
-          }
-      });
-self.getBill();
   },
     getBill:function(){
       var self=this;
