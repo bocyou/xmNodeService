@@ -2,7 +2,7 @@
  * Created by haoguo on 17/10/16.
  */
 var express = require('express');
-var request = require('request');
+
 var router = express.Router();
 var mysql = require('../lib/mysql');
 var session = require('express-session');
@@ -12,56 +12,36 @@ var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
 
 //问题刮奖时不能重启服务
-var lucjy_base = [0, 0, 1, 2, 2, 8, 6];
-var lucky_bj = [];//各地区前20名刮奖数组
-var lucky_nj = [];
-var lucky_sh = [];
+var lucky_base = [0, 0, 1, 2, 2, 8, 6];
+var lucky_ary=[];
 
 var lucky = {
-    check_area: function (area) {
-        var self = this;
-        switch (area) {
-            case 'bj':
-                return lucky_bj;
-                break;
-            case 'nj':
-                return lucky_nj;
-                break;
-            case 'nj':
-                return lucky_sh;
-                break;
-        }
-    },
-    rest: function (area) {
-        var self = this;
-        //重置所有地区
-        rest(lucky_bj);
-        rest(lucky_nj);
-        rest(lucky_sh);
 
-        function rest(ary) {
+    rest: function () {
+        var self = this;
+        //重置刮奖数组
+        lucky_ary=[];
             for (var i = 0; i < 20; i++) {
-                if (lucjy_base[i] == undefined) {
-                    ary.push(Math.round(Math.random() * 2 + 3));
+                if (lucky_base[i] == undefined) {
+                    lucky_ary.push(Math.round(Math.random() * 2 + 3));
                 } else {
-                    ary.push(lucjy_base[i]);
+                    lucky_ary.push(lucky_base[i]);
                 }
 
             }
             //乱序(可有可无)
-            ary.sort(function () {
+        lucky_ary.sort(function () {
                 return Math.random() > .5 ? -1 : 1;
             });
 
-        }
-
+ console.log(lucky_ary);
     },
 
 
-    draw: function (area) {
+    draw: function () {
         var self = this;
 
-        function draw(lucky_ary) {
+
 
             if (lucky_ary.length == 0) {
                 //取3-5中的随机数
@@ -76,9 +56,9 @@ var lucky = {
                 return num;
 
             }
-        }
 
-        return draw(self.check_area(area));
+
+
 
 
     }
@@ -138,8 +118,12 @@ router.post('/get_user_draw_list', function (req, res, next) {
             mysql.findToday('lucky_user_list', 'area="' + area + '"', function (result, err) {
                 if (result && result.length > 0) {
                     res.send(200, {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
-                } else {
+                } else if(result.length==0){
+                    // 当天没有人刮奖则重置刮奖数组
                     lucky.rest();
+                    res.send(200, {code: 200, result: [], message: "未查找到刮奖用户"})
+                }else {
+
                     res.send(200, {code: 200, result: [], message: "未查找到刮奖用户"})
                 }
 
@@ -219,7 +203,7 @@ router.post('/get_user_special_list', function (req, res, next) {
 
                     res.send(200, {code: 200, result: ary, message: "获取所有特殊奖项信息成功"})
                 } else {
-                    lucky.rest();
+
                     res.send(200, {code: 200, result: [], message: "获取所有特殊奖项信息失败"})
                 }
 
@@ -238,13 +222,13 @@ router.post('/check_current_user_draw', function (req, res, next) {
         if (user_info) {
             mysql.findToday('lucky_user_list', 'user_id="' + user_info[0].id + '"', function (result, err) {
                 if (result && result.length > 0) {
-                    res.send(200, {code: 200, result: result[0], message: "该用户已刮奖"})
+                    res.status(200).send( {code: 200, result: result[0], message: "该用户已刮奖"})
                 } else {
-                    res.send(200, {code: 200, result: false, message: "该用户未刮奖"})
+                    res.status(200).send({code: 200, result: false, message: "该用户未刮奖"})
                 }
             })
         } else {
-            res.send(200, {code: 502, result: false, message: "用户不合法"})
+            res.status(200).send(200, {code: 502, result: false, message: "用户不合法"})
         }
 
 
@@ -257,7 +241,7 @@ router.post('/save_user_draw', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
-            var money = lucky.draw(userInfo[0].area);
+            var money = lucky.draw();
             var bar = {
                 user_id: userInfo[0].id,
                 user_name: userInfo[0].user_name,
@@ -278,7 +262,8 @@ router.post('/save_user_draw', function (req, res, next) {
                             if (err) {
                                 res.send(200, {code: 500, result: '', message: '保存失败'})
                             } else {
-                                res.send(200, {code: 200, result: money, message: "保存成功"})
+                                res.status(200).send( {code: 200, result: money, message: "保存成功"});
+                                console.log(lucky_ary);
                             }
                         });
                     }else{
@@ -288,7 +273,6 @@ router.post('/save_user_draw', function (req, res, next) {
                 }
             });
 
-         /* */
 
         } else {
             res.send(200, {code: 502, result: false, message: "用户不合法"})

@@ -28,20 +28,21 @@
    
 </view>
 
-<view>
+
   <view class="list-title">本月前三</view>
 
-        <view wx:for="{{month_list}}" wx:key="item" class="bar" style="justify-content:center;background-color:#f7f7f7">
+        <view wx:for="{{month_list}}" wx:key="item" class="bar" style="justify-content:center;background-color:#f7f7f7;">
             <view class="border-color ">
               <image mode='aspectFill' src="{{item.user_img}}"></image>
             </view>
-            <view class="info" style="margin-left:40rpx;width:230rpx;">
+            <view class="info" style="margin-left:40rpx;flex:1;">
               <view class="name">{{item.user_name}}</view>
               <view class="txt">本月累计赞助{{item.sum_money}}元</view>
             </view>
            
         </view>
-</view>
+
+
 
 <view style="padding-bottom:60rpx;margin-top:100rpx;">
   <view class="list-title">今日刮卡用户</view>

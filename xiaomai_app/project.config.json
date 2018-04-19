@@ -41,6 +41,18 @@
 					"name": "我",
 					"pathName": "pages/me/me",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订餐",
+					"pathName": "pages/dinner/dinner",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "登录",
+					"pathName": "pages/login/login",
+					"query": ""
 				}
 			]
 		}

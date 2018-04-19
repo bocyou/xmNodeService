@@ -261,9 +261,10 @@ z-index:2;
   height:360rpx;
   width:100%;
     background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/stock-pho.jpg");
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    margin-bottom:30rpx;
 }
 .number{
   font-size:36rpx;
