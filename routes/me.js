@@ -56,13 +56,16 @@ router.post('/get_user_not_pay', function (req, res, next) {
 router.post('/get_all_user_bill', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     //先在user_bill中查找本周内有没有数据
-    mysql.findCurrentWeek('user_bill', '', function (result, err) {
 
-        if (err == null) {
+    mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time) = YEARWEEK(now())', function (err,result) {
+        console.log(err);
+        if (err != null) {
             res.send(200, {code: 501, result: {}, message: "您本周已分发账单"})
         } else {
+            //查找本周订餐人员的数据
             mysql.findtest('order_food_user', 'users', 'where YEARWEEK(create_time) = YEARWEEK(now()) and tab1.status=1', function (err, result1) {
                 if (err == null) {
+                    //本周刮奖人员的数据
                     mysql.findtest('lucky_user_list', 'users', 'where YEARWEEK(create_time) = YEARWEEK(now())', function (err, result2) {
                         if (err == null) {
                             var result_ary = result1.concat(result2);
@@ -103,7 +106,7 @@ router.post('/get_all_user_bill', function (req, res, next) {
                             mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`)', [usr], function (result, err) {
                                 console.log(err);
                                 if (err == null) {
-                                    res.send(200, {code: 200, result: res_ary, message: "获取此用户本周账单成功"})
+                                    res.send(200, {code: 200, result: res_ary, message: "本周账单分发成功"})
                                 } else {
                                     res.send(200, {code: 501, result: err.sqlMessage, message: '插入失败' + err});
                                 }
@@ -153,7 +156,7 @@ router.post('/get_user_bill', function (req, res, next) {
 
 
 });
-//获取所有未付款账单
+//获取所有用户未付款账单
 router.post('/get_all_user_bill_list', function (req, res, next) {
 
     mysql.sql('select * from users tab2 join user_bill tab1 on tab1.user_id=tab2.id where tab1.status=1',function(err,result){

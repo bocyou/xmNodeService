@@ -179,10 +179,11 @@ Page({
       if (res.from === 'button') {
           // 来自页面内转发按钮
       }
+
       return {
           title: ' 吃饭了',
           path: 'pages/dinner/dinner',
-          imageUrl: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/dinner_share.png',
+          imageUrl: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/dinner_share.png?v='+Math.round(Math.random()*100),
           success: function (res) {
               // 转发成功
 

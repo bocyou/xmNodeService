@@ -3,27 +3,31 @@
   <view class="img-box">
     <image mode="widthFix" src="{{user_info.wx_img}}"></image>
   </view>
-  <view class="info">
+
+<view style="position:relative; border-bottom:2px solid #eaeaeb;padding-bottom:60rpx">
+  <view class="user-info">
     <view>  {{user_info.user_name}}</view>
     <view class="area">{{user_area[user_info.area]}}校区</view>
   </view>
-</view>
-<view class="content">
   <view class="bill">
-    <view class="money">¥ {{bill_money}}</view>
+    <view class="money">¥ <text>{{bill_money}}</text></view>
     <view class="txt">
-      本周已花费
+      {{week_txt}}
     </view>
   </view>
+</view>
+</view>
+
+<view class="content">
+
     <view class="bill-list">
       <block wx:if="{{bill_ary.length>0}}">
-        <view class="">本周账单已出</view>
-        <view class="tip">请于周一前付款给王老师</view>
+    <!--    <view class="">本周账单已出</view>
+        <view class="tip">请于周一前付款给王老师</view>-->
       </block>
 
       <block wx:else>
-        <view class="">本周账单尚未出</view>
-        <view class="">每周六账单日</view>
+        <view class="not-bill-tip">您尚无拖欠账单<text>(每周六账单日)</text></view>
       </block>
 
     </view>
@@ -32,11 +36,13 @@
 
 <block wx:if="{{bill_ary.length>0}}">
 <view class="bill-content" >
-  <view class="title">已出账单</view>
+  <view class="title">您有未支付账单<text>（请转账给王老师后点击下方确认付钱）</text></view>
   <view class="bar" wx:for="{{bill_ary}}" wx:key="i">
-    <view>{{item.create_time}}</view>
-    <view>{{item.money}}</view>
-    <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">点击确认付钱</view>
+    <view class="status"></view>
+    <view class="money">¥ <text>{{item.money}}</text></view>
+    <view class="date">{{item.create_time}}</view>
+
+    <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
   </view>
 </view>
 </block>

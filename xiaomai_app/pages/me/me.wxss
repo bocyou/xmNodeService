@@ -1,23 +1,23 @@
 /* pages/me/me.wxss */
 
 .header{
-  border-bottom:2px solid #eaeaeb;
-  padding-bottom:60rpx;
+
+
 }
 .header image{
-  width:360rpx;
+  width:300rpx;
   border-radius:0 0 20rpx 20rpx;
   display: block;
   margin:0 auto;
 }
-.header .info{
-   width:360rpx;
+.user-info{
+   width:300rpx;
     margin:0 auto;
     color:#3c3f58;
     font-size:46rpx;
     margin-top:66rpx;
 }
-.header .area{
+.area{
   color:#656576;
   font-size:30rpx;
   margin-top:10rpx;
@@ -33,12 +33,17 @@
   transform: initial;
 }
 .content{
-    padding:60rpx 30rpx 0;
-    display:flex;
-    justify-content: space-around;
-    align-items: center;
+
+
 }
 .bill{
+    position:absolute;
+    bottom:60rpx;
+    right:30rpx;
+    background-color:#fff;
+    box-shadow:0 0 80rpx rgba(0,0,0,.2);
+    border-radius: 16rpx;
+    padding:20rpx 40rpx;
 
 }
 .bill-list .tip{
@@ -46,19 +51,56 @@
     font-size:28rpx;
 }
 .bill .money{
+    font-size:28rpx;
+    color:#3c2075;
+}
+.bill .money text{
     font-size:60rpx;
     font-weight:bold;
-    margin-bottom:20rpx;
+    margin-bottom:10rpx;
+
 }
 .bill .txt{
     font-size:24rpx;
     color:#717171;
 }
 
+.bill-content .title{
+    text-align:left;
+    font-size:30rpx;
+    color:#717171;
+    margin-bottom:30rpx;
+    background-color:#eaeaeb;
+    padding:30rpx;
+}
+.bill-content .title text{
+    font-size:24rpx;
+    color: rgba(0, 0, 0, 0.4);
+}
 .bill-content .bar{
     display:flex;
     align-items:center;
     justify-content: space-between;
+    color:#717171;
+    padding:30rpx;
+}
+
+.bill-content .bar .status{
+    width:18rpx;
+    height:18rpx;
+    border:4rpx solid red;
+    border-radius:50px;
+}
+.bill-content .bar .money{
+    font-size:28rpx;
+}
+.bill-content .bar .money text{
+    font-size:38rpx;
+    font-weight: bold;
+}
+.bill-content .bar .date{
+    font-size:28rpx;
+
 }
 .bill-content .bar .pay-money{
     background-color:red;
@@ -67,4 +109,15 @@
     padding:15rpx 30rpx;
     border-radius: 8rpx;
     font-size:24rpx;
+}
+.not-bill-tip{
+    font-size:28rpx;
+    color:#717171;
+   text-align: left;
+    background-color:#eaeaeb;
+    padding:30rpx;
+}
+.not-bill-tip text{
+    font-size:24rpx;
+    color: rgba(0, 0, 0, 0.4);
 }

@@ -8,6 +8,7 @@ Page({
    */
   data: {
     user_info:"",
+      week_txt:' 本周已花费',
     user_area:{"bj":"北京","nj":"南京","sh":"上海"},
       bill_money:0,
       bill_ary:[]
@@ -17,7 +18,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+var self=this;
 
 
 
@@ -117,27 +118,38 @@ Page({
       var self=this;
       var bill_id=e.currentTarget.dataset.billid;
       console.log(bill_id);
-        util.request({
-            url: util.api+'/me/user_pay_bill', param: {bill_id:bill_id}, complete: function (res) {
-                //获取当前用户账单信息
-                var data = res.data;
-                if (data.code == 200 ) {
-                    wx.showToast({
-                        title: '确认成功',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                    self.getBill();
+        wx.showModal({
+            title: '',
+            content: '确定已付款给王老师了？',
+            success: function(res) {
+                if (res.confirm) {
+                    util.request({
+                        url: util.api+'/me/user_pay_bill', param: {bill_id:bill_id}, complete: function (res) {
+                            //获取当前用户账单信息
+                            var data = res.data;
+                            if (data.code == 200 ) {
+                                wx.showToast({
+                                    title: '确认成功',
+                                    icon: 'none',
+                                    duration: 2000
+                                })
+                                self.getBill();
 
-                }else{
-                    wx.showToast({
-                        title: '确认失败',
-                        icon: 'none',
-                        duration: 2000
-                    })
+                            }else{
+                                wx.showToast({
+                                    title: '确认失败',
+                                    icon: 'none',
+                                    duration: 2000
+                                })
+                            }
+                        }
+                    });
+                } else if (res.cancel) {
+                    console.log('用户点击取消')
                 }
             }
-        });
+        })
+
     },
   /**
    * 生命周期函数--监听页面隐藏

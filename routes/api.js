@@ -400,16 +400,7 @@ router.post('/get_current_user', function (req, res, next) {
         }
     }, res);
 });
-//正在执行的任务
-router.post('/get_cleaning_list', checkSession, function (req, res, next) {
-    mysql.search(req, res, next, 'cleaning_list', function (rows, fields) {
-        if (fields) {
-            var listStatus = 'undistributed';
-            res.send(200, {code: 200, result: {"cleaning_list": rows}})
-        }
 
-    });
-});
 router.post('/get_wx_info', function (req, res, next) {
     res.send(200, {code: 200, result: req.body.session})
 });
@@ -457,119 +448,11 @@ router.post('/finish_work', function (req, res, next) {
 });
 
 
-router.post('/post_work', checkSession, function (req, res, next) {
-//分发任务
-    var usr = req.body.works;
-    for (var i = 0; i < usr.length; i++) {
-        usr[i][3] = 'yifenfa';
-        usr[i][4] = new Date();
-    }
-    mysql.insert_more('cleaning_list(`work_id`,`name`, `money`,`status`,`task_time`)', [usr], function (result, err) {
-        if (result) {
-            res.send(200, {code: 200, result: result})
-        } else {
-            res.send(200, {code: 501, result: err.sqlMessage, message: '插入失败'});
-        }
-
-    });
-});
-
-router.post('/draw_work_status', function (req, res, next) {
-    //更改任务状态,领取任务
-    var getData = req.body;
-    getUserInfo(req.headers.sessionkey, function (result) {
-        if (result) {
-            var userName = result[0].name;
-            var userId = result[0].id;
-
-            //更新任务状态
-            mysql.updateData('cleaning_list', 'work_id=' + getData.work_id, 'receiver_name= "' + userName + '", receiver_id = "' + userId + '",status="yilingqu"', function (result, err) {
-                if (result) {
-                    res.send(200, {code: 200, result: true, message: '更新任务状态成功'});
-                } else {
-                    res.send(200, {code: 501, result: err.sqlMessage, message: '更新任务状态失败'});
-                }
-            })
-        } else {
-            res.send(200, {code: 501, result: '', message: '获取用户信息失败'});
-        }
-    });
-});
-
-router.post('/pending_work_status', function (req, res, next) {
-    //更改任务状态,个人完成任务
-    var getData = req.body;
-    getUserInfo(req.headers.sessionkey, function (result) {
-        if (result) {
-            var userName = result[0].name;
-            var userId = result[0].id;
-            //更新任务状态
-            mysql.updateData('cleaning_list', 'work_id=' + getData.work_id, 'receiver_name= "' + userName + '", receiver_id = "' + userId + '",status="pending"', function (result, err) {
-                if (result) {
-                    res.send(200, {code: 200, result: true, message: '更新任务状态成功'});
-                } else {
-                    res.send(200, {code: 501, result: err.sqlMessage, message: '更新任务状态失败'});
-                }
-            })
-        } else {
-            res.send(200, {code: 501, result: '', message: '获取用户信息失败'});
-        }
-    });
-});
 
 
-router.post('/passed_work_status', function (req, res, next) {
-    //更改任务状态,管理员审核通过
-    //通过后给领取人加钱
-    var getData = req.body;
-    getUserInfo(req.headers.sessionkey, function (result) {
-        //获取当前用户信息
-        if (result) {
 
-            var userName = result[0].name;
-            var userId = result[0].id;
-            var receiver_id = getData.receiver_id;//工作人员信息
-            var oldMoney = (result[0].money == '' ? 0 : parseInt(result[0].money));//本来已经赚到的钱
-            //先根据work_id找到此工作
-            mysql.find_one('cleaning_list', 'work_id', getData.work_id, function (result) {
-                if (result) {
-                    var workData = result[0];
-                    var newMoney = parseInt(workData.money);
-                    var sumMoney = newMoney + oldMoney;
-                    //更新任务状态
-                    mysql.updateData('cleaning_list', 'work_id=' + getData.work_id, 'auditor= "' + userName + '",status="passed"', function (result, err) {
-                        if (result) {
-                            //更新用户钱数
-                            mysql.updateData('users', 'id=' + receiver_id, 'money= "' + sumMoney + '"', function (result, err) {
-                                if (result) {
-                                    res.send(200, {code: 200, result: true, message: '更新任务状态成功'});
 
-                                } else {
-                                    res.send(200, {code: 501, result: err.sqlMessage, message: '更新领取人钱数失败'});
-                                }
-                            });
 
-                        } else {
-                            res.send(200, {code: 501, result: err.sqlMessage, message: '更新任务状态失败'});
-                        }
-                    })
 
-                } else {
-                    res.send(200, {code: 501, result: false, message: '没有找到此任务'});
-                }
-            });
-            //更新任务状态
-            /*  mysql.updateData('cleaning_list','work_id='+getData.work_id, 'auditor= "'+userName+'",status="passed"' ,function (result, err) {
-                  if (result) {
-                      //更新领取人的钱数
-                      res.send(200, {code: 200, result: true, message: '更新任务状态成功'});
-                  } else {
-                      res.send(200, {code: 501, result: err.sqlMessage, message: '更新任务状态失败'});
-                  }
-              })*/
-        } else {
-            res.send(200, {code: 501, result: '', message: '获取用户信息失败'});
-        }
-    });
-});
+
 module.exports = router;
