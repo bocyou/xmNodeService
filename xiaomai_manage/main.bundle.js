@@ -567,7 +567,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"hold-transition login-page\">\n  <div class=\"login-box\">\n    <div class=\"login-logo\">\n      <a ><b>小麦</b>后台管理</a>\n    </div>\n    <!-- /.login-logo -->\n    <div class=\"login-box-body\">\n      <p class=\"login-box-msg\">Sign in to start your session</p>\n\n      <form action=\"../../index2.html\" method=\"post\">\n        <div class=\"form-group has-feedback\">\n          <input (input)=\"InputUserName($event)\" type=\"text\" class=\"form-control\" placeholder=\"name\">\n          <span class=\"glyphicon glyphicon-user form-control-feedback\"></span>\n        </div>\n        <div class=\"form-group has-feedback\">\n          <input (input)=\"InputPassword($event)\" type=\"password\" class=\"form-control\" placeholder=\"Password\">\n          <span class=\"glyphicon glyphicon-lock form-control-feedback\"></span>\n        </div>\n        <button (click)=\"siginIn()\" class=\"btn btn-primary btn-block btn-flat\">Sign In</button>\n     <!--   <div class=\"row\">\n          <div class=\"col-xs-8\">\n            <div class=\"checkbox icheck\">\n              <label>\n                <div class=\"icheckbox_square-blue\" aria-checked=\"false\" aria-disabled=\"false\" style=\"position: relative;\"><input type=\"checkbox\" style=\"position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"><ins class=\"iCheck-helper\" style=\"position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"></ins></div> Remember Me\n              </label>\n            </div>\n          </div>\n          &lt;!&ndash; /.col &ndash;&gt;\n          <div class=\"col-xs-4\">\n            <button type=\"submit\" class=\"btn btn-primary btn-block btn-flat\">Sign In</button>\n          </div>\n          &lt;!&ndash; /.col &ndash;&gt;\n        </div>-->\n      </form>\n\n    <!--  <div class=\"social-auth-links text-center\">\n        <p>- OR -</p>\n        <a href=\"#\" class=\"btn btn-block btn-social btn-facebook btn-flat\"><i class=\"fa fa-facebook\"></i> Sign in using\n          Facebook</a>\n        <a href=\"#\" class=\"btn btn-block btn-social btn-google btn-flat\"><i class=\"fa fa-google-plus\"></i> Sign in using\n          Google+</a>\n      </div>-->\n      <!-- /.social-auth-links -->\n<!--\n      <a href=\"#\">I forgot my password</a><br>\n      <a href=\"register.html\" class=\"text-center\">Register a new membership</a>-->\n\n    </div>\n    <!-- /.login-box-body -->\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"hold-transition login-page\">\n  <div class=\"login-box\">\n    <div class=\"login-logo\">\n      <a ><b>小麦</b>后台管理</a>\n    </div>\n    <!-- /.login-logo -->\n    <div class=\"login-box-body\">\n      <p class=\"login-box-msg\">Sign in to start your session</p>\n\n      <form action=\"../../index2.html\" method=\"post\">\n        <div class=\"form-group has-feedback\">\n          <input  [(ngModel)]=\"user_name\" [ngModelOptions]=\"{standalone: true}\" type=\"text\" class=\"form-control\" placeholder=\"name\">\n          <span class=\"glyphicon glyphicon-user form-control-feedback\"></span>\n        </div>\n        <div class=\"form-group has-feedback\">\n          <input [(ngModel)]=\"password\" [ngModelOptions]=\"{standalone: true}\" type=\"password\" class=\"form-control\" placeholder=\"Password\">\n          <span class=\"glyphicon glyphicon-lock form-control-feedback\"></span>\n        </div>\n        <div ><input type=\"checkbox\" id=\"remember\" [(ngModel)]=\"is_remember\" [ngModelOptions]=\"{standalone: true}\"><label for=\"remember\">记住密码</label></div>\n        <button (click)=\"siginIn()\" class=\"btn btn-primary btn-block btn-flat\">Sign In</button>\n     <!--   <div class=\"row\">\n          <div class=\"col-xs-8\">\n            <div class=\"checkbox icheck\">\n              <label>\n                <div class=\"icheckbox_square-blue\" aria-checked=\"false\" aria-disabled=\"false\" style=\"position: relative;\"><input type=\"checkbox\" style=\"position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"><ins class=\"iCheck-helper\" style=\"position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"></ins></div> Remember Me\n              </label>\n            </div>\n          </div>\n          &lt;!&ndash; /.col &ndash;&gt;\n          <div class=\"col-xs-4\">\n            <button type=\"submit\" class=\"btn btn-primary btn-block btn-flat\">Sign In</button>\n          </div>\n          &lt;!&ndash; /.col &ndash;&gt;\n        </div>-->\n      </form>\n\n    <!--  <div class=\"social-auth-links text-center\">\n        <p>- OR -</p>\n        <a href=\"#\" class=\"btn btn-block btn-social btn-facebook btn-flat\"><i class=\"fa fa-facebook\"></i> Sign in using\n          Facebook</a>\n        <a href=\"#\" class=\"btn btn-block btn-social btn-google btn-flat\"><i class=\"fa fa-google-plus\"></i> Sign in using\n          Google+</a>\n      </div>-->\n      <!-- /.social-auth-links -->\n<!--\n      <a href=\"#\">I forgot my password</a><br>\n      <a href=\"register.html\" class=\"text-center\">Register a new membership</a>-->\n\n    </div>\n    <!-- /.login-box-body -->\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -596,6 +596,16 @@ var LoginComponent = (function () {
         this.http = http;
         this.jsonp = jsonp;
         this.router = router;
+        if (localStorage.login_info) {
+            console.log(JSON.parse(localStorage.login_info));
+            var user_info = JSON.parse(localStorage.login_info);
+            this.user_name = user_info.name;
+            this.password = user_info.password;
+            this.is_remember = true;
+        }
+        else {
+            this.is_remember = false;
+        }
     }
     LoginComponent.prototype.ngOnInit = function () {
     };
@@ -605,9 +615,14 @@ var LoginComponent = (function () {
     LoginComponent.prototype.InputPassword = function (event) {
         this.password = event.target.value;
     };
+    LoginComponent.prototype.isRemember = function (is_remember) {
+        console.log(event);
+        this.is_remember = is_remember;
+    };
     LoginComponent.prototype.siginIn = function () {
         var _this = this;
         var self = this;
+        console.log(self.is_remember);
         if (self.user_name == '' || self.password == '') {
             alert('请输入完整');
         }
@@ -615,6 +630,12 @@ var LoginComponent = (function () {
             this.http.post("/angular/login/user_login", { user_name: self.user_name, password: self.password })
                 .map(function (response) { return response.json(); }).subscribe(function (data) {
                 if (data.code == 200) {
+                    if (self.is_remember == true) {
+                        localStorage.login_info = JSON.stringify({
+                            name: self.user_name,
+                            password: self.password
+                        });
+                    }
                     _this.router.navigate(['/manage/dinner/menu']);
                 }
                 else if (data.code == 502) {
@@ -1555,7 +1576,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/user-bill/user-bill.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<section class=\"content-header\">\n  <h1>\n    小麦\n    <small>用户账单</small>\n  </h1>\n  <ol class=\"breadcrumb\">\n    <li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> </a></li>\n    <li class=\"active\"></li>\n  </ol>\n</section>\n\n\n<section class=\"content container-fluid\">\n  <div class=\"box box-info\">\n    <div class=\"box-header with-border\">\n      <h3 class=\"box-title\">本周账单 应收{{all_user_money}}</h3>\n\n      <div class=\"box-tools pull-right\">\n        <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n        </button>\n        <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n      </div>\n    </div>\n    <!-- /.box-header -->\n    <div class=\"box-body bill-content\">\n      <div class=\"table-responsive\">\n        <table class=\"table no-margin\">\n          <thead>\n          <tr>\n            <th>用户</th>\n            <th>金额</th>\n            <th>交纳状态</th>\n\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let item of user_bill_list ;let i=index\">\n            <td><img class=\"user-face\" src=\"{{(item.wx_info|billJson).avatarUrl}}\">{{item.user_name}}</td>\n            <td><b>{{item.money}}</b></td>\n            <td><span class=\"label label-success\" [ngClass]=\"{active:item.status==1}\">{{item.status|billStatus}}</span>\n            </td>\n\n          </tr>\n\n          </tbody>\n        </table>\n      </div>\n      <!-- /.table-responsive -->\n    </div>\n    <!-- /.box-body -->\n\n    <!-- /.box-footer -->\n  </div>\n\n\n  <div class=\"box\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">截止目前尚未交纳账用户</h3>\n    </div>\n    <!-- /.box-header -->\n    <div class=\"box-body no-padding\">\n      <table class=\"table table-striped\">\n        <tbody>\n        <tr>\n          <th style=\"width: 10px\">#</th>\n          <th>用户</th>\n          <th>账单时间</th>\n          <th style=\"width: 40px\">费用</th>\n        </tr>\n        <tr *ngFor=\"let item of all_user_bill_list;let i=index\">\n          <td>{{i+1}}.</td>\n          <td><img class=\"notbill-user-face\" src=\"{{(item.wx_info|billJson).avatarUrl}}\" alt=\"User Image\">{{item.user_name}}</td>\n          <td>\n            {{item.create_time|date:\"MM/dd HH:mm\"}}\n          </td>\n          <td><span class=\"badge bg-red\">{{item.money}}</span></td>\n        </tr>\n\n        </tbody>\n      </table>\n    </div>\n    <!-- /.box-body -->\n  </div>\n\n</section>\n"
+module.exports = "<section class=\"content-header\">\n  <h1>\n    小麦\n    <small>用户账单</small>\n  </h1>\n  <ol class=\"breadcrumb\">\n    <li><a href=\"#\"><i class=\"fa fa-dashboard\"></i> </a></li>\n    <li class=\"active\"></li>\n  </ol>\n</section>\n\n\n<section class=\"content container-fluid\">\n  <div class=\"box box-info\">\n    <div class=\"box-header with-border\">\n      <h3 class=\"box-title\">本周账单 应收{{all_user_money}}</h3>\n\n      <div class=\"box-tools pull-right\">\n        <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i>\n        </button>\n        <button type=\"button\" class=\"btn btn-box-tool\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>\n      </div>\n    </div>\n    <!-- /.box-header -->\n    <div class=\"box-body bill-content\">\n      <div class=\"table-responsive\">\n        <table class=\"table no-margin\">\n          <thead>\n          <tr>\n            <th>用户</th>\n            <th>金额</th>\n            <th>交纳状态</th>\n\n          </tr>\n          </thead>\n          <tbody>\n          <tr *ngFor=\"let item of user_bill_list ;let i=index\">\n            <td><img class=\"user-face\" src=\"{{(item.wx_info|billJson).avatarUrl}}\">{{item.user_name}}</td>\n            <td><b>{{item.money}}</b></td>\n            <td><span class=\"label label-success\" [ngClass]=\"{active:item.status==1}\">{{item.status|billStatus}}</span>\n            </td>\n\n          </tr>\n\n          </tbody>\n        </table>\n      </div>\n      <!-- /.table-responsive -->\n    </div>\n    <!-- /.box-body -->\n\n    <!-- /.box-footer -->\n  </div>\n\n\n  <div class=\"box\">\n    <div class=\"box-header\">\n      <h3 class=\"box-title\">截止目前尚未交纳账用户<small>  共计<b>{{all_notpay_user}}</b>元</small></h3>\n    </div>\n    <!-- /.box-header -->\n    <div class=\"box-body no-padding\">\n      <table class=\"table table-striped\">\n        <tbody>\n        <tr>\n          <th style=\"width: 10px\">#</th>\n          <th>用户</th>\n          <th>账单时间</th>\n          <th style=\"width: 40px\">费用</th>\n        </tr>\n        <tr *ngFor=\"let item of all_user_bill_list;let i=index\">\n          <td>{{i+1}}.</td>\n          <td><img class=\"notbill-user-face\" src=\"{{(item.wx_info|billJson).avatarUrl}}\" alt=\"User Image\">{{item.user_name}}</td>\n          <td>\n            {{item.create_time|date:\"MM/dd HH:mm\"}}\n          </td>\n          <td><span class=\"badge bg-red\">{{item.money}}</span></td>\n        </tr>\n\n        </tbody>\n      </table>\n    </div>\n    <!-- /.box-body -->\n  </div>\n\n</section>\n"
 
 /***/ }),
 
@@ -1592,6 +1613,7 @@ var UserBillComponent = (function () {
         this.user_bill_list = [];
         this.all_user_money = 0;
         this.all_user_bill_list = [];
+        this.all_notpay_user = 0;
         this.getUserBillList();
         this.getAllUserNotBill();
     }
@@ -1604,27 +1626,10 @@ var UserBillComponent = (function () {
         var self = this;
         this.http.post('/me/get_all_user_bill_list', '').map(function (res) { return res.json(); }).subscribe(function (data) {
             if (data.code == 200) {
-                /*      var rest_ary=data.result;
-                      var result_ary=[];
-                      rest_ary.sort(function(a,b){
-                        return a.user_id-b.user_id;
-                      });
-                     for (var i = 0; i < rest_ary.length;) {
-                       var count = 0;
-                       var sum_money:number=0;
-                       for (var j = i; j < rest_ary.length; j++) {
-                         if (rest_ary[i].user_id == rest_ary[j].user_id) {
-                           count++;
-                           sum_money+=parseInt(rest_ary[j].money);
-                         }
-                       }
-                       result_ary.push({name:rest_ary[i],num:count,sum_money:sum_money});
-                       i += count;
-                     }
-                     console.log(result_ary);*/
-                _this.all_user_bill_list = data.result.sort(function (a, b) {
-                    return a.user_id - b.user_id;
+                data.result.forEach(function (item, idx) {
+                    self.all_notpay_user += parseInt(item.money);
                 });
+                _this.all_user_bill_list = data.result;
             }
             else if (data.code == 502) {
                 _this.router.navigate(['/login']);

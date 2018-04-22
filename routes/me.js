@@ -22,7 +22,7 @@ router.post('/get_user_not_pay', function (req, res, next) {
     getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
-            console.log(user_id);
+
             mysql.findWeek('lucky_user_list', 'user_id="' + user_id + '"', function (result1, err) {
                 if (err == null) {
                     mysql.findWeek('order_food_user', 'user_id="' + user_id + '"AND status=1', function (result2, err) {
@@ -57,16 +57,16 @@ router.post('/get_all_user_bill', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     //先在user_bill中查找本周内有没有数据
 
-    mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time) = YEARWEEK(now())', function (err,result) {
+    mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err,result) {
         console.log(err);
         if (err != null) {
             res.send(200, {code: 501, result: {}, message: "您本周已分发账单"})
         } else {
             //查找本周订餐人员的数据
-            mysql.findtest('order_food_user', 'users', 'where YEARWEEK(create_time) = YEARWEEK(now()) and tab1.status=1', function (err, result1) {
+            mysql.findtest('order_food_user', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1) and tab1.status=1', function (err, result1) {
                 if (err == null) {
                     //本周刮奖人员的数据
-                    mysql.findtest('lucky_user_list', 'users', 'where YEARWEEK(create_time) = YEARWEEK(now())', function (err, result2) {
+                    mysql.findtest('lucky_user_list', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err, result2) {
                         if (err == null) {
                             var result_ary = result1.concat(result2);
                             //提取userid相同的用户
@@ -171,7 +171,7 @@ router.post('/get_all_user_bill_list', function (req, res, next) {
 });
 //获取本周所有账单
 router.post('/get_user_bill_list', function (req, res, next) {
-    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time) = YEARWEEK(now())' , function (result, err) {
+    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now())' , function (result, err) {
         if (err == null) {
             res.send(200, {code: 200, result: result, message: "获取周用户账单列表成功"})
 
