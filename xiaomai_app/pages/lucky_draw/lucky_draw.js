@@ -10,7 +10,7 @@ Page({
   data: {
     is_loading:1,
      random_ary:[8,6,0,0,1,2],
-     status:0,//0表示未刮奖，1表示已刮奖
+     status:0,//0表示未刮奖，1表示已刮奖,2表示周末
      current_user_money:0,
      all_list:[],
      month_list:[],//本月前三
@@ -22,11 +22,16 @@ Page({
    */
   onLoad: function (options) {
     var self=this;
+   console.log();
+   var day=new Date().getDay();
+   if(day==0||day==6){
+       //不用抽奖
+   }else{
+
+   }
       util.checkPermission(function(userInfo){
           self.checkCurrentUserDraw();
-          self.getSpecialList();
-          self.getTopList();
-          self.getAllList();
+
 
 
       });
@@ -82,6 +87,35 @@ Page({
   onShareAppMessage: function () {
   
   },
+    checkCurrentUserDraw:function(){
+        var self=this;
+        util.request({
+            url: util.api+'/lucky_draw/check_current_user_draw', complete: function (res) {
+                var data = res.data;
+
+                if(data.code==200&&data.result){
+                    //已经刮卡
+                    self.getSpecialList();
+                    self.getTopList();
+                    self.getAllList();
+                    self.setData({
+                        status:1,
+                        is_loading:0,
+                        current_user_money:data.result.money
+                    });
+
+                }else{
+                    //没有刮卡
+                    self.setData({
+                        status: 0,
+                        is_loading:0
+                    });
+                }
+
+
+            }
+        });
+    },
   getTopList:function(){
     var self = this;
     util.request({
@@ -161,31 +195,7 @@ Page({
       }
     });
   },
-  checkCurrentUserDraw:function(){
-    var self=this;
-    util.request({
-      url: util.api+'/lucky_draw/check_current_user_draw', complete: function (res) {
-        var data = res.data;
 
-        if(data.code==200&&data.result){
-           //已经刮卡
-           self.setData({
-             status:1,
-               is_loading:0,
-             current_user_money:data.result.money
-           });
-        }else{
-          //没有刮卡
-          self.setData({
-            status: 0,
-              is_loading:0
-          });
-        }
-        
-
-      }
-    });
-  },
   getDrawList:function(){
     var self=this;
     util.request({

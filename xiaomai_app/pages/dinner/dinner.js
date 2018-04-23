@@ -211,15 +211,17 @@ Page({
     var self=this;
 
     wx.showLoading({
-      title: '加载中',
+      title: '加载中'
     })
     self.restData();
+
     util.request({
       url: util.api+'/order_food/get_dinner_list', param: '', complete: function (res) {
         var list_data = res.data;
         if (list_data.code == 200) {
           wx.hideLoading();
-          if (list_data.isDraw==1){
+            var day=new Date().getDay();
+          if (list_data.isDraw==1||day==0||day==6){
            //已刮卡
             if (JSON.stringify(list_data.result) == '{}') {
               //订餐尚未开始
@@ -328,7 +330,7 @@ Page({
            console.log('为刮卡');
             self.setData({
             
-              dinner_status: "no_draw",
+              dinner_status: "no_draw"
            
             });
           }

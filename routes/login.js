@@ -29,9 +29,9 @@ router.post('/user_login', function (req, res, next) {
                 area:result[0].area,
                 user_img:JSON.parse(result[0].wx_info).avatarUrl
             };
-            res.send(200, {code: 200, result: result[0],message:'登陆成功'})
+            res.status(200).send( {code: 200, result: result[0],message:'登陆成功'})
         }else{
-            res.send(200, {code: 500, result: {},message:'登陆失败'})
+            res.status(200).send( {code: 500, result: {},message:'登陆失败'})
 
         }
 
@@ -43,7 +43,7 @@ router.post('/user_login', function (req, res, next) {
 router.post('/user_sign_out', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     req.session.user=false;
-    res.send(200, {code: 200, result: true,message:'退出成功'})
+    res.status(200).send( {code: 200, result: true,message:'退出成功'})
 
 });
 
