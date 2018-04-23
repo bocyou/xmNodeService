@@ -19,18 +19,12 @@ router.post('/', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     console.log(req.body);
     var access_token='';
-    request.get({
-        url: 'https://api.weixin.qq.com/sns/jscode2session', params: {
-            grant_type: 'client_credential',
-            appid: "wxff898caf09a11846",
-            secret: "6f8b1e6559774ab25c0e6ec3b5b1ee26"
-        }
-    }, function optionalCallback(err, httpResponse, body) {
+    request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxff898caf09a11846&secret=6f8b1e6559774ab25c0e6ec3b5b1ee26', function (err, response, body) {
         if (err) {
             console.log('获取失败ass');
             // res.send(200, {code: 200, result: '获取openid失败'});
         } else {
-           console.log(JSON.parse(body));
+            console.log(JSON.parse(body));
             access_token=JSON.parse(body).access_token;
             request.post({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='+access_token, formData: {
@@ -45,9 +39,9 @@ router.post('/', function (req, res, next) {
             }, function optionalCallback(err, httpResponse, body) {
                 if (err) {
                     console.log('发送失败');
-                   // res.send(200, {code: 200, result: '获取openid失败'});
+                    // res.send(200, {code: 200, result: '获取openid失败'});
                 } else {
-                   console.log('发送成功');
+                    console.log('发送成功');
 
 
                 }
@@ -55,8 +49,8 @@ router.post('/', function (req, res, next) {
             });
 
         }
-
     });
+
 
 });
 
