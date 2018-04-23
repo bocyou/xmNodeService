@@ -6,7 +6,10 @@ var router=express.Router();
 router.get('/',function(req,res){
     console.log(req.query);
     console.log(req.param('signature'));
-    res.render('index',{title:'首页'});
+    console.log(req.param('timestamp'));
+    console.log(req.param('nonce'));
+    console.log(req.param('echostr'));
+    res.status(200).send({code: 200, result:req.param('echostr'), message: "参数校验成功"})
 
 });
 
