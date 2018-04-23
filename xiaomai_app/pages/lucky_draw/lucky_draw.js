@@ -22,13 +22,7 @@ Page({
    */
   onLoad: function (options) {
     var self=this;
-   console.log();
-   var day=new Date().getDay();
-   if(day==0||day==6){
-       //不用抽奖
-   }else{
 
-   }
       util.checkPermission(function(userInfo){
           self.checkCurrentUserDraw();
 
@@ -110,6 +104,7 @@ Page({
                         status: 0,
                         is_loading:0
                     });
+                   // self.getAllList();//定时任务写好前需调用
                 }
 
 

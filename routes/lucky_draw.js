@@ -80,9 +80,9 @@ router.post('/sum_user_draw_money', function (req, res, next) {
 router.post('/check_current_user', function (req, res, next) {
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
-            res.send(200, {code: 200, result: true, message: "该用户合法"})
+            res.status(200).send({code: 200, result: true, message: "该用户合法"})
         } else {
-            res.send(200, {code: 200, result: false, message: "用户不合法"})
+            res.status(200).send( {code: 200, result: false, message: "用户不合法"})
         }
     });
 
@@ -99,14 +99,14 @@ router.post('/get_user_draw_list', function (req, res, next) {
 
             mysql.findToday('lucky_user_list', 'area="' + area + '"', function (result, err) {
                 if (result && result.length > 0) {
-                    res.send(200, {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
+                    res.status(200).send( {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
                 } else if (result.length == 0) {
                     // 当天没有人刮奖则重置刮奖数组
                     lucky.rest();
-                    res.send(200, {code: 200, result: [], message: "未查找到刮奖用户"})
+                    res.status(200).send( {code: 200, result: [], message: "未查找到刮奖用户"})
                 } else {
 
-                    res.send(200, {code: 200, result: [], message: "未查找到刮奖用户"})
+                    res.status(200).send( {code: 200, result: [], message: "未查找到刮奖用户"})
                 }
 
             })
@@ -183,10 +183,10 @@ router.post('/get_user_special_list', function (req, res, next) {
                         return item.money == 0 || item.money == 8 || item.money == 6
                     });
 
-                    res.send(200, {code: 200, result: ary, message: "获取所有特殊奖项信息成功"})
+                    res.status(200).send({code: 200, result: ary, message: "获取所有特殊奖项信息成功"})
                 } else {
 
-                    res.send(200, {code: 200, result: [], message: "获取所有特殊奖项信息失败"})
+                    res.status(200).send( {code: 200, result: [], message: "获取所有特殊奖项信息失败"})
                 }
 
             })
