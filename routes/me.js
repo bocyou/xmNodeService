@@ -171,7 +171,7 @@ router.post('/get_all_user_bill_list', function (req, res, next) {
 });
 //获取本周所有账单
 router.post('/get_user_bill_list', function (req, res, next) {
-    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now())' , function (result, err) {
+    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)' , function (result, err) {
         if (err == null) {
             res.send(200, {code: 200, result: result, message: "获取周用户账单列表成功"})
 
