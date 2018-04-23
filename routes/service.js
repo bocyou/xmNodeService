@@ -5,7 +5,7 @@ var express=require('express');
 var router=express.Router();
 router.get('/',function(req,res){
     console.log(req.query);
-    console.log(res);
+    console.log(req.param('signature'));
     res.render('index',{title:'首页'});
 
 });
