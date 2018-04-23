@@ -30,7 +30,7 @@ router.post('/', function (req, res, next) {
             console.log('获取失败ass');
             // res.send(200, {code: 200, result: '获取openid失败'});
         } else {
-
+           console.log(JSON.parse(body));
             access_token=JSON.parse(body).access_token;
             request.post({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='+access_token, formData: {
