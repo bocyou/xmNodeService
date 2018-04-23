@@ -2,6 +2,7 @@
  * Created by haoguo on 17/5/31.
  */
 var express=require('express');
+var request = require('request');
 var router=express.Router();
 router.get('/',function(req,res){
     console.log(req.body);
