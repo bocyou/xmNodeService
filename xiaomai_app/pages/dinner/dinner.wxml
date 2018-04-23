@@ -64,6 +64,7 @@
  </view>
  <view style="height:60px;"></view>
  </scroll-view>
+
 </block>
 
 
@@ -114,8 +115,18 @@
 
 <block wx:elif="{{dinner_status=='over'}}">
  <view >订餐已结束</view>
-</block>
 
+</block>
+<block wx:if="{{dinner_status=='over'||dinner_status=='yidingcan'}}">
+    <view class="bottom-menu">
+        <navigator open-type="switchTab" class="tab" url="../index/index">
+            首页
+        </navigator>
+        <navigator open-type="switchTab" class="tab" url="../me/me">
+            我
+        </navigator>
+    </view>
+</block>
 <!--用户不属于北京 -->
 <block wx:elif="{{dinner_status=='area_disabled'}}">
  

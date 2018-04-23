@@ -39,7 +39,7 @@ app.use('/invite',require('./routes/invite'));
 app.use('/invite_code',require('./routes/invite_code'));
 app.use('/angular/login',require('./routes/login'));
 app.use('/me',require('./routes/me'));
-
+app.use('/service',require('./routes/service'));
 
 app.listen(config.part,function(){
 	console.log('已启动'+new Date());

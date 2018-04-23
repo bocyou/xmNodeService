@@ -216,23 +216,34 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
         if (userInfo) {
             var dinner_list = req.body.dinner_list;
             var spread_money=req.body.spread_money;
-            mysql.insert_one('order_food_user', {
-                area: userInfo[0].area,
-                user_name: userInfo[0].user_name,
-                user_id: userInfo[0].id,
-                dinner_list: dinner_list,
-                create_time: new Date(),
-                status: 1,
-                spread_money:spread_money
-            }, function (result, err) {
-                if (result) {
-                    res.send(200, {code: 200, result: true, message: '订餐成功'})
-                } else {
-                    res.send(200, {code: 200, result: false, message: '订餐失败!可退出重试'})
-                }
+
+            mysql.sql('SELECT * FROM order_food_user WHERE to_days(create_time) = to_days(now()) AND status = 1 AND user_id='+userInfo[0].id,function(err,result){
+               if(err){
+                   res.status(200).send({code: 500, result: false, message: '获取您的订餐信息失败'});
+               }else{
+                   if(result.length==0){
+                       mysql.insert_one('order_food_user', {
+                           area: userInfo[0].area,
+                           user_name: userInfo[0].user_name,
+                           user_id: userInfo[0].id,
+                           dinner_list: dinner_list,
+                           create_time: new Date(),
+                           status: 1,
+                           spread_money:spread_money
+                       }, function (result, err) {
+                           if (result) {
+                               res.status(200).send( {code: 200, result: true, message: '订餐成功'})
+                           } else {
+                               res.status(200).send( {code:500, result: false, message: '订餐失败!可退出重试'})
+                           }
+                       });
+                   }else{
+                       res.status(200).send({code:500, result: [], message: '您已订餐！请勿重复点击'});
+                   }
+               }
             });
         } else {
-            res.send(200, {code: 200, result: [], message: '获取该用户信息失败'});
+            res.status(200).send({code:500, result: [], message: '获取该用户信息失败'});
         }
     });
 

@@ -11,3 +11,22 @@ page{
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+.bottom-menu{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  display: flex;
+  align-items:center;
+  height:100rpx;
+  background-color:#fff;
+  border-top:2rpx solid #eaeaea;
+}
+.bottom-menu .tab{
+  flex:1;
+  text-align:center;
+  line-height:100rpx;
+}
+.bottom-menu .tab:first-child{
+  border-right:2rpx solid #eaeaea;
+}

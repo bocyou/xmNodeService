@@ -17,7 +17,8 @@
   </view>
 </view>
 </view>
-
+<button bindtap="downCode">下载付款二维码</button>
+<button bindtap="scanCode">扫码</button>
 <view class="content">
 
     <view class="bill-list">

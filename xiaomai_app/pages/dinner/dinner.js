@@ -462,8 +462,8 @@ Page({
           }else{
             // 订餐失败
             wx.showToast({
-              title: '订餐失败',
-              icon: 'loading',
+              title: data.message,
+              icon: 'none',
               duration: 2000
             })
 

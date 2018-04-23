@@ -151,6 +151,34 @@ var self=this;
         })
 
     },
+    downCode:function(){
+
+        wx.downloadFile({
+            url: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/paycode.png', //仅为示例，并非真实的资源
+            success: function(res) {
+                // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                if (res.statusCode === 200) {
+                    console.log();
+
+                    wx.saveImageToPhotosAlbum({
+                        filePath: res.tempFilePath,
+                        success(result) {
+                            console.log(result)
+                        }
+                    })
+
+                }
+            }
+        })
+    },
+    scanCode:function(){
+        wx.scanCode({
+            onlyFromCamera: false,
+            success: (res) => {
+                console.log(res)
+            }
+        })
+    },
   /**
    * 生命周期函数--监听页面隐藏
    */
