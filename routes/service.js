@@ -29,7 +29,15 @@ router.post('/', function (req, res, next) {
             console.log(JSON.parse(body));
             access_token = JSON.parse(body).access_token;
             var post_parame=JSON.stringify({"touser": '"'+user_openid+'"',"msgtype": "text",  "text": {"content": "Hello World"}});
-            request({
+            request.post({url:'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token, form:post_parame}, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log(body);
+                    if (!error && response.statusCode == 200) {
+                        console.log('发送成功');
+                    }
+                }
+            })
+       /*     request({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
                 method: "POST",
                 json: false,
@@ -42,7 +50,7 @@ router.post('/', function (req, res, next) {
                 if (!error && response.statusCode == 200) {
                     console.log('发送成功');
                 }
-            });
+            });*/
 
        /*
             request.post({
