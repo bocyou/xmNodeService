@@ -28,7 +28,7 @@ router.post('/', function (req, res, next) {
             access_token=JSON.parse(body).access_token;
             request.post({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='+access_token, formData: {
-                    "touser":"OPENID",
+                    "touser":"opoUD0aa1OIkGC1MDf7oNnhgTMYs",
                     "msgtype":"text",
                     "text":
                         {
@@ -37,6 +37,7 @@ router.post('/', function (req, res, next) {
                 }
 
             }, function optionalCallback(err, httpResponse, body) {
+                console.log(body);
                 if (err) {
                     console.log('发送失败');
                     // res.send(200, {code: 200, result: '获取openid失败'});
