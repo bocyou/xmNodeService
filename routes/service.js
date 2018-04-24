@@ -28,7 +28,7 @@ router.post('/', function (req, res, next) {
         } else {
             console.log(JSON.parse(body));
             access_token = JSON.parse(body).access_token;
-            var post_parame=JSON.stringify({"touser": '"'+user_openid.toString()+'"',"msgtype": "text",  "text": {"content": "Hello World"}});
+            var post_parame=JSON.stringify({"touser": user_openid,"msgtype": "text",  "text": {"content": "Hello World"}});
             console.log(post_parame);
             request.post({url:'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token, form:post_parame}, function(error, response, body) {
                 if (!error && response.statusCode == 200) {
