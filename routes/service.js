@@ -17,8 +17,9 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    console.log(req.body.FromUserName);
+
     var user_openid=req.body.FromUserName;
+    console.log('openid='+user_openid);
     var access_token = '';
     request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxff898caf09a11846&secret=6f8b1e6559774ab25c0e6ec3b5b1ee26', function (err, response, body) {
         if (err) {
