@@ -36,7 +36,7 @@ router.post('/', function (req, res, next) {
                     "content-type": "application/json"
                 },
                 body: JSON.stringify({
-                    "touser":user_openid,
+                    "touser":'"'+user_openid+'"',
                     "msgtype": "text",
                     "text":
                         {
