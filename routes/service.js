@@ -39,9 +39,9 @@ router.post('/', function (req, res, next) {
                     "touser":'"'+user_openid+'"',
                     "msgtype": "text",
                     "text":
-                        {
-                            "content": "Hello World"
-                        }
+                        "{\"touser\": \"opoUD0aa1OIkGC1MDf7oNnhgTMYs\",\"msgtype\": \"text\",  \"text\": {\"content\": \"Hello World\"}}"
+
+
                 })
             }, function(error, response, body) {
                 console.log(body);
