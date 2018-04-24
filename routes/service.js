@@ -32,6 +32,7 @@ router.post('/', function (req, res, next) {
             request.post({url:'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token, form:post_parame}, function(error, response, body) {
                 if (!error && response.statusCode == 200) {
                     console.log(body);
+                    console.log(1);
                     if (!error && response.statusCode == 200) {
                         console.log('发送成功');
                     }
