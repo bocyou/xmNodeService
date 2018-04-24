@@ -35,7 +35,7 @@ router.post('/', function (req, res, next) {
                 headers: {
                     "content-type": "application/json"
                 },
-                body: "{\"touser\": \"opoUD0aa1OIkGC1MDf7oNnhgTMYs\",\"msgtype\": \"text\",  \"text\": {\"content\": \"Hello World\"}}"
+                body:  {"touser": '"'+user_openid+'"',"msgtype": "text",  "text": {"content": "Hello World"}}
             }, function(error, response, body) {
                 console.log(body);
                 if (!error && response.statusCode == 200) {
