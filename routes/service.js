@@ -29,7 +29,7 @@ router.post('/', function (req, res, next) {
             request.post({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
                 form: {
-                    "touser": "opoUD0aa1OIkGC1MDf7oNnhgTMYs",
+                    "touser": "wxff898caf09a11846",
                     "msgtype": "text",
                     "text":
                         {
