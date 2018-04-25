@@ -41,7 +41,7 @@ app.use('/angular/login',require('./routes/login'));
 app.use('/me',require('./routes/me'));
 app.use('/service',require('./routes/service'));
 app.use('/test',require('./routes/test'));
-
+app.use('/paycode',require('./routes/pay_code'));
 app.listen(config.part,function(){
 	console.log('已启动'+new Date());
 });
