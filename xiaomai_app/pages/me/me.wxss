@@ -114,10 +114,28 @@
     font-size:28rpx;
     color:#717171;
    text-align: left;
-    background-color:#eaeaeb;
+
     padding:30rpx;
 }
 .not-bill-tip text{
     font-size:24rpx;
     color: rgba(0, 0, 0, 0.4);
+}
+.service-btn{
+    color:#717171;
+    font-size:30rpx;
+    background-color:#eaeaeb;
+    border:1px solid #eaeaeb;
+    border-radius: initial;
+    outline: none;
+    box-shadow: none;
+
+}
+.service-btn .text{
+      font-size:24rpx;
+  }
+
+.service-btn .text .tip{
+   color:#3c2075;
+    font-weight: bold;
 }

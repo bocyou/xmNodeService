@@ -151,35 +151,7 @@ var self=this;
         })
 
     },
-    downCode:function(){
 
-        wx.chooseImage({
-            success: function(res) {
-                var tempFilePaths = res.tempFilePaths
-                console.log(res);
-             /*   wx.uploadFile({
-                    url: 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=image', //仅为示例，非真实的接口地址
-                    filePath: tempFilePaths[0],
-                    name: 'file',
-                    formData:{
-                        "media": 'test'
-                    },
-                    success: function(res){
-                        var data = res.data
-                        //do something
-                    }
-                })*/
-            }
-        })
-    },
-    scanCode:function(){
-        wx.scanCode({
-            onlyFromCamera: false,
-            success: (res) => {
-                console.log(res)
-            }
-        })
-    },
   /**
    * 生命周期函数--监听页面隐藏
    */

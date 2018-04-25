@@ -124,7 +124,33 @@ Page({
       
   
       util.checkPermission(function(userInfo){
-          self.checkDinnerStatus();
+          util.request({
+              url: util.api+'/me/get_user_bill', param: '', complete: function (res) {
+                  //获取当前用户账单信息
+                  var data = res.data;
+                  if (data.code == 200&&data.result.length>0) {
+                      wx.showModal({
+                          title: '来自王老师的提示',
+                          content: '您有尚未支付的账单，点击确定去支付后再来点餐！',
+                          success: function (res) {
+                              if (res.confirm) {
+                                  wx.switchTab({
+                                      url: '../me/me'
+                                  })
+                              } else if (res.cancel) {
+                                  wx.switchTab({
+                                      url: '../me/me'
+                                  })
+                              }
+
+                          }
+                      })
+                  }else{
+                      self.checkDinnerStatus();
+                  }
+              }
+          });
+
       });
   
  

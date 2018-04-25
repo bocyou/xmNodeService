@@ -17,9 +17,8 @@
   </view>
 </view>
 </view>
-<button bindtap="downCode">下载付款二维码</button>
-<button bindtap="scanCode">扫码</button>
-<button open-type="contact" session-from="imgcode">客服</button>
+
+<button class="service-btn" open-type="contact" session-from="imgcode">获取付款二维码<text class="text"> (若获取不到请发送<text class="tip"> pay </text>)</text></button>
 <view class="content">
 
     <view class="bill-list">
