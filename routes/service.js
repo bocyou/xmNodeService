@@ -20,6 +20,7 @@ router.post('/', function (req, res, next) {
 
     user_openid = req.body.FromUserName || user_openid;
     console.log(req.body);
+    var content_txt=req.body.Content;
     // console.log('openid='+user_openid);
     var access_token = '';
     request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxff898caf09a11846&secret=6f8b1e6559774ab25c0e6ec3b5b1ee26', function (err, response, body) {
@@ -29,11 +30,21 @@ router.post('/', function (req, res, next) {
         } else {
             console.log(JSON.parse(body));
             access_token = JSON.parse(body).access_token;
-            var post_parame = JSON.stringify({
-                "touser": user_openid,
-                "msgtype": "text",
-                "text": {"content": '<a href="https://xiaomai.towords.com/paycode">点击获取付款二维码</a>'}
-            });
+            var post_parame='';
+            if(content_txt=='pay'){
+                post_parame = JSON.stringify({
+                    "touser": user_openid,
+                    "msgtype": "text",
+                    "text": {"content": '<a href="https://xiaomai.towords.com/paycode">点击获取付款二维码</a>'}
+                });
+            }else{
+                post_parame = JSON.stringify({
+                    "touser": user_openid,
+                    "msgtype": "text",
+                    "text": {"content": '没事别来烦我'}
+                });
+            }
+
             console.log(post_parame);
             request.post({
                 url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
