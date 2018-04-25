@@ -228,10 +228,15 @@ Page({
                     is_draw=true;
                 },2000);
                 if(data.code==200){
+
                     self.getAllList();
                     self.getTopList();
                     self.getSpecialList();
-                    self.checkCurrentUserDraw();
+                    self.setData({
+                        status:1,
+                        is_loading:0
+                    });
+
                 } else{
                   wx.showModal({
                       title: '',

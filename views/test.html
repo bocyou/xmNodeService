@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增微信临时图片</title>
+</head>
+<body>
+  <input id="file" type="file"/>
+  <button>
+      上传
+  </button>
+  <script src="/introduce/jQuery-3.1.1.js"></script>
+  <script>
+     $('button').click(function(){
+         console.log(1);
+
+         var formData=new FormData();
+         formData.append('img',$('#file')[0].files[0]);
+         $.ajax({
+             data: formData,
+             url: '/test/upload',
+             type:"post",
+             dataType: 'JSON',
+             contentType: false,    //不可缺
+             processData: false,    //不可缺
+             success: function(data){
+                 console.log(data);
+
+
+             },
+             error: function(err){
+                 console.log('error: ' + err);
+             }
+         });
+     });
+  </script>
+</body>
+</html>

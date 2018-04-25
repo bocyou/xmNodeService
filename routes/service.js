@@ -36,6 +36,7 @@ router.post('/', function (req, res, next) {
                     console.log(1);
                     if (!error && response.statusCode == 200) {
                         console.log('发送成功');
+                        res.status(200).send('success');
                     }
                 }
             })

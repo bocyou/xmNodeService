@@ -242,8 +242,9 @@ router.post('/save_user_draw', function (req, res, next) {
                         //当天没有刮卡，保存用户刮奖钱数
                         mysql.sql('select * from lucky_ary where id = 0', function (err, result) {
 
-                            if (err) {
-                                res.send(200, {code: 500, result: result, message: '抽奖失败'});
+                            if (err!=null) {
+                                res.send(200, {code: 500, result: result, message: '抽奖失败!请稍后重试'});
+                                console.log("查询数组失败"+err);
                             } else {
 
                                 var ary = JSON.parse(result[0].lucky_ary);
@@ -255,6 +256,7 @@ router.post('/save_user_draw', function (req, res, next) {
                                 }else{
                                     //取3-5中的随机数
                                     var money=Math.round(Math.random() * 2 + 3);
+
                                     bar.money = money;
                                 }
 
