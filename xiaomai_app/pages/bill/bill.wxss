@@ -1,0 +1,67 @@
+/* pages/bill/bill.wxss */
+/*
+.page-title{
+    font-size:36rpx;
+    color:#717171;
+    padding:0 30rpx;
+    margin-bottom:40rpx;
+    margin-top:60rpx;
+    font-weight: bold;
+}
+.bill-bar{
+    font-size:30rpx;
+    line-height:80rpx;
+    padding:0 30rpx;
+}
+.bill-bar .red{
+    color: #a94442;
+}
+.bill-bar .green{
+    color: #3c763d;
+
+}*/
+.page-title{
+    background-color:#fff;
+    padding:30rpx;
+    margin-top:30rpx;
+    border-top: 6rpx solid #d2d6de;
+}
+page{
+    background-color: #f7f7f7;
+    padding:0 30rpx;
+}
+.bill-table-bar{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding:26rpx 30rpx;
+    font-size:28rpx;
+    color:#717171;
+    background-color:#fff;
+}
+.bill-table-bar .bill-date{
+     width:200rpx;
+ }
+.bill-table-bar .bill-money{
+    width:120rpx;
+}
+.bill-table-bar .bill-status{
+    flex:1;
+}
+.bill-table-bar .bill-pay-date{
+    width:200rpx;
+}
+.bill-table-bar .th{
+    font-size:28rpx;
+    color:#333;
+    font-weight:bold;
+}
+.bill-table-bar:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+.bill-table-bar .green{
+    color:#00a65a;
+}
+.bill-table-bar .red{
+    color:#dd4b39;
+}

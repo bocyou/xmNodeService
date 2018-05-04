@@ -1,22 +1,62 @@
 <!--pages/lucky_draw/lucky_draw.wxml-->
 
 <block wx:if="{{status==0}}">
+    <!--    <view class="draw-area">
+            <view class="draw-btn" bindtap="startDraw"> 点击开奖</view>
+            <block wx:if="{{status==1}}">
+
+                <block wx:if="{{current_user_money>0}}">
+
+                    <view class="tip-txt">今日需捐款
+                        <text>{{current_user_money}}</text>
+                        元
+                    </view>
+                </block>
+                <block wx:elif="{{current_user_money==0}}">
+                    <view class="tip-txt">今日随便吃，不花钱</view>
+                </block>
+
+            </block>
+        </view>-->
+    <!--    <div class="monster blue">
+            <div class="eye">
+                <div class="eyeball"></div>
+            </div>
+            <div class="mouth"></div>
+        </div>-->
     <view class="draw-area">
-        <view class="draw-btn" bindtap="startDraw"> 点击开奖</view>
-        <block wx:if="{{status==1}}">
 
-            <block wx:if="{{current_user_money>0}}">
-
-                <view class="tip-txt">今日需捐款
-                    <text>{{current_user_money}}</text>
-                    元
+        <view class="draw-money">
+            <view>
+                <view >
+                    <image style="max-width:500rpx;margin:0 auto;display:block;" mode="widthFix" src="https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/gif/{{img[current_user_money]}}"></image>
                 </view>
-            </block>
-            <block wx:elif="{{current_user_money==0}}">
-                <view class="tip-txt">今日随便吃，不花钱</view>
-            </block>
+                <view style="color:#0C4475;font-size:28rpx;margin-top:160rpx;">
+                    <block wx:if="{{current_user_money==0}}">白吃白喝</block>
+                    <block wx:else>{{current_user_money}} 元</block>
+                </view>
+                <view class="submit-show-list" bindtap="showList">确定</view>
 
-        </block>
+            </view>
+
+        </view>
+
+        <view class="pageLoading {{show_draw_result==1?'complete':''}}" wx:if="{{hide_draw==0}}">
+            <view class="draw-tip">别看了，点我 !</view>
+            <view class="monster" bindtap="startDraw">
+
+                <view class="eye">
+                    <view class="eyeball"></view>
+                </view>
+                <view class="black-bar"></view>
+                <view class="white-block"></view>
+                <!--  <view class="mouth"></view>-->
+            </view>
+
+            <!--   <view class="loading">
+                   <view class="bar"></view>
+               </view>-->
+        </view>
     </view>
 
 

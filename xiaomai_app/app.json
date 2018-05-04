@@ -6,7 +6,8 @@
     "pages/lucky_draw/lucky_draw",
     "pages/login/login",
     "pages/signup/signup",
-    "pages/shop_game/shop_game"
+    "pages/shop_game/shop_game",
+    "pages/bill/bill"
   ],
   "window":{
     "backgroundTextStyle":"light",

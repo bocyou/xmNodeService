@@ -246,11 +246,9 @@ z-index:2;
  
 }
 .cancel-btn-box{
-  position:fixed;
-  bottom:16rpx;
-  left:0;
+
+ margin:60rpx auto 50rpx;
   width:100%;
-  z-index:100;
 }
 .cancel-btn{
   width:90%;

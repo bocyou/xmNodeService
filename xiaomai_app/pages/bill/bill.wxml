@@ -1,0 +1,31 @@
+<!--pages/bill/bill.wxml-->
+
+<view class="page-title">
+    历史账单（30天内）
+</view>
+
+
+<view class="bill-menu bill-table-bar">
+    <view class="bill-date th">账单日</view>
+    <view class="bill-money th">金额</view>
+    <view class="bill-pay-date th">还款日</view>
+    <view class="bill-status th">状态</view>
+</view>
+<view class="bill-bar bill-table-bar" wx:for="{{bill_ary}}" wx:key="i">
+
+
+    <view class="bill-date">{{item.create_time}}</view>
+    <view class="bill-money">{{item.money}}</view>
+
+    <block wx:if="{{item.status==1}}">
+        <view class="bill-pay-date">-</view>
+        <view class="bill-status red">未支付</view>
+    </block>
+    <block wx:else>
+        <view class="bill-pay-date">{{item.update_time}}</view>
+        <view class="bill-status green">已支付</view>
+    </block>
+
+
+</view>
+

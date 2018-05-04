@@ -37,7 +37,7 @@
 
 <!--已订餐-->
 <block wx:elif="{{dinner_status=='yidingcan'}}">
- <view class="cancel-btn-box" wx:if="{{isCancel}}"><button class="cancel-btn" bindtap="cancelDinner">取消</button></view>
+
  <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight-50}}">
  <view wx:if="{{!isCancel}}" class="over-title">今日订餐已结束</view>
  <view wx:if="{{havedinner_price>0}}">
@@ -62,9 +62,9 @@
      </view>
     </block>
  </view>
- <view style="height:60px;"></view>
+     <view class="cancel-btn-box" wx:if="{{isCancel}}"><button class="cancel-btn" bindtap="cancelDinner">取消</button></view>
+     <view style="height:60px;"></view>
  </scroll-view>
-
 </block>
 
 

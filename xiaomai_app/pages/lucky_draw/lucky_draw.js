@@ -8,6 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+      img:['0.png','1.gif','2.gif','2.gif','2.gif','2.gif','6.gif','','8.gif'],
+      show_draw_result:0,//显示刮奖结果页面0不显示，1显示
+      hide_draw:0,//隐藏开奖区域，1隐藏
     is_loading:1,
      random_ary:[8,6,0,0,1,2],
      status:0,//0表示未刮奖，1表示已刮奖,2表示周末
@@ -94,8 +97,7 @@ Page({
                     self.getAllList();
                     self.setData({
                         status:1,
-                        is_loading:0,
-                        current_user_money:data.result.money
+                        is_loading:0
                     });
 
                 }else{
@@ -104,7 +106,7 @@ Page({
                         status: 0,
                         is_loading:0
                     });
-                   // self.getAllList();//定时任务写好前需调用
+                    self.getAllList();//定时任务写好前需调用
                 }
 
 
@@ -164,8 +166,7 @@ Page({
             special_list:resul_ary
           });
         } else {
-          self.setData({
-          });
+
         }
 
 
@@ -217,25 +218,39 @@ Page({
       }
     });
   },
+    showList:function(){
+      console.log('12');
+      var self=this;
+        self.getAllList();
+        self.getTopList();
+        self.getSpecialList();
+        self.setData({
+            status:1
+        });
+    },
   startDraw:function(){
     var self=this;
+      self.setData({
+          show_draw_result:1
+      });
     if(is_draw){
         is_draw=false;
         util.request({
             url: util.api+'/lucky_draw/save_user_draw', complete: function (res) {
                 var data = res.data;
-                setInterval(function(){
                     is_draw=true;
-                },2000);
                 if(data.code==200){
 
-                    self.getAllList();
-                    self.getTopList();
-                    self.getSpecialList();
+
                     self.setData({
-                        status:1,
-                        is_loading:0
+                        is_loading:0,
+                        current_user_money:data.result
                     });
+                    setInterval(function(){
+                        self.setData({
+                            hide_draw:1
+                        });
+                    },1600)
 
                 } else{
                   wx.showModal({
