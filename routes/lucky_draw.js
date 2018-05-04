@@ -262,12 +262,12 @@ router.post('/save_user_draw', function (req, res, next) {
 
                                 mysql.sql('update lucky_ary set lucky_ary="' + JSON.stringify(ary) + '" where id=0', function (err, result) {
 
-                                    if (err) {
+                                    if (err!=null) {
                                         res.status(200).send({code: 500, result: result, message: '更新奖池时发生错误'});
                                     } else {
                                         mysql.insert_one('lucky_user_list', bar, function (result, err) {
 
-                                            if (err) {
+                                            if (err!=null) {
                                                 res.send(200, {code: 500, result: '', message: '保存失败'})
                                             } else {
                                                 res.status(200).send({code: 200, result: money, message: "保存成功"});
