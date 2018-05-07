@@ -10,7 +10,7 @@ var checkSession = require('../middlewares/check_session').checkAppSession;
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
-
+var schedule = require('node-schedule');
 //问题刮奖时不能重启服务
 var lucky_base = [0, 0, 1, 2, 2, 8, 6];
 var lucky_ary = [];
@@ -52,6 +52,19 @@ router.get('/', function (req, res) {
     res.render('api', {title: ''});
 
 });
+
+//每天晚上00点重置奖池
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [1, new schedule.Range(2, 5)];
+rule.hour = 00;
+rule.minute = 00;
+
+var rest_lucky_ary = schedule.scheduleJob(rule, function(){
+    console.log('重置奖池');
+});
+
+
+
 
 
 //管理列表计算今天获得的钱数(仅北京地区)
@@ -145,7 +158,7 @@ router.post('/month_top_list', checkSession, function (req, res, next) {
 //如果没有人刮奖则重置lucky_ary
 router.post('/get_user_draw_list',checkSession, function (req, res, next) {
 
-            mysql.sql('SELECT * FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now())', function (err, result) {
+            mysql.sql('SELECT user_img,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now())', function (err, result) {
                 if (result && result.length > 0) {
                     res.status(200).send( {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
                 } else if (result.length == 0) {

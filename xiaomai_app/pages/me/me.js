@@ -37,24 +37,8 @@ Page({
     onShow: function () {
         var self = this;
         util.checkPermission(function (userInfo) {
-            util.request({
-                url: util.api + '/api/get_current_user', param: '', complete: function (res) {
-                    //获取当前用户信息
-                    var data = res.data;
-                    if (data.code == 200 && JSON.stringify(data.result) != '{}') {
-                        self.setData({
-                            user_info: data.result
-                        });
-                    } else {
-                        wx.showToast({
-                            title: '获取数据失败',
-                            icon: 'none',
-                            duration: 2000
-                        })
-                    }
-                }
-            });
 
+             self.getUserInfo();
             util.request({
                 url: util.api + '/me/get_user_not_pay', param: '', complete: function (res) {
                     //获取当前用户账单
@@ -84,6 +68,26 @@ Page({
 
         });
 
+    },
+    getUserInfo:function(){
+        var self=this;
+        util.request({
+            url: util.api + '/api/get_current_user', param: '', complete: function (res) {
+                //获取当前用户信息
+                var data = res.data;
+                if (data.code == 200 && JSON.stringify(data.result) != '{}') {
+                    self.setData({
+                        user_info: data.result
+                    });
+                } else {
+                    wx.showToast({
+                        title: '获取数据失败',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            }
+        });
     },
 
     getBill: function () {
@@ -152,6 +156,61 @@ Page({
             }
         })
 
+    },
+    refreshFace:function(){
+        var self=this;
+        wx.getUserInfo({
+            success: function(res) {
+                var userInfo = res.userInfo;
+
+                var avatarUrl = userInfo.avatarUrl;
+                console.log(avatarUrl);
+                util.request({
+                    url: util.api + '/me/refresh_user_face', param: {user_img: avatarUrl}, complete: function (res) {
+                        //获取当前用户账单信息
+                        var data = res.data;
+                        if (data.code == 200) {
+                            self.getUserInfo();
+
+                        } else {
+                         wx.showToast({
+                             title:'更新失败',
+                             icon:'none',
+                             duration:'2000'
+                         });
+                        }
+                    }
+                });
+            },
+            fail:function(res){
+                wx.showToast({
+                    title: '获取头像信息失败',
+                    icon: 'none',
+                    duration: 2000
+                })
+            }
+        })
+     /*   util.request({
+            url: util.api + '/me/user_pay_bill', param: {bill_id: bill_id}, complete: function (res) {
+                //获取当前用户账单信息
+                var data = res.data;
+                if (data.code == 200) {
+                    wx.showToast({
+                        title: '确认成功',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                    self.getBill();
+
+                } else {
+                    wx.showToast({
+                        title: '确认失败',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            }
+        });*/
     },
 
     /**

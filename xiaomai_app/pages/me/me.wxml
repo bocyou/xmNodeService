@@ -1,7 +1,11 @@
 <!--pages/me/me.wxml-->
 <view class="header">
     <view class="img-box">
-        <view style="width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})"></view>
+        <view style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
+
+            <view class="refresh-btn" bindtap="refreshFace"></view>
+        </view>
+
     </view>
 
     <view style="position:relative; border-bottom:2px solid #eaeaeb;padding-bottom:60rpx">

@@ -8,13 +8,16 @@ var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
-
+var schedule = require('node-schedule');
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});
 
 });
-
+//每周六自动分发账单
+var sat_bill= schedule.scheduleJob({hour: 00, minute: 00, dayOfWeek: 6}, function(){
+    console.log('自动分发账单');
+});
 
 //获取本周总钱数
 router.post('/get_user_not_pay', function (req, res, next) {
@@ -80,6 +83,8 @@ router.post('/get_user_month_bill', function (req, res, next) {
 
 
 });
+
+
 
 
 
@@ -193,10 +198,10 @@ router.post('/get_all_user_bill_list', function (req, res, next) {
 
     mysql.sql('select * from users tab2 join user_bill tab1 on tab1.user_id=tab2.id where tab1.status=1',function(err,result){
         if (err == null) {
-            res.send(200, {code: 200, result: result, message: "获取所有用户未付款账单成功"})
+            res.status(200).send( {code: 200, result: result, message: "获取所有用户未付款账单成功"})
 
         } else {
-            res.send(200, {code: 200, result: [], message: "获取所有未付款用户账单失败" + err})
+            res.status(200).send( {code: 200, result: [], message: "获取所有未付款用户账单失败" + err})
         }
     })
 
@@ -265,20 +270,7 @@ router.post('/get_user_lastmonth_bill_list', function (req, res, next) {
             res.send(200, {code: 200, result: {}, message: "获取用户账单列表失败" + err})
         }
     });
-    /*
-        mysql.conditionSearch('user_bill', 'status="1" AND user_id="' + user_id + '"', function (result, err) {
-            if (err == null) {
-                if (result.length == 0) {
-                    res.send(200, {code: 200, result: result, message: "此用户无拖欠账单"})
-                } else {
-                    res.send(200, {code: 200, result: result, message: "获取此用户账单成功"})
-                }
 
-            } else {
-                res.send(200, {code: 200, result: {}, message: "获取此用户账单失败" + err})
-            }
-
-        })*/
 
 });
 
@@ -300,5 +292,30 @@ router.post('/user_pay_bill', function (req, res, next) {
 
 });
 
+
+router.post('/refresh_user_face', function (req, res, next) {
+
+    getUserInfo(req.headers.sessionkey, function (user_info) {
+        if (user_info) {
+            console.log(req.body.user_img);
+                mysql.sql('update users set user_img = '+JSON.stringify(req.body.user_img)+' where id = ' + user_info[0].id,function(err,result){
+
+                    if (result) {
+                        res.status(200).send( {code: 200, result: result, message: "更新用户头像成功"})
+
+                    } else {
+                        console.log(err);
+                        res.status(200).send( {code: 500, result: [], message: "更新用户头像失败" + err})
+                    }
+                })
+        } else {
+            res.status(200).send(200, {code: 502, result: false, message: "用户不合法"})
+        }
+
+
+    });
+
+
+});
 
 module.exports = router;

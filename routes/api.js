@@ -393,7 +393,7 @@ router.post('/get_current_user', function (req, res, next) {
                 role:userInfo[0].role,
                 user_name:userInfo[0].user_name,
                 area:userInfo[0].area,
-                wx_img:JSON.parse(userInfo[0].wx_info).avatarUrl
+                wx_img:userInfo[0].user_img
             };
             res.send(200, {code: 200, result: user_info, message: "获取当前用户信息成功"})
         } else {

@@ -6,9 +6,14 @@ var app=express();
 var path=require('path');
 
 
+
+
 var bodyParser = require('body-parser');//bodyParser用于解析客户端请求的body中的内容,内部使用JSON编码处理,url编码处理以及对于文件的上传处理.
 
 var config = require('config-lite');
+
+
+
 
 
 app.set('views',path.join(__dirname,'views'));

@@ -10,6 +10,17 @@
   display: block;
   margin:0 auto;
 }
+.header .img-box .refresh-btn{
+   position:absolute;
+    bottom:10rpx;
+    right:10rpx;
+    width:40rpx;
+    height:40rpx;
+    opacity: .6;
+    background:url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/icon_refresh.png") no-repeat center;
+    background-size:contain;
+}
+
 .user-info{
    width:300rpx;
     margin:0 auto;
