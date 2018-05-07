@@ -24,8 +24,8 @@ router.post('/get_today_dinner',checkSession, function (req, res, next) {
     //获取今日状态为1的所有订餐信息
 
 
+    mysql.sql( 'SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1" AND to_days(create_time) = to_days(now())', function (err, result) {
 
-    mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
         if (result && result.length > 0) {
             //统计订餐信息
             var dinner_all_list = [];

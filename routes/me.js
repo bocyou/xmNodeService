@@ -228,6 +228,60 @@ router.post('/get_user_bill_list', function (req, res, next) {
 
 });
 
+router.post('/get_user_bill_list', function (req, res, next) {
+    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)' , function (result, err) {
+        if (err == null) {
+            res.send(200, {code: 200, result: result, message: "获取周用户账单列表成功"})
+
+        } else {
+            res.send(200, {code: 200, result: {}, message: "获取用户账单列表失败" + err})
+        }
+    });
+    /*
+        mysql.conditionSearch('user_bill', 'status="1" AND user_id="' + user_id + '"', function (result, err) {
+            if (err == null) {
+                if (result.length == 0) {
+                    res.send(200, {code: 200, result: result, message: "此用户无拖欠账单"})
+                } else {
+                    res.send(200, {code: 200, result: result, message: "获取此用户账单成功"})
+                }
+
+            } else {
+                res.send(200, {code: 200, result: {}, message: "获取此用户账单失败" + err})
+            }
+
+        })*/
+
+});
+//获取上月账单
+router.post('/get_user_lastmonth_bill_list', function (req, res, next) {
+
+    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE  date_format(create_time,"%Y-%m")=date_format( DATE_ADD(now(),INTERVAL -1 MONTH) ,"%Y-%m")' , function (result, err) {
+         console.log(err);
+        if (err == null) {
+            res.send(200, {code: 200, result: result, message: "获取周用户账单列表成功"})
+
+        } else {
+            res.send(200, {code: 200, result: {}, message: "获取用户账单列表失败" + err})
+        }
+    });
+    /*
+        mysql.conditionSearch('user_bill', 'status="1" AND user_id="' + user_id + '"', function (result, err) {
+            if (err == null) {
+                if (result.length == 0) {
+                    res.send(200, {code: 200, result: result, message: "此用户无拖欠账单"})
+                } else {
+                    res.send(200, {code: 200, result: result, message: "获取此用户账单成功"})
+                }
+
+            } else {
+                res.send(200, {code: 200, result: {}, message: "获取此用户账单失败" + err})
+            }
+
+        })*/
+
+});
+
 
 //付款
 router.post('/user_pay_bill', function (req, res, next) {
