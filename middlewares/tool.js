@@ -5,7 +5,17 @@ var mysql = require('../lib/mysql');
 module.exports = {
     getUserInfo: function(session,callback,res){
 
-    mysql.find_one('custom_session','session_key',[session], function (result) {
+        mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
+            console.log(result);
+            console.log(err);
+            if(result){
+                callback(result);
+            }else{
+                callback(false);
+            }
+
+        })
+ /*   mysql.find_one('custom_session','session_key',[session], function (result) {
         if (result&&result.length>0) {
             var openId=result[0].open_id;
             //根据openid 获取用户信息
@@ -21,7 +31,7 @@ module.exports = {
             res.send(200, {code: 502, result: [],massage:'session失效'})
         }
 
-    });
+    });*/
 },
 getCurrentSession:function(session,callback,res){
         mysql.find_one('custom_session','session_key',[session], function (result) {

@@ -26,12 +26,28 @@ Page({
   onLoad: function (options) {
     var self=this;
 
-      util.checkPermission(function(userInfo){
-          self.checkCurrentUserDraw();
+     var today=new Date().getDay();
+     console.log(today);
+     if(today==0||today==6){
+         wx.showModal({
+             title: '',
+             content: '今天不用刮卡',
+             success: function (res) {
+                 if (res.confirm) {
+                 } else if (res.cancel) {
+                 }
+             }
+         })
+     }else{
+         util.checkPermission(function(userInfo){
+             self.checkCurrentUserDraw();
+
+         
+
+         });
+     }
 
 
-
-      });
     
 
   },
@@ -92,7 +108,6 @@ Page({
 
                 if(data.code==200&&data.result){
                     //已经刮卡
-                    self.getSpecialList();
                     self.getTopList();
                     self.getAllList();
                     self.setData({
@@ -133,13 +148,14 @@ Page({
   },
   getSpecialList:function(){
     var self=this;
-    util.request({
+/*    util.request({
       url: util.api+'/lucky_draw/get_user_special_list', complete: function (res) {
         var data = res.data;
         if (data.code == 200 && data.result) {
           var ary=data.result;
           var resul_ary=self.data.special_list;
           var is_repeat_one=false;
+
           ary.forEach(function(item,idx){
             switch(item.money){
                 case 8:
@@ -171,7 +187,7 @@ Page({
 
 
       }
-    });
+    });*/
   },
   getAllList:function(){
     var self=this;
@@ -179,8 +195,36 @@ Page({
       url: util.api+'/lucky_draw/get_user_draw_list', complete: function (res) {
         var data = res.data;
         if (data.code == 200 && data.result) {
+            var resul_ary=self.data.special_list;
+            var is_repeat_one=false;
+            var special_ary = data.result.filter(function (item, idx) {
+                return item.money == 0 || item.money == 8 || item.money == 6
+            });
+            special_ary=special_ary.forEach(function(item,idx){
+                switch(item.money){
+                    case 8:
+                        resul_ary[0].name=item.user_name;
+                        resul_ary[0].img = '8-2';
+                        break;
+                    case 6:
+                        resul_ary[1].name = item.user_name;
+                        resul_ary[1].img = '6-2';
+                        break;
+                    case 0:
+                        if (is_repeat_one){
+                            resul_ary[3].name = item.user_name;
+                            resul_ary[3].img = '0-2';
+                        }else{
+                            resul_ary[2].name = item.user_name;
+                            resul_ary[2].img = '0-2';
+                            is_repeat_one=true;
+                        }
+                        break;
+                }
+            });
           self.setData({
-            all_list:data.result
+            all_list:data.result,
+              special_list:resul_ary
           });
         } else {
           self.setData({
@@ -223,7 +267,6 @@ Page({
       var self=this;
         self.getAllList();
         self.getTopList();
-        self.getSpecialList();
         self.setData({
             status:1
         });

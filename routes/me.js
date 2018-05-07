@@ -92,7 +92,7 @@ router.post('/get_all_user_bill', function (req, res, next) {
     mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err,result) {
         console.log(err);
         if (err != null) {
-            res.send(200, {code: 501, result: {}, message: "您本周已分发账单"})
+            res.status(200).send( {code: 501, result: {}, message: "您本周已分发账单"})
         } else {
             //查找本周订餐人员的数据
             mysql.findtest('order_food_user', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1) and tab1.status=1', function (err, result1) {
@@ -138,9 +138,9 @@ router.post('/get_all_user_bill', function (req, res, next) {
                             mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`)', [usr], function (result, err) {
                                 console.log(err);
                                 if (err == null) {
-                                    res.send(200, {code: 200, result: res_ary, message: "本周账单分发成功"})
+                                    res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
                                 } else {
-                                    res.send(200, {code: 501, result: err.sqlMessage, message: '插入失败' + err});
+                                    res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
                                 }
 
                             });
@@ -148,13 +148,13 @@ router.post('/get_all_user_bill', function (req, res, next) {
 
                         } else {
 
-                            res.send(200, {code: 200, result: {}, message: "获取此用户抽奖信息失败"})
+                            res.status(200).send( {code: 200, result: {}, message: "获取此用户抽奖信息失败"})
                         }
 
                     })
                 } else {
 
-                    res.send(200, {code: 200, result: {}, message: "获取此用户订餐信息失败"})
+                    res.status(200).send( {code: 200, result: {}, message: "获取此用户订餐信息失败"})
                 }
 
             })

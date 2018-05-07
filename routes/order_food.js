@@ -22,7 +22,10 @@ router.get('/', function (req, res) {
 router.post('/get_today_dinner',checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     //获取今日状态为1的所有订餐信息
-    mysql.findToday('order_food_user', 'status="1"', function (result, err) {
+
+
+
+    mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
         if (result && result.length > 0) {
             //统计订餐信息
             var dinner_all_list = [];
@@ -73,7 +76,9 @@ router.post('/get_today_dinner',checkSession, function (req, res, next) {
         } else {
             res.send(200, {code: 200, result: {}, message: '尚无订餐信息'});
         }
+
     })
+
 
 
 });
@@ -223,8 +228,6 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
                }else{
                    if(result.length==0){
                        mysql.insert_one('order_food_user', {
-                           area: userInfo[0].area,
-                           user_name: userInfo[0].user_name,
                            user_id: userInfo[0].id,
                            dinner_list: dinner_list,
                            create_time: new Date(),
