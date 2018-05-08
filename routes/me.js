@@ -85,7 +85,86 @@ router.post('/get_user_month_bill', function (req, res, next) {
 });
 
 
+var billWork={
+    postBill:function(){
 
+        mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err,result) {
+            console.log(err);
+            if (err != null) {
+                console.log("您本周已分发账单");
+                //res.status(200).send( {code: 501, result: {}, message: "您本周已分发账单"})
+            } else {
+                //查找本周订餐人员的数据
+                mysql.findtest('order_food_user', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1) and tab1.status=1', function (err, result1) {
+                    if (err == null) {
+                        //本周刮奖人员的数据
+                        mysql.findtest('lucky_user_list', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err, result2) {
+                            if (err == null) {
+                                var result_ary = result1.concat(result2);
+                                //提取userid相同的用户
+                                var res_ary = [];
+                                result_ary.sort(function (a, b) {
+                                    return a.user_id - b.user_id
+                                });
+                                var num = 0;
+                                var usr = [];
+                                for (var i = 0; i < result_ary.length;) {
+                                    var count = 0;
+                                    var sum_money = 0;
+                                    for (var j = i; j < result_ary.length; j++) {
+                                        if (result_ary[i].user_id == result_ary[j].user_id) {
+                                            count++;
+                                            sum_money += parseInt(result_ary[j].spread_money == undefined ? result_ary[j].money : result_ary[j].spread_money);
+                                        }
+                                    }
+                                    usr[num] = [];
+                                    usr[num][0] = result_ary[i].user_id;
+                                    usr[num][1] = sum_money;
+                                    usr[num][2] = '1';
+                                    usr[num][3] = new Date();
+                                    usr[num][4] = '';
+                                    num++;
+                                    //发送模版信息
+                                    res_ary.push({
+                                        user_name: result_ary[i].user_name,
+                                        user_face: result_ary[i].user_img,
+                                        user_id: result_ary[i].user_id,
+                                        num: count,
+                                        money: sum_money
+                                    });
+                                    i += count;
+                                }
+
+                                mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`)', [usr], function (result, err) {
+                                    console.log(err);
+                                    if (err == null) {
+                                        console.log("本周账单分发成功"+new Date());
+                                       // res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
+                                    } else {
+                                        console.log("本周账单分发失败"+new Date());
+                                        //res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
+                                    }
+
+                                });
+
+
+                            } else {
+                                console.log("获取用户抽奖信息失败"+new Date());
+                               // res.status(200).send( {code: 200, result: {}, message: "获取此用户抽奖信息失败"})
+                            }
+
+                        })
+                    } else {
+                        console.log("获取用户订餐信息失败"+new Date());
+                        //res.status(200).send( {code: 200, result: {}, message: "获取此用户订餐信息失败"})
+                    }
+
+                })
+            }
+
+        })
+    }
+}
 
 
 
@@ -94,78 +173,6 @@ router.post('/get_all_user_bill', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     //先在user_bill中查找本周内有没有数据
 
-    mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err,result) {
-        console.log(err);
-        if (err != null) {
-            res.status(200).send( {code: 501, result: {}, message: "您本周已分发账单"})
-        } else {
-            //查找本周订餐人员的数据
-            mysql.findtest('order_food_user', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1) and tab1.status=1', function (err, result1) {
-                if (err == null) {
-                    //本周刮奖人员的数据
-                    mysql.findtest('lucky_user_list', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err, result2) {
-                        if (err == null) {
-                            var result_ary = result1.concat(result2);
-                            //提取userid相同的用户
-                            var res_ary = [];
-                            result_ary.sort(function (a, b) {
-                                return a.user_id - b.user_id
-                            });
-                            var num = 0;
-                            var usr = [];
-                            for (var i = 0; i < result_ary.length;) {
-                                var count = 0;
-                                var sum_money = 0;
-                                for (var j = i; j < result_ary.length; j++) {
-                                    if (result_ary[i].user_id == result_ary[j].user_id) {
-                                        count++;
-                                        sum_money += parseInt(result_ary[j].spread_money == undefined ? result_ary[j].money : result_ary[j].spread_money);
-                                    }
-                                }
-                                usr[num] = [];
-                                usr[num][0] = result_ary[i].user_id;
-                                usr[num][1] = sum_money;
-                                usr[num][2] = '1';
-                                usr[num][3] = new Date();
-                                usr[num][4] = '';
-                                num++;
-                                //发送模版信息
-                                res_ary.push({
-                                    user_name: result_ary[i].user_name,
-                                    user_face: result_ary[i].user_img,
-                                    user_id: result_ary[i].user_id,
-                                    num: count,
-                                    money: sum_money
-                                });
-                                i += count;
-                            }
-
-                            mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`)', [usr], function (result, err) {
-                                console.log(err);
-                                if (err == null) {
-                                    res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
-                                } else {
-                                    res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
-                                }
-
-                            });
-
-
-                        } else {
-
-                            res.status(200).send( {code: 200, result: {}, message: "获取此用户抽奖信息失败"})
-                        }
-
-                    })
-                } else {
-
-                    res.status(200).send( {code: 200, result: {}, message: "获取此用户订餐信息失败"})
-                }
-
-            })
-        }
-
-    })
 
 });
 //获取当前用户本周账单

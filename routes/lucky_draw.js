@@ -37,9 +37,10 @@ var lucky = {
         mysql.sql('update lucky_ary set lucky_ary="' + JSON.stringify(lucky_ary) + '" where id=0', function (err, result) {
 
             if (err) {
+                console.log('重置奖池失败'+new Date());
                 console.log(err)
             } else {
-
+                console.log('重置奖池成功'+new Date());
 
             }
         });
@@ -53,14 +54,15 @@ router.get('/', function (req, res) {
 
 });
 
-//每天晚上00点重置奖池
+//周一到周五晚上00点重置奖池
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [1, new schedule.Range(2, 5)];
 rule.hour = 00;
 rule.minute = 00;
 
 var rest_lucky_ary = schedule.scheduleJob(rule, function(){
-    console.log('重置奖池');
+
+    lucky.rest();
 });
 
 
@@ -163,7 +165,7 @@ router.post('/get_user_draw_list',checkSession, function (req, res, next) {
                     res.status(200).send( {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
                 } else if (result.length == 0) {
                     // 当天没有人刮奖则重置刮奖数组
-                    lucky.rest();
+
                     res.status(200).send( {code: 200, result: [], message: "未查找到刮奖用户"})
                 } else {
 

@@ -27,17 +27,26 @@
     <view class="draw-area">
 
         <view class="draw-money">
-            <view>
-                <view >
-                    <image style="max-width:500rpx;margin:0 auto;display:block;" mode="widthFix" src="https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/gif/{{img[current_user_money]}}"></image>
-                </view>
-                <view style="color:#0C4475;font-size:28rpx;margin-top:160rpx;">
-                    <block wx:if="{{current_user_money==0}}">白吃白喝</block>
-                    <block wx:else>{{current_user_money}} 元</block>
-                </view>
-                <view class="submit-show-list" bindtap="showList">确定</view>
+            <block wx:if="{{current_user_money==-1}}">
+               <view style="color:#717171">网络较慢，正在拼命获取刮奖结果</view>
+            </block>
+            <block wx:elif="{{current_user_money==-2}}">
+                <view style="color:#717171">出现错误了！请退出重新抽奖</view>
+            </block>
+            <block wx:else>
+                <view>
+                    <view >
+                        <image style="max-width:500rpx;margin:0 auto;display:block;" mode="widthFix" src="https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/gif/{{img[current_user_money]}}"></image>
+                    </view>
+                    <view style="color:#0C4475;font-size:28rpx;margin-top:160rpx;">
+                        <block wx:if="{{current_user_money==0}}">白吃白喝</block>
+                        <block wx:else>{{current_user_money}} 元</block>
+                    </view>
+                    <view class="submit-show-list" bindtap="showList">确定</view>
 
-            </view>
+                </view>
+            </block>
+
 
         </view>
 

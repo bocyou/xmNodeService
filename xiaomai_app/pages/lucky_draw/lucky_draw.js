@@ -14,7 +14,7 @@ Page({
     is_loading:1,
      random_ary:[8,6,0,0,1,2],
      status:0,//0表示未刮奖，1表示已刮奖,2表示周末
-     current_user_money:0,
+     current_user_money:-1,//刮奖后的显示张泰-1表示尚未请求到后台-2表示失败，
      all_list:[],
      month_list:[],//本月前三
      special_list: [{ name: '', img: '8-1' }, { name: '', img: '6-1' }, { name: '', img: '0-1' }, { name: '', img: '0-1' }]//得奖用户
@@ -121,7 +121,6 @@ Page({
                         status: 0,
                         is_loading:0
                     });
-                    self.getAllList();//定时任务写好前需调用
                 }
 
 
@@ -263,7 +262,6 @@ Page({
     });
   },
     showList:function(){
-      console.log('12');
       var self=this;
         self.getAllList();
         self.getTopList();
@@ -293,7 +291,7 @@ Page({
                         self.setData({
                             hide_draw:1
                         });
-                    },1600)
+                    },1000)
 
                 } else{
                   wx.showModal({
