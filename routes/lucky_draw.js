@@ -73,15 +73,16 @@ var rest_lucky_ary = schedule.scheduleJob(rule, function(){
 
 router.post('/sum_user_draw_money', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    mysql.findToday('lucky_user_list', 'area="bj"', function (result, err) {
+
+    mysql.sql('SELECT * FROM lucky_user_list WHERE to_days(create_time) = to_days(now())',  function (err, result) {
         if (result && result.length > 0) {
             var sum_mony = 0;
             result.forEach(function (item, idx) {
                 sum_mony += item.money;
             });
-            res.send(200, {code: 200, result: sum_mony, message: "获取所有用户刮奖信息成功"})
+            res.status(200).send( {code: 200, result: sum_mony, message: "获取所有用户刮奖信息成功"})
         } else {
-            res.send(200, {code: 200, result: 0, message: "未查找到刮奖用户"})
+            res.status(200).send( {code: 200, result: 0, message: "未查找到刮奖用户"})
         }
 
     })
