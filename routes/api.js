@@ -17,6 +17,7 @@ router.get('/', function (req, res) {
     res.render('api', {title: ''});
 
 });
+
 //解密获取用户信息
 function WXBizDataCrypt(appId, sessionKey) {
     this.appId = appId
@@ -72,14 +73,12 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
     });
 }*/
 //后台管理获取用户信息
-router.post('/get_current_userinfo',checkSession, function (req, res, next) {
+router.post('/get_current_userinfo', checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
 
     res.send(200, {code: 200, result: req.session.user, message: "获取当前用户信息成功"})
 
 });
-
-
 
 
 //检查当前用户是否合法
@@ -222,7 +221,7 @@ router.post('/user_sign_up', function (req, res, next) {
                                 user_name: req_data.user_name,
                                 area: req_data.area,
                                 wx_info: JSON.stringify(req_data.userInfo),
-                                user_img:req_data.userInfo.avatarUrl
+                                user_img: req_data.userInfo.avatarUrl
                             };
                             //将此邀请码更新为不可用
                             mysql.updateData('invite_code', 'id="' + invite_id + '"', 'status="0"', function (result, err) {
@@ -281,7 +280,32 @@ router.post('/user_sign_up', function (req, res, next) {
 })
 
 
+//收集用户formid
+router.post('/save_user_fromid', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    getUserInfo(req.headers.sessionkey, function (userInfo) {
+        if (userInfo.length > 0) {
+            mysql.insert_one('user_formid', {
+                formid: req.body.formid,
+                create_time: new Date(),
+                user_id: userInfo[0].id
+            }, function (result, err) {
+                if (result) {
 
+                    res.status(200).send({code: 200, result: true, message: '保存formid成功'});
+
+                } else {
+                    res.status(200).send({code: 500, result: false, message: '保存formid失败'})
+                }
+            });
+
+
+        } else {
+            res.send(200, {code: 502, result: false, message: "用户不合法"})
+        }
+    });
+
+});
 
 
 router.post('/test', function (req, res, next) {
@@ -316,7 +340,6 @@ router.post('/test', function (req, res, next) {
             var pc = new WXBizDataCrypt(appId, sessionKey)
 
             var data = pc.decryptData(encryptedData, iv)
-
 
 
             res.send(200, {code: 200, result: data});
@@ -363,7 +386,6 @@ router.post('/test2', function (req, res, next) {
             var data = pc.decryptData(encryptedData, iv)
 
 
-
             res.send(200, {code: 200, result: data});
 
 
@@ -386,14 +408,14 @@ router.post('/get_all_user', function (req, res, next) {
 router.post('/get_current_user', function (req, res, next) {
 //获取当前用户信息
     getUserInfo(req.headers.sessionkey, function (userInfo) {
-        if (userInfo&&userInfo.length > 0) {
-            var user_info={
-                wx_name:userInfo[0].wx_name,
-                id:userInfo[0].id,
-                role:userInfo[0].role,
-                user_name:userInfo[0].user_name,
-                area:userInfo[0].area,
-                wx_img:userInfo[0].user_img
+        if (userInfo && userInfo.length > 0) {
+            var user_info = {
+                wx_name: userInfo[0].wx_name,
+                id: userInfo[0].id,
+                role: userInfo[0].role,
+                user_name: userInfo[0].user_name,
+                area: userInfo[0].area,
+                wx_img: userInfo[0].user_img
             };
             res.send(200, {code: 200, result: user_info, message: "获取当前用户信息成功"})
         } else {
@@ -407,7 +429,7 @@ router.post('/get_wx_info', function (req, res, next) {
 });
 
 //获取清洁任务列表(原始列表)
-router.post('/get_clean_list', function (req, res, next) {
+/*router.post('/get_clean_list', function (req, res, next) {
     mysql.search(req, res, next, 'clean_list', function (rows, fields) {
         if (fields) {
             var listStatus = 'undistributed';
@@ -422,7 +444,7 @@ router.post('/get_clean_list', function (req, res, next) {
         }
 
     });
-});
+});*/
 
 router.post('/update_clean_list', function (req, res, next) {
     mysql.update(req, res, next, '', function (result) {
@@ -433,7 +455,7 @@ router.post('/update_clean_list', function (req, res, next) {
     });
 });
 
-
+/*
 //管理模块
 router.post('/finish_work', function (req, res, next) {
     //结束今天所有任务
@@ -446,14 +468,7 @@ router.post('/finish_work', function (req, res, next) {
     });
 
 
-});
-
-
-
-
-
-
-
+});*/
 
 
 module.exports = router;

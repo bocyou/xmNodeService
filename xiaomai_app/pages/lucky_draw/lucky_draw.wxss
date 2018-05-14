@@ -14,7 +14,16 @@
   font-size:36rpx;
   font-weight: bold;
 }
-
+button{
+  margin:0 ;
+  padding:0;
+  outline:none;
+  border:none;
+  list-style: none;
+}
+button::after{
+  border:none;
+}
 
 
 /*已刮卡用户列表start*/

@@ -261,19 +261,35 @@ Page({
       }
     });
   },
-    showList:function(){
+    showList:function(e){
       var self=this;
         self.getAllList();
         self.getTopList();
         self.setData({
             status:1
         });
+        util.request({
+            url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId},complete: function (res) {
+                var data = res.data;
+                if (data.code == 200) {
+
+
+                } else {
+
+                }
+
+
+            }
+        })
     },
-  startDraw:function(){
+  startDraw:function(e){
     var self=this;
       self.setData({
           show_draw_result:1
       });
+
+
+
     if(is_draw){
         is_draw=false;
         util.request({
@@ -308,6 +324,19 @@ Page({
             }
         });
     }
+      util.request({
+          url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId},complete: function (res) {
+              var data = res.data;
+              if (data.code == 200) {
+
+
+              } else {
+
+              }
+
+
+          }
+      })
 
   }
 });

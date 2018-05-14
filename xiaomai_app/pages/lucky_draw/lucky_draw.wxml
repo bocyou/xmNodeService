@@ -42,7 +42,9 @@
                         <block wx:if="{{current_user_money==0}}">白吃白喝</block>
                         <block wx:else>{{current_user_money}} 元</block>
                     </view>
-                    <view class="submit-show-list" bindtap="showList">确定</view>
+                    <form report-submit="true" bindsubmit="showList">
+                    <button class="submit-show-list"  form-type="submit">确定</button>
+                    </form>
 
                 </view>
             </block>
@@ -52,15 +54,18 @@
 
         <view class="pageLoading {{show_draw_result==1?'complete':''}}" wx:if="{{hide_draw==0}}">
             <view class="draw-tip">别看了，点我 !</view>
-            <view class="monster" bindtap="startDraw">
+            <form report-submit="true" bindsubmit="startDraw">
+                <button class="monster" form-type="submit">
 
-                <view class="eye">
-                    <view class="eyeball"></view>
-                </view>
-                <view class="black-bar"></view>
-                <view class="white-block"></view>
-                <!--  <view class="mouth"></view>-->
-            </view>
+                    <view class="eye">
+                        <view class="eyeball"></view>
+                    </view>
+                    <view class="black-bar"></view>
+                    <view class="white-block"></view>
+                    <!--  <view class="mouth"></view>-->
+                </button>
+            </form>
+
 
             <!--   <view class="loading">
                    <view class="bar"></view>
