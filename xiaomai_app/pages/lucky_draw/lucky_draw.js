@@ -269,7 +269,7 @@ Page({
             status:1
         });
         util.request({
-            url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId},complete: function (res) {
+            url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId,type:0},complete: function (res) {
                 var data = res.data;
                 if (data.code == 200) {
 
@@ -325,7 +325,7 @@ Page({
         });
     }
       util.request({
-          url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId},complete: function (res) {
+          url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId,type:0},complete: function (res) {
               var data = res.data;
               if (data.code == 200) {
 
