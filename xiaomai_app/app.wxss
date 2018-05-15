@@ -19,20 +19,21 @@ page{
 } 
 .bottom-menu{
   position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  display: flex;
-  align-items:center;
+  bottom:60rpx;
+  right:30rpx;
+  width:100rpx;
   height:100rpx;
-  background-color:#fff;
-  border-top:2rpx solid #eaeaea;
+  box-shadow: 0 0 50rpx rgba(0, 0 ,0 ,.2);
+  border-radius: 100px;
+
+  display: block;
+  background:url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/home.png") center #fff no-repeat;
+  background-size: 50%;
 }
-.bottom-menu .tab{
-  flex:1;
-  text-align:center;
-  line-height:100rpx;
-}
-.bottom-menu .tab:first-child{
-  border-right:2rpx solid #eaeaea;
+
+.image{
+  background-repeat: no-repeat;
+  background-position:center;
+  background-size: contain;
+  display:block;
 }

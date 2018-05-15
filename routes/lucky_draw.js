@@ -11,7 +11,7 @@ var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
 var schedule = require('node-schedule');
-//问题刮奖时不能重启服务
+
 var lucky_base = [0, 0, 1, 2, 2, 8, 6];
 var lucky_ary = [];
 
@@ -37,10 +37,20 @@ var lucky = {
         mysql.sql('update lucky_ary set lucky_ary="' + JSON.stringify(lucky_ary) + '" where id=0', function (err, result) {
 
             if (err) {
-                console.log('重置奖池失败'+new Date());
+                console.log('重置北京奖池失败'+new Date());
                 console.log(err)
             } else {
-                console.log('重置奖池成功'+new Date());
+                console.log('重置北京奖池成功'+new Date());
+
+            }
+        });
+        mysql.sql('update lucky_ary set lucky_ary="' + JSON.stringify(lucky_ary) + '" where id=1', function (err, result) {
+
+            if (err) {
+                console.log('重置上海奖池失败'+new Date());
+                console.log(err)
+            } else {
+                console.log('重置上海奖池成功'+new Date());
 
             }
         });
@@ -69,18 +79,18 @@ var rest_lucky_ary = schedule.scheduleJob(rule, function(){
 
 
 
-//管理列表计算今天获得的钱数(仅北京地区)
+//管理列表获取今天的刮奖情况
 
-router.post('/sum_user_draw_money', function (req, res, next) {
+router.post('/area_user_draw_list', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-
-    mysql.sql('SELECT * FROM lucky_user_list WHERE to_days(create_time) = to_days(now())',  function (err, result) {
+  console.log(req.body);
+    mysql.sql( 'SELECT area,user_id,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now()) AND area="'+req.body.area+'"',  function (err, result) {
         if (result && result.length > 0) {
-            var sum_mony = 0;
+       /*     var sum_mony = 0;
             result.forEach(function (item, idx) {
                 sum_mony += item.money;
-            });
-            res.status(200).send( {code: 200, result: sum_mony, message: "获取所有用户刮奖信息成功"})
+            });*/
+            res.status(200).send( {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
         } else {
             res.status(200).send( {code: 200, result: 0, message: "未查找到刮奖用户"})
         }
@@ -108,15 +118,26 @@ router.post('/check_current_user', function (req, res, next) {
 
 //获取本月，用户地区所有人员的刮卡记录前三名并根据id计算所有人员的总钱数 和当前用户
 //返回姓名，钱数，用户头像
+function checkRepeat(obj,ary){
+    var i=ary.length;
+    var name='user_id';
+    while(i--){
+        if(obj[name]==ary[i][name]){
+            return i
+        }
+    }
+    return -1
+}
 router.post('/month_top_list', checkSession, function (req, res, next) {
 
-
-            mysql.sql('SELECT * FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE date_format(create_time,"%Y-%m")=date_format(now(),"%Y-%m")', function (err, result) {
+    getUserInfo(req.headers.sessionkey, function (user_info) {
+        if (user_info) {
+            mysql.sql('SELECT * FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE date_format(create_time,"%Y-%m")=date_format(now(),"%Y-%m") and area="'+user_info[0].area+'"', function (err, result) {
 
                 if (err == null && result.length > 0) {
                     //根据用户id排序
-
                     var statis_ary = [];
+                    var me={};
                     result.sort(function (a, b) {
                         return a.user_id - b.user_id
                     });
@@ -131,41 +152,57 @@ router.post('/month_top_list', checkSession, function (req, res, next) {
                                 all_money += parseInt(result[j].money);
                             }
                         }
-
-                        statis_ary.push({
+                        var list_obj={
                             user_name: result[i].user_name,
                             user_img: JSON.parse(result[i].wx_info).avatarUrl,
-                            sum_money: all_money
-                        });
+                            sum_money: all_money,
+                            user_id:result[i].user_id
+                        }
+
+                        statis_ary.push(list_obj);
+                        if(result[i].user_id==user_info[0].id){
+                            me=list_obj
+                        }
                         i += count;
                     }
 
                     statis_ary.sort(function (a, b) {
                         return b.sum_money - a.sum_money
                     });
+                    statis_ary=statis_ary.slice(0, 3);
+                    if(checkRepeat(me,statis_ary)==-1){
+                        statis_ary.push(me);
+                    }
 
 
-                    res.send(200, {code: 200, result: statis_ary.slice(0, 3), message: "本月前三名数据成功"})
+                    res.status(200).send( {code: 200, result:statis_ary , message: "本月前三名数据成功"})
                 } else {
-
-                    res.send(200, {code: 200, result: [], message: "本月前三名数据失败"})
+                    console.log(err);
+                    res.status(200).send(200, {code: 200, result: [], message: "本月前三名数据失败"})
                 }
 
             })
+        } else {
+            res.status(200).send({code: 502, result: false, message: "用户不合法"})
+        }
+
+
+    });
+
 
 
 
 });
 
 //获取所有用户(当天的)刮奖数据并区分当前用户
-//如果没有人刮奖则重置lucky_ary
-router.post('/get_user_draw_list',checkSession, function (req, res, next) {
 
-            mysql.sql('SELECT user_img,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now())', function (err, result) {
+router.post('/get_user_draw_list',checkSession, function (req, res, next) {
+    getUserInfo(req.headers.sessionkey, function (user_info) {
+        if (user_info) {
+            mysql.sql('SELECT user_img,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now()) AND area="'+user_info[0].area+'"', function (err, result) {
                 if (result && result.length > 0) {
                     res.status(200).send( {code: 200, result: result, message: "获取所有用户刮奖信息成功"})
                 } else if (result.length == 0) {
-                    // 当天没有人刮奖则重置刮奖数组
 
                     res.status(200).send( {code: 200, result: [], message: "未查找到刮奖用户"})
                 } else {
@@ -174,35 +211,19 @@ router.post('/get_user_draw_list',checkSession, function (req, res, next) {
                 }
 
             })
+        } else {
+            res.status(200).send(200, {code: 502, result: false, message: "用户不合法"})
+        }
+
+
+    });
+
+
 
 
 
 });
-//获取今日，各地区刮出0，8，6的人员
-/*router.post('/get_user_special_list', function (req, res, next) {
 
-    getCurrentSession(req.headers.sessionkey, function (user_info) {
-        if (user_info && user_info.length > 0) {
-            var area = user_info[0].area;
-            mysql.findToday('lucky_user_list', 'area="' + area + '"', function (result, err) {
-                if (err == null && result.length > 0) {
-                    var ary = result.filter(function (item, idx) {
-                        return item.money == 0 || item.money == 8 || item.money == 6
-                    });
-
-                    res.status(200).send({code: 200, result: ary, message: "获取所有特殊奖项信息成功"})
-                } else {
-
-                    res.status(200).send( {code: 200, result: [], message: "获取所有特殊奖项信息失败"})
-                }
-
-            })
-        }
-
-    }, res);
-
-
-});*/
 
 //检查当前用户是否刮奖
 router.post('/check_current_user_draw',checkSession, function (req, res, next) {
@@ -244,7 +265,17 @@ router.post('/save_user_draw', function (req, res, next) {
                 } else {
                     if (result.length <= 0) {
                         //当天没有刮卡，保存用户刮奖钱数
-                        mysql.sql('select * from lucky_ary where id = 0', function (err, result) {
+                        var area=0;
+
+                        switch(userInfo[0].area){
+                            case 'bj':
+                                area=0;
+                                break;
+                            case 'sh':
+                                area=1;
+                                break;
+                        }
+                        mysql.sql('select * from lucky_ary where id = "'+area+'"', function (err, result) {
 
                             if (err!=null) {
                                 res.send(200, {code: 500, result: result, message: '抽奖失败!请稍后重试'});
@@ -264,7 +295,7 @@ router.post('/save_user_draw', function (req, res, next) {
                                     bar.money = money;
                                 }
 
-                                mysql.sql('update lucky_ary set lucky_ary="' + JSON.stringify(ary) + '" where id=0', function (err, result) {
+                                mysql.sql('update lucky_ary set lucky_ary="' + JSON.stringify(ary) + '" where id="'+area+'"', function (err, result) {
 
                                     if (err!=null) {
                                         res.status(200).send({code: 500, result: result, message: '更新奖池时发生错误'});

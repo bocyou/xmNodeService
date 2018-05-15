@@ -43,6 +43,12 @@ page{
   border-radius:100px;
   line-height:80rpx;
   font-size:26rpx;
+  border:none;
+  outline:none;
+  list-style: none;
+}
+.signup::after{
+  border:none;
 }
 .bottom .h3{
   text-align:center;

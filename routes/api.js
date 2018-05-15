@@ -288,7 +288,8 @@ router.post('/save_user_fromid', function (req, res, next) {
             mysql.insert_one('user_formid', {
                 formid: req.body.formid,
                 create_time: new Date(),
-                user_id: userInfo[0].id
+                user_id: userInfo[0].id,
+                status:1
             }, function (result, err) {
                 if (result) {
 
@@ -306,6 +307,8 @@ router.post('/save_user_fromid', function (req, res, next) {
     });
 
 });
+
+
 
 
 router.post('/test', function (req, res, next) {
@@ -446,14 +449,14 @@ router.post('/get_wx_info', function (req, res, next) {
     });
 });*/
 
-router.post('/update_clean_list', function (req, res, next) {
+/*router.post('/update_clean_list', function (req, res, next) {
     mysql.update(req, res, next, '', function (result) {
         if (result) {
             res.send(200, {code: 200, result: result})
         }
 
     });
-});
+});*/
 
 /*
 //管理模块

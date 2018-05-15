@@ -1,5 +1,12 @@
 /* pages/lucky_draw/lucky_draw.wxss */
-
+page{
+  background-color: #f9f9f9;
+}
+.block-radius{
+  margin:30rpx 0;
+  border-radius:10rpx;
+  background-color:#fff;
+}
 .code{
   width:600rpx;
   display: block;
@@ -48,7 +55,7 @@ button::after{
   height:170rpx;
 }
 .list-title{
-  padding:0 30rpx;
+  padding: 30rpx;
   color:#717171;
   font-size:36rpx;
   font-weight:bold;
@@ -108,7 +115,7 @@ button::after{
   position:relative;
   top:0;
   left:0;
-  margin-bottom:-10rpx;
+
 }
 .special-content .name{
   position:absolute;
@@ -118,6 +125,11 @@ button::after{
   font-size:43rpx;
 
 }
+.special-content .image{
+  width:100%;
+  height:257rpx;
+}
+
 
 
 
@@ -155,7 +167,7 @@ width:100%;
   width: 220rpx;
   height: 220rpx;
   background-color: #E55A54;
-  border-radius: 50px;
+  border-radius: 100px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -164,7 +176,6 @@ width:100%;
   cursor: pointer;
   margin: 10rpx;
   box-shadow: 0rpx 20rpx 40rpx rgba(0, 0, 0, 0.2);
-  position: relative;
   animation: jumping 0.8s infinite alternate;
 
     overflow:hidden;
@@ -212,6 +223,8 @@ width:100%;
     width:100%;
     height:110rpx;
     background-color:#fff;
+  border-radius:0 0 100px 100px;
+
 }
 /*.monster .mouth {
   width: 32%;
@@ -330,4 +343,96 @@ h3 {
   border-radius:100px;
   line-height:80rpx;
   font-size:26rpx;
+}
+
+/*本月前三*/
+.month-top{
+
+  padding-bottom:100rpx;
+  padding-top:80rpx;
+}
+.month-top .top{
+  display:flex;
+  justify-content: center;
+
+
+}
+.month-top .bottom{
+  display:flex;
+  justify-content: space-between;
+  padding:0 30rpx;
+}
+.month-top .content .image{
+margin:0 auto;
+}
+.month-top .three{
+
+  position:relative;
+  margin-top:-128rpx;
+  left:0rpx;
+
+
+}
+.month-top .two{
+  margin-top:-200rpx;
+  position:relative;
+
+}
+.month-top .one .month-star .image{
+  width:300rpx;
+  height:300rpx;
+}
+
+.month-top .two .month-star .image{
+  width:210rpx;
+  height:210rpx;
+}
+.month-top .three .month-star .image{
+  width:140rpx;
+  height:140rpx;
+}
+.month-star .image{
+
+  border-radius: 100px;
+
+}
+.month-star .info{
+  color:#717171;
+  text-align:center;
+  word-break: keep-all;
+
+}
+.month-star .info .name{
+  font-size:34rpx;
+  margin-top:30rpx;
+  margin-bottom:4rpx;
+}
+.month-star .info .txt{
+  font-size:26rpx;
+}
+
+.month-me{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  background-color:#fff;
+  padding:0 30rpx;
+
+}
+.month-me .image{
+  width:100rpx;
+  height:100rpx;
+}
+.month-me .info{
+  flex:1;
+  color:#717171;
+}
+.month-me .info .name{
+  font-size:38rpx;
+
+}
+
+.month-me .info .txt{
+  font-size:28rpx;
+
 }

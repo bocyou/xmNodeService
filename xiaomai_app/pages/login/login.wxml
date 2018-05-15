@@ -8,6 +8,6 @@
 
 <view class="bottom">
   <view class="h3">顶上小麦</view>
-<view class="signup" bindtap='userLogin'>登录</view>
+<button class="signup" open-type="getUserInfo" bindgetuserinfo='userLogin'>登录</button>
 </view>
 

@@ -205,7 +205,7 @@ router.post('/get_user_bill', function (req, res, next) {
 //获取所有用户未付款账单
 router.post('/get_all_user_bill_list', function (req, res, next) {
 
-    mysql.sql('select * from users tab2 join user_bill tab1 on tab1.user_id=tab2.id where tab1.status=1',function(err,result){
+    mysql.sql('select area,create_time,money,status,update_time,user_img,user_name from users tab2 join user_bill tab1 on tab1.user_id=tab2.id where tab1.status=1',function(err,result){
         if (err == null) {
             res.status(200).send( {code: 200, result: result, message: "获取所有用户未付款账单成功"})
 

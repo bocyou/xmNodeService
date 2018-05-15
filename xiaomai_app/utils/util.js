@@ -10,7 +10,7 @@ const formatTime = date => {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 //var api='http://localhost:8080';
-var api ='https://xiaomai.towords.com';
+var api ='http://192.168.2.239:8080';
 //https://xiaomai.towords.com
 const formatNumber = n => {
   n = n.toString()

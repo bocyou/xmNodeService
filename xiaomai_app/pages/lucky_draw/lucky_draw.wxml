@@ -1,29 +1,7 @@
 <!--pages/lucky_draw/lucky_draw.wxml-->
 
 <block wx:if="{{status==0}}">
-    <!--    <view class="draw-area">
-            <view class="draw-btn" bindtap="startDraw"> 点击开奖</view>
-            <block wx:if="{{status==1}}">
 
-                <block wx:if="{{current_user_money>0}}">
-
-                    <view class="tip-txt">今日需捐款
-                        <text>{{current_user_money}}</text>
-                        元
-                    </view>
-                </block>
-                <block wx:elif="{{current_user_money==0}}">
-                    <view class="tip-txt">今日随便吃，不花钱</view>
-                </block>
-
-            </block>
-        </view>-->
-    <!--    <div class="monster blue">
-            <div class="eye">
-                <div class="eyeball"></div>
-            </div>
-            <div class="mouth"></div>
-        </div>-->
     <view class="draw-area">
 
         <view class="draw-money">
@@ -80,28 +58,79 @@
     <view>
         <view wx:for="{{special_list}}" wx:key="item" class="special-content">
             <text class="name">{{item.name}}</text>
-            <image class="special-bg" mode="widthFix"
-                   src="https://ts-dingup-onlinetest.oss-cn-beijing.aliyuncs.com/img/shop/{{item.img}}.png"></image>
+            <view class="image" style="background-image: url(https://ts-dingup-onlinetest.oss-cn-beijing.aliyuncs.com/img/shop/{{item.img}}.png)"></view>
+
         </view>
 
     </view>
 
 
-    <view class="list-title">本月前三</view>
 
-    <view wx:for="{{month_list}}" wx:key="item" class="bar" style="justify-content:center;background-color:#f7f7f7;">
-        <view class="border-color ">
-            <image mode='aspectFill' src="{{item.user_img}}"></image>
+    <view class="month-top block-radius">
+        <view class="top">
+            <block wx:if="{{month_list[0]}}">
+                <view class="one content">
+                    <view class="month-star">
+                        <view class="image" style="background-image: url({{month_list[0].user_img}});"></view>
+                        <view class="info" >
+                            <view class="name">{{month_list[0].user_name}}</view>
+                            <view class="txt">本月赞助{{month_list[0].sum_money}}元</view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+
+
         </view>
-        <view class="info" style="margin-left:40rpx;flex:1;">
-            <view class="name">{{item.user_name}}</view>
-            <view class="txt">本月累计赞助{{item.sum_money}}元</view>
+
+
+        <view class="bottom">
+            <block wx:if="{{month_list[2]}}">
+                <view class="three content">
+                    <view class="month-star">
+                        <view class="image" style="background-image: url({{month_list[2].user_img}});"></view>
+                        <view class="info" >
+                            <view class="name">{{month_list[2].user_name}}</view>
+                            <view class="txt">本月赞助{{month_list[2].sum_money}}元</view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+
+
+
+            <block wx:if="{{month_list[1]}}">
+                <view class="two content">
+                    <view class="month-star">
+                        <view class="image" style="background-image: url({{month_list[1].user_img}});"></view>
+                        <view class="info">
+                            <view class="name">{{month_list[1].user_name}}</view>
+                            <view class="txt">本月赞助{{month_list[1].sum_money}}元</view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+
         </view>
 
     </view>
+    <block wx:if="{{month_list[3]}}">
+        <view class="month-me block-radius">
+            <view class="image" style="background-image: url({{month_list[3].user_img}})">
+            </view>
+            <view class="info" style="margin-left:40rpx;flex:1;">
+                <view class="name"> {{month_list[3].sum_money}}元</view>
+                <view class="txt">您本月累计赞助</view>
+            </view>
+        </view>
+    </block>
 
 
-    <view style="padding-bottom:100rpx;margin-top:100rpx;">
+
+
+
+
+    <view style="padding-bottom:100rpx;" class="block-radius">
         <view class="list-title">今日刮卡用户</view>
 
         <view wx:for="{{all_list}}" wx:key="item" class="bar">
@@ -118,14 +147,10 @@
         </view>
     </view>
 
-    <view class="bottom-menu">
-        <navigator open-type="switchTab" class="tab" url="../index/index">
-            首页
+        <navigator open-type="switchTab" class="bottom-menu" url="../index/index">
+
         </navigator>
-        <navigator open-type="switchTab" class="tab" url="../me/me">
-            我
-        </navigator>
-    </view>
+
 </block>
 
 
