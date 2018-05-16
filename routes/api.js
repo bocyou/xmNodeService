@@ -11,7 +11,7 @@ var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
-
+var version='20180517';
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});
@@ -96,7 +96,7 @@ router.post('/check_current_user', function (req, res, next) {
 });
 
 /*我start*/
-var version='20180516';
+
 router.post('/get_user_info', function (req, res, next) {
 
     getUserInfo(req.headers.sessionkey, function (userInfo) {

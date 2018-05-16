@@ -210,7 +210,7 @@ var postNews={
 
 
                             if(JSON.parse(body).errcode==0){
-                                console.log('发送成功');
+                                console.log(item.user_name+' 发送成功');
                                 mysql.sql('update user_formid set status=0 where formid="'+item.form_id[0]+'"', function (err, result) {
 
                                     if (err) {
