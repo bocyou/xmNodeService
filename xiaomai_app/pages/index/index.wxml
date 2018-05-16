@@ -16,7 +16,7 @@
                     </view>
 
                 </navigator>
-                <navigator open-type="navigateTo" class="app-entry dinner-manage" url="../dinner/dinner">
+                <navigator open-type="navigateTo" class="app-entry dinner-manage" url="../dinner/dinner" wx:if="{{is_dinner}}">
                     <view class="content">
 
                         <view class="txt">

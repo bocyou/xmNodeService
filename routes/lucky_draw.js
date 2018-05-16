@@ -154,7 +154,7 @@ router.post('/month_top_list', checkSession, function (req, res, next) {
                         }
                         var list_obj={
                             user_name: result[i].user_name,
-                            user_img: JSON.parse(result[i].wx_info).avatarUrl,
+                            user_img: result[i].user_img,
                             sum_money: all_money,
                             user_id:result[i].user_id
                         }
@@ -228,6 +228,7 @@ router.post('/get_user_draw_list',checkSession, function (req, res, next) {
 //检查当前用户是否刮奖
 router.post('/check_current_user_draw',checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+
     getUserInfo(req.headers.sessionkey, function (user_info) {
         if (user_info) {
             mysql.findToday('lucky_user_list', 'user_id="' + user_info[0].id + '"', function (result, err) {

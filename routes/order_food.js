@@ -162,10 +162,10 @@ var postNews={
     },
     postMessage:function(){
         var self=this;
-        mysql.sql('SELECT open_id,user_name,user_id,formid FROM user_formid tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status=1', function (err, result) {
+        mysql.sql('SELECT open_id,user_name,user_id,formid,tab1.id FROM user_formid tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status=1 AND area="bj"', function (err, result) {
            console.log(err);
             if (result && result.length > 0) {
-               console.log(result);
+
                 var ary=result;
                 var res = [];
                 ary.sort(function(a,b){
@@ -184,13 +184,14 @@ var postNews={
                     res.push({open_id:ary[i].open_id,user_name:ary[i].user_name,form_id:form_ary});
                     i += count;
                 }
+
                 res.forEach(function(item,idx){
                     request.post({
                         url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + self.access_token,
                         form: JSON.stringify({
                             "touser": item.open_id,
                             "template_id": "0oZ02MXqYUtOJjOee4UF8OJiorTThYFg1WHNyRluwPA",
-                            "page": "dinner",
+                            "page": "pages/dinner/dinner",
                             "form_id": item.form_id[0],
                             "data": {
                                 "keyword1": {
@@ -198,7 +199,7 @@ var postNews={
                                     "color": "#173177"
                                 },
                                 "keyword2": {
-                                    "value": "嗨！"+item.user_name+" 小麦提醒您订餐已开始。",
+                                    "value": "嗨！"+item.user_name+" 订餐开始了！抓紧时间订餐！不要错过了！",
                                     "color": "#173177"
                                 }
                             },
@@ -206,27 +207,41 @@ var postNews={
                         })
                     }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
-                            console.log(body);
 
-                            if (!error && response.statusCode == 200) {
+
+                            if(JSON.parse(body).errcode==0){
                                 console.log('发送成功');
+                                mysql.sql('update user_formid set status=0 where formid="'+item.form_id[0]+'"', function (err, result) {
 
+                                    if (err) {
+                                        console.log('重置formid失败');
+                                        console.log(err)
+                                    } else {
+
+
+                                    }
+                                });
+                            }else{
+                                console.log(error);
                             }
+
                         }
                     })
                 })
+
+
             } else {
              console.log('获取用户formid失败');
             }
 
         })
-       /* */
+
     }
 }
 router.post('/test_message', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-
-
+    //手动发送订餐消息
+    postNews.getAccessToken();
 
 });
 
@@ -244,12 +259,14 @@ router.post('/start_dinner',checkSession, function (req, res, next) {
 
     mysql.insert_one('order_fooding', list_obj, function (result, err) {
         if (result) {
-            res.send(200, {code: 200, result: true, message: '分发成功'})
+            res.status(200).send({code: 200, result: true, message: '分发成功'})
+            postNews.getAccessToken();
+
         } else {
-            res.send(200, {code: 200, result: false, message: '分发失败'})
+            res.status(200).send({code: 200, result: false, message: '分发失败'})
         }
     });
-    //postNews.getAccessToken();
+
 });
 
 

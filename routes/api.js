@@ -96,14 +96,20 @@ router.post('/check_current_user', function (req, res, next) {
 });
 
 /*我start*/
-
-router.post('/get_current_not_pay', function (req, res, next) {
+var version='20180516';
+router.post('/get_user_info', function (req, res, next) {
 
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
-            res.send(200, {code: 200, result: true, message: "该用户合法"})
+            var user_info=userInfo[0];
+            console.log(req.headers.v);
+            var is_show_dinner=true;
+            if(req.headers.v==version){
+                is_show_dinner=false;
+            }
+            res.send(200, {code: 200, result: {area:user_info.area,user_id:user_info.user_id,user_name:user_info.user_name,img:is_show_dinner}, message: "该用户合法"})
         } else {
-            res.send(200, {code: 200, result: false, message: "用户不合法"})
+            res.send(200, {code: 200, result: [], message: "用户不合法"})
         }
     }, res);
 

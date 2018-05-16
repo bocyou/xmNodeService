@@ -71,7 +71,9 @@
             <block wx:if="{{month_list[0]}}">
                 <view class="one content">
                     <view class="month-star">
-                        <view class="image" style="background-image: url({{month_list[0].user_img}});"></view>
+                        <view class="image" style="background-image: url({{month_list[0].user_img}});">
+                            <view class="img-bg"></view>
+                        </view>
                         <view class="info" >
                             <view class="name">{{month_list[0].user_name}}</view>
                             <view class="txt">本月赞助{{month_list[0].sum_money}}元</view>
@@ -88,7 +90,10 @@
             <block wx:if="{{month_list[2]}}">
                 <view class="three content">
                     <view class="month-star">
-                        <view class="image" style="background-image: url({{month_list[2].user_img}});"></view>
+                        <view class="image" style="background-image: url({{month_list[2].user_img}});">
+                            <view class="img-bg"></view>
+                        </view>
+
                         <view class="info" >
                             <view class="name">{{month_list[2].user_name}}</view>
                             <view class="txt">本月赞助{{month_list[2].sum_money}}元</view>
@@ -102,7 +107,9 @@
             <block wx:if="{{month_list[1]}}">
                 <view class="two content">
                     <view class="month-star">
-                        <view class="image" style="background-image: url({{month_list[1].user_img}});"></view>
+                        <view class="image" style="background-image: url({{month_list[1].user_img}});">
+                            <view class="img-bg"></view>
+                        </view>
                         <view class="info">
                             <view class="name">{{month_list[1].user_name}}</view>
                             <view class="txt">本月赞助{{month_list[1].sum_money}}元</view>
@@ -131,7 +138,7 @@
 
 
     <view style="padding-bottom:100rpx;" class="block-radius">
-        <view class="list-title">今日刮卡用户</view>
+       <!-- <view class="list-title">今日刮卡用户</view>-->
 
         <view wx:for="{{all_list}}" wx:key="item" class="bar">
             <view class="user">

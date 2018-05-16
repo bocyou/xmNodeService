@@ -350,6 +350,8 @@ h3 {
 
   padding-bottom:100rpx;
   padding-top:80rpx;
+  padding-right:20rpx;
+  padding-left:20rpx;
 }
 .month-top .top{
   display:flex;
@@ -377,23 +379,60 @@ margin:0 auto;
   margin-top:-200rpx;
   position:relative;
 
+
+}
+.month-top .img-bg{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position:absolute;
+  top:50%;
+  left:50%;
+
+
+}
+.month-top .one .img-bg{
+  background-image:url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon_no1.png");
+  width:260rpx;
+  height:260rpx;
+  margin-top:-146rpx;
+  margin-left:-130rpx;
+
+}
+.month-top .two .img-bg{
+  background-image:url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon_no2.png");
+  width:190rpx;
+  height:190rpx;
+  margin-top:-108rpx;
+  margin-left:-95rpx;
+
+}
+.month-top .three .img-bg{
+  background-image:url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon_no3.png");
+  width:140rpx;
+  height:140rpx;
+  margin-top:-78rpx;
+  margin-left:-70rpx;
+
 }
 .month-top .one .month-star .image{
-  width:300rpx;
-  height:300rpx;
+  width:220rpx;
+  height:220rpx;
 }
 
 .month-top .two .month-star .image{
-  width:210rpx;
-  height:210rpx;
+  width:160rpx;
+  height:160rpx;
 }
 .month-top .three .month-star .image{
-  width:140rpx;
-  height:140rpx;
+  width:120rpx;
+  height:120rpx;
 }
 .month-star .image{
 
   border-radius: 100px;
+  position:relative;
+
 
 }
 .month-star .info{

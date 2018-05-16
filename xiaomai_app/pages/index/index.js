@@ -5,11 +5,8 @@ const util = require('../../utils/util.js');
 var session='';
 Page({
   data: {
-    motto: 'welcome to xiaomai',
-    userInfo: {},
-    hasUserInfo: false,
     screenInfo:false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+      is_dinner:false
   },
   //事件处理函数
   bindViewTap: function() {
@@ -25,9 +22,22 @@ Page({
       })
     });
       util.checkPermission(function(userInfo){
-          self.setData({
-              userInfo: userInfo
-          })
+          util.request({
+              url: util.api+'/api/get_user_info', complete: function (res) {
+                  var data = res.data;
+
+                  if(data.code==200){
+                      self.setData({
+                          is_dinner: data.result.img
+                      })
+
+                  } else{
+
+
+                  }
+              }
+          });
+
       });
 
   }
