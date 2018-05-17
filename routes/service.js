@@ -4,6 +4,8 @@
 var express = require('express');
 var request = require('request');
 var router = express.Router();
+var tool = require('../middlewares/tool');
+var getUserInfo = tool.getUserInfo;
 router.get('/', function (req, res) {
     console.log(req.body);
     console.log(req.query.signature);
@@ -32,55 +34,70 @@ router.post('/', function (req, res, next) {
         } else {
             console.log(JSON.parse(body));
             access_token = JSON.parse(body).access_token;
-            var post_parame='';
-            switch (content_type){
-                case 'event':
-                    if(session_form=='imgcode'){
-                        post_parame = JSON.stringify({
-                            "touser": user_openid,
-                            "msgtype": "text",
-                            "text": {"content": '<a href="https://xiaomai.towords.com/paycode">点击获取付款二维码</a>'}
-                        });
+            getUserInfo(req.headers.sessionkey, function (user_info) {
+                if (user_info) {
+                     var code_url='';
+                    if(user_info[0].area=='bj'){
+                        code_url= '<a href="https://xiaomai.towords.com/paycode">点击获取付款二维码</a>'
                     }else{
-                        post_parame = JSON.stringify({
-                            "touser": user_openid,
-                            "msgtype": "text",
-                            "text": {"content": '没事别来烦我'}
-                        });
+                        code_url='<a href="https://xiaomai.towords.com/shpaycode">点击获取付款二维码</a>';
                     }
-                    break;
-                default:
-                    if(content_txt=='pay'){
-                        post_parame = JSON.stringify({
-                            "touser": user_openid,
-                            "msgtype": "text",
-                            "text": {"content": '<a href="https://xiaomai.towords.com/paycode">点击获取付款二维码</a>'}
-                        });
-                    }else{
-                        post_parame = JSON.stringify({
-                            "touser": user_openid,
-                            "msgtype": "text",
-                            "text": {"content": '没事别来烦我'}
-                        });
+                    var post_parame='';
+                    switch (content_type){
+                        case 'event':
+                            if(session_form=='imgcode'){
+                                post_parame = JSON.stringify({
+                                    "touser": user_openid,
+                                    "msgtype": "text",
+                                    "text": {"content": code_url}
+                                });
+                            }else{
+                                post_parame = JSON.stringify({
+                                    "touser": user_openid,
+                                    "msgtype": "text",
+                                    "text": {"content": '没事别来烦我'}
+                                });
+                            }
+                            break;
+                        default:
+                            if(content_txt=='pay'){
+                                post_parame = JSON.stringify({
+                                    "touser": user_openid,
+                                    "msgtype": "text",
+                                    "text": {"content": code_url}
+                                });
+                            }else{
+                                post_parame = JSON.stringify({
+                                    "touser": user_openid,
+                                    "msgtype": "text",
+                                    "text": {"content": '没事别来烦我'}
+                                });
+                            }
+                            break;
                     }
-                    break;
-            }
 
 
-            console.log(post_parame);
-            request.post({
-                url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
-                form: post_parame
-            }, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    console.log(body);
+                    console.log(post_parame);
+                    request.post({
+                        url: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=' + access_token,
+                        form: post_parame
+                    }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            console.log(body);
 
-                    if (!error && response.statusCode == 200) {
-                        console.log('发送成功');
-                        res.status(200).send('success');
-                    }
+                            if (!error && response.statusCode == 200) {
+                                console.log('发送成功');
+                                res.status(200).send('success');
+                            }
+                        }
+                    })
+                } else {
+                    res.status(200).send(200, {code: 502, result: false, message: "用户不合法"})
                 }
-            })
+
+
+            });
+
 
 
         }
