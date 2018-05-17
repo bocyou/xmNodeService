@@ -5,6 +5,7 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 var tool = require('../middlewares/tool');
+var mysql = require('../lib/mysql');
 var getUserInfo = tool.getUserInfo;
 router.get('/', function (req, res) {
     console.log(req.body);
@@ -32,12 +33,13 @@ router.post('/', function (req, res, next) {
             console.log('获取失败ass');
             // res.send(200, {code: 200, result: '获取openid失败'});
         } else {
-            console.log(JSON.parse(body));
+
             access_token = JSON.parse(body).access_token;
-            getUserInfo(req.headers.sessionkey, function (user_info) {
-                if (user_info) {
-                     var code_url='';
-                    if(user_info[0].area=='bj'){
+            mysql.sql( 'SELECT * FROM users  WHERE open_id="'+user_openid+'"',  function (err, result) {
+                if (result && result.length > 0) {
+                    var code_url='';
+                    console.log(result)
+                    if(result[0].area=='bj'){
                         code_url= '<a href="https://xiaomai.towords.com/paycode">点击获取付款二维码</a>'
                     }else{
                         code_url='<a href="https://xiaomai.towords.com/shpaycode">点击获取付款二维码</a>';
@@ -92,11 +94,11 @@ router.post('/', function (req, res, next) {
                         }
                     })
                 } else {
-                    res.status(200).send(200, {code: 502, result: false, message: "用户不合法"})
+
                 }
 
+            })
 
-            });
 
 
 
