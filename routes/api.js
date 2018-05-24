@@ -440,47 +440,7 @@ router.post('/get_wx_info', function (req, res, next) {
     res.send(200, {code: 200, result: req.body.session})
 });
 
-//获取清洁任务列表(原始列表)
-/*router.post('/get_clean_list', function (req, res, next) {
-    mysql.search(req, res, next, 'clean_list', function (rows, fields) {
-        if (fields) {
-            var listStatus = 'undistributed';
-            for (var i = 0; i < rows.length; i++) {
-                if (rows[i].status != 'undistributed') {
-                    //如果状态里有其他状态则说明已经分发
-                    listStatus = 'distributed';
-                    break;
-                }
-            }
-            res.send(200, {code: 200, result: {"clean_list": rows, "list_status": listStatus}})
-        }
 
-    });
-});*/
-
-/*router.post('/update_clean_list', function (req, res, next) {
-    mysql.update(req, res, next, '', function (result) {
-        if (result) {
-            res.send(200, {code: 200, result: result})
-        }
-
-    });
-});*/
-
-/*
-//管理模块
-router.post('/finish_work', function (req, res, next) {
-    //结束今天所有任务
-    mysql.deleteTable(req, res, next, function (result, err) {
-        if (result) {
-            res.send(200, {code: 200, result: result})
-        } else {
-            res.send(200, {code: 501, result: err.sqlMessage, message: '删除失败'});
-        }
-    });
-
-
-});*/
 
 
 module.exports = router;

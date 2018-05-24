@@ -174,7 +174,7 @@ router.post('/get_user_month_bill', function (req, res, next) {
 router.post('/get_all_user_bill', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     //先在user_bill中查找本周内有没有数据
-
+  //  billWork.postBill();
 
 });
 //获取当前用户本周账单
