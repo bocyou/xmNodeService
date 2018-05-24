@@ -8,6 +8,7 @@ var mysql = require('../lib/mysql');
 var session = require('express-session');
 var checkSession = require('../middlewares/check_session').checkAppSession;
 var tool = require('../middlewares/tool');
+var saveLogs=tool.saveLogs;
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
 var schedule = require('node-schedule');
@@ -301,15 +302,19 @@ router.post('/save_user_draw', function (req, res, next) {
                                     if (err!=null) {
                                         res.status(200).send({code: 500, result: result, message: '更新奖池时发生错误'});
                                     } else {
-                                        mysql.insert_one('lucky_user_list', bar, function (result, err) {
+                                        mysql.sql('INSERT INTO lucky_user_list(user_id,money,create_time) VALUE('+bar.user_id+',"'+bar.money+'",'+JSON.stringify(new Date())+')', function (err, result) {
 
-                                            if (err!=null) {
-                                                res.send(200, {code: 500, result: '', message: '保存失败'})
-                                            } else {
+                                            if (err==null) {
+
                                                 res.status(200).send({code: 200, result: money, message: "保存成功"});
+
+                                            } else {
+                                                res.send(200, {code: 500, result: '', message: '保存刮奖数据失败'})
+                                                saveLogs(bar.user_id,err);
 
                                             }
                                         });
+
 
                                     }
                                 });

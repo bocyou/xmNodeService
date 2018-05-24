@@ -42,7 +42,25 @@ getCurrentSession:function(session,callback,res){
         }
 
     });
-}
+},
+    saveLogs:function(user_id,err_info){
+        var bar={
+            user_id:user_id,
+            err_info:err_info,
+            create_time:new Date()
+        };
+
+        mysql.sql('INSERT INTO xiaomai_logs(user_id,err_info,create_time) VALUE('+user_id+',"'+JSON.stringify(err_info)+'",'+JSON.stringify(new Date())+')', function (err, result) {
+
+            if(result&&err==null){
+
+               // res.send(200, {code: 500, result: '', message: '保存失败'})
+            } else {
+               // res.status(200).send({code: 200, result: money, message: "保存成功"});
+
+            }
+        });
+    }
  
 };
 Date.prototype.Format = function (fmt) { //

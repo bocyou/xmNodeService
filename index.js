@@ -48,6 +48,7 @@ app.use('/service',require('./routes/service'));
 app.use('/test',require('./routes/test'));
 app.use('/paycode',require('./routes/pay_code'));
 app.use('/shpaycode',require('./routes/pages/sh_pay_code'));
+app.use('/logs',require('./routes/logs'));
 app.listen(config.part,function(){
 	console.log('已启动'+new Date());
 });

@@ -10,6 +10,7 @@ var checkSession = require('../middlewares/check_session').checkSession;
 var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
+var saveLogs=tool.saveLogs;
 var getCurrentSession = tool.getCurrentSession;
 var version='20180517';
 
@@ -107,9 +108,11 @@ router.post('/get_user_info', function (req, res, next) {
             if(req.headers.v==version){
                 is_show_dinner=false;
             }
-            res.send(200, {code: 200, result: {area:user_info.area,user_id:user_info.user_id,user_name:user_info.user_name,img:is_show_dinner}, message: "该用户合法"})
+
+
+            res.status(200).send({code: 200, result: {area:user_info.area,user_id:user_info.user_id,user_name:user_info.user_name,img:is_show_dinner}, message: "该用户合法"})
         } else {
-            res.send(200, {code: 200, result: [], message: "用户不合法"})
+            res.status(200).send({code: 200, result: [], message: "用户不合法"})
         }
     }, res);
 
