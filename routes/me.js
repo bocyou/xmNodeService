@@ -144,17 +144,18 @@ router.post('/get_user_month_bill', function (req, res, next) {
     getCurrentSession(req.headers.sessionkey, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
-           console.log(user_id);
+
            var end_time=new Date();
            var start_time=new Date(end_time.getTime()-30*24*60*60*1000);
             mysql.sql("SELECT * FROM user_bill WHERE create_time BETWEEN '"+start_time.Format('yyyy-MM-dd')+"' AND '"+end_time.Format('yyyy-MM-dd')+"' AND user_id="+user_id, function (err, result) {
-                console.log(err);
-                console.log(result);
+
+
                 if (err) {
                     res.status(200).send({code: 500, result: [], message: "获取用户账单失败"})
+                    console.log(err);
 
                 } else {
-                    console.log(result);
+
                     res.status(200).send({code: 200, result: result, message: "获取用户前30天内账单成功"})
                 }
             });
