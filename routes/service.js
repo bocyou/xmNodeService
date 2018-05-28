@@ -31,7 +31,7 @@ router.post('/', function (req, res, next) {
     request('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxff898caf09a11846&secret=6f8b1e6559774ab25c0e6ec3b5b1ee26', function (err, response, body) {
         if (err) {
             console.log('获取失败ass');
-            // res.send(200, {code: 200, result: '获取openid失败'});
+            // res.status(200).send( {code: 200, result: '获取openid失败'});
         } else {
 
             access_token = JSON.parse(body).access_token;

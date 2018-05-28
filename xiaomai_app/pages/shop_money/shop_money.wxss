@@ -1,0 +1,24 @@
+/* pages/shop_money/shop_money.wxss */
+.money{
+    font-size:140rpx;
+    font-weight:bold;
+    color: #303030;
+    text-align:center;
+    margin:160rpx auto 40rpx;
+}
+.money text{
+    font-size:26rpx;
+    font-weight:normal;
+    color:#717171;
+}
+.tip{
+    font-size:28rpx;
+    color:#717171;
+    text-align:center;
+}
+.tip-txt{
+    margin:140rpx auto;
+    color:#717171;
+    font-size:32rpx;
+    text-align:center;
+}

@@ -35,20 +35,39 @@ app.use(session({
     store: new store(config.mysql)
 }));
 
-
+/*静态页面*/
 app.use('/',require('./routes/index'));
+app.use('/invite_code',require('./routes/invite_code'));
+app.use('/paycode',require('./routes/pay_code'));
+app.use('/shpaycode',require('./routes/pages/sh_pay_code'));
+
+/*接口*/
+app.use('/xm/api',require('./routes/api'));
+app.use('/xm/order_food',require('./routes/order_food'));
+app.use('/xm/lucky_draw',require('./routes/lucky_draw'));
+app.use('/xm/invite',require('./routes/invite'));
+app.use('/xm/angular/login',require('./routes/login'));
+app.use('/xm/me',require('./routes/me'));
+app.use('/xm/service',require('./routes/service'));
+app.use('/xm/test',require('./routes/test'));
+app.use('/xm/logs',require('./routes/logs'));
+app.use('/xm/timer',require('./routes/timer'));
+app.use('/xm/shop_money',require('./routes/shop_money'));
+
+
+
+
+
 app.use('/api',require('./routes/api'));
 app.use('/order_food',require('./routes/order_food'));
 app.use('/lucky_draw',require('./routes/lucky_draw'));
 app.use('/invite',require('./routes/invite'));
-app.use('/invite_code',require('./routes/invite_code'));
 app.use('/angular/login',require('./routes/login'));
 app.use('/me',require('./routes/me'));
 app.use('/service',require('./routes/service'));
 app.use('/test',require('./routes/test'));
-app.use('/paycode',require('./routes/pay_code'));
-app.use('/shpaycode',require('./routes/pages/sh_pay_code'));
 app.use('/logs',require('./routes/logs'));
+app.use('/timer',require('./routes/timer'));
 app.listen(config.part,function(){
 	console.log('已启动'+new Date());
 });

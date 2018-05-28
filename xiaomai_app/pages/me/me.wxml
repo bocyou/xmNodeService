@@ -1,9 +1,9 @@
 <!--pages/me/me.wxml-->
 <view class="header">
     <view class="img-box">
-        <view style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
+        <view bindtap="refreshFace" style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
 
-            <view class="refresh-btn" bindtap="refreshFace"></view>
+            <!--<view class="refresh-btn" bindtap="refreshFace"></view>-->
         </view>
 
     </view>

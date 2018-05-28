@@ -261,16 +261,13 @@ router.post('/save_user_draw', function (req, res, next) {
                           mysql.sql('select * from lucky_ary where area = "' + user_area + '"', function (err, result) {
                               //查询奖池
                               if (result && err == null) {
-
                                   var ary = JSON.parse(result[0].lucky_ary);
                                   if (ary.length > 0) {
-                                      var idx = Math.round(Math.random() * ary.length);
+                                      var idx = Math.floor(Math.random() * ary.length);
                                       bar.money = ary[idx];
                                       ary.splice(idx, 1);
                                   } else {
                                       //取3-5中的随机数
-
-
                                       bar.money = Math.round(Math.random() * 2 + 3);
                                   }
 

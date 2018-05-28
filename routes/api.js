@@ -68,7 +68,7 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
 
         }else{
 
-            res.send(200, {code: 501, result: result,massage:'session已过期'})
+            res.status(200).send( {code: 501, result: result,massage:'session已过期'})
         }
 
     });
@@ -77,7 +77,7 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
 router.post('/get_current_userinfo', checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
 
-    res.send(200, {code: 200, result: req.session.user, message: "获取当前用户信息成功"})
+    res.status(200).send( {code: 200, result: req.session.user, message: "获取当前用户信息成功"})
 
 });
 
@@ -88,9 +88,9 @@ router.post('/get_current_userinfo', checkSession, function (req, res, next) {
 router.post('/check_current_user', function (req, res, next) {
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo.length > 0) {
-            res.send(200, {code: 200, result: true, message: "该用户合法"})
+            res.status(200).send( {code: 200, result: true, message: "该用户合法"})
         } else {
-            res.send(200, {code: 200, result: false, message: "用户不合法"})
+            res.status(200).send( {code: 200, result: false, message: "用户不合法"})
         }
     }, res);
 
@@ -136,7 +136,7 @@ router.post('/user_login', function (req, res, next) {
             }
         }, function optionalCallback(err, httpResponse, body) {
             if (err) {
-                res.send(200, {code: 200, result: '获取openid失败'});
+                res.status(200).send( {code: 200, result: '获取openid失败'});
             } else {
                 //生成3rd_session
                 var wxSession = JSON.parse(body);
@@ -160,15 +160,15 @@ router.post('/user_login', function (req, res, next) {
                         }, function (result, err) {
                             if (result) {
                                 //session存入数据库
-                                res.send(200, {code: 200, result: true, session: randomSession});
+                                res.status(200).send( {code: 200, result: true, session: randomSession});
 
                             } else {
-                                res.send(200, {code: 200, result: false, message: '新建session失败'})
+                                res.status(200).send( {code: 200, result: false, message: '新建session失败'})
                             }
                         });
 
                     } else {
-                        res.send(200, {code: 200, result: -1, message: '该用户尚未注册'});
+                        res.status(200).send( {code: 200, result: -1, message: '该用户尚未注册'});
                     }
                 });
 
@@ -177,7 +177,7 @@ router.post('/user_login', function (req, res, next) {
 
         });
     } else {
-        res.send(200, {code: 200, result: '参数错误'});
+        res.status(200).send( {code: 200, result: '参数错误'});
     }
 
 });
@@ -203,7 +203,7 @@ router.post('/user_sign_up', function (req, res, next) {
                 }
             }, function optionalCallback(err, httpResponse, body) {
                 if (err) {
-                    res.send(200, {code: 200, result: '获取openid失败'});
+                    res.status(200).send( {code: 200, result: '获取openid失败'});
                 } else {
 
                     //生成randomSession用于和小程序关联信息
@@ -218,7 +218,7 @@ router.post('/user_sign_up', function (req, res, next) {
                     //获取openid后检查此用户是否存在
                     mysql.find_one('users', 'open_id', userInfo.openid, function (result) {
                         if (result && result.lenght > 0) {
-                            res.send(200, {code: 200, result: 2, session: randomSession, message: '该用户已存在'})
+                            res.status(200).send( {code: 200, result: 2, session: randomSession, message: '该用户已存在'})
                         } else {
 
                             //创建用户
@@ -247,7 +247,7 @@ router.post('/user_sign_up', function (req, res, next) {
                                                 area: req_data.area
                                             }, function (result, err) {
                                                 if (result) {
-                                                    res.send(200, {
+                                                    res.status(200).send( {
                                                         code: 200,
                                                         result: true,
                                                         session: randomSession,
@@ -256,17 +256,17 @@ router.post('/user_sign_up', function (req, res, next) {
 
 
                                                 } else {
-                                                    res.send(200, {code: 200, result: '', message: '新建session失败'})
+                                                    res.status(200).send( {code: 200, result: '', message: '新建session失败'})
                                                 }
                                             });
 
                                         } else {
-                                            res.send(200, {code: 200, result: false, message: '创建用户失败'})
+                                            res.status(200).send( {code: 200, result: false, message: '创建用户失败'})
                                         }
 
                                     });
                                 } else {
-                                    res.send(200, {code: 200, result: false, message: '更改邀请码状态失败'});
+                                    res.status(200).send( {code: 200, result: false, message: '更改邀请码状态失败'});
                                 }
                             })
 
@@ -281,7 +281,7 @@ router.post('/user_sign_up', function (req, res, next) {
 
         } else {
             //邀请码无效
-            res.send(200, {code: 200, result: 3, message: '您输入的邀请码无效'});
+            res.status(200).send( {code: 200, result: 3, message: '您输入的邀请码无效'});
         }
     })
 
@@ -311,7 +311,7 @@ router.post('/save_user_fromid', function (req, res, next) {
 
 
         } else {
-            res.send(200, {code: 502, result: false, message: "用户不合法"})
+            res.status(200).send( {code: 502, result: false, message: "用户不合法"})
         }
     });
 
@@ -333,7 +333,7 @@ router.post('/test', function (req, res, next) {
         }
     }, function optionalCallback(err, httpResponse, body) {
         if (err) {
-            res.send(200, {code: 200, result: '获取openid失败'});
+            res.status(200).send( {code: 200, result: '获取openid失败'});
         } else {
             //生成randomSession用于和小程序关联信息
             var wxSession = JSON.parse(body);
@@ -354,7 +354,7 @@ router.post('/test', function (req, res, next) {
             var data = pc.decryptData(encryptedData, iv)
 
 
-            res.send(200, {code: 200, result: data});
+            res.status(200).send( {code: 200, result: data});
 
 
         }
@@ -377,7 +377,7 @@ router.post('/test2', function (req, res, next) {
         }
     }, function optionalCallback(err, httpResponse, body) {
         if (err) {
-            res.send(200, {code: 200, result: '获取openid失败'});
+            res.status(200).send( {code: 200, result: '获取openid失败'});
         } else {
             //生成randomSession用于和小程序关联信息
             var wxSession = JSON.parse(body);
@@ -398,7 +398,7 @@ router.post('/test2', function (req, res, next) {
             var data = pc.decryptData(encryptedData, iv)
 
 
-            res.send(200, {code: 200, result: data});
+            res.status(200).send( {code: 200, result: data});
 
 
         }
@@ -412,7 +412,7 @@ router.post('/get_all_user', function (req, res, next) {
     //获取所有用户表
     mysql.search(req, res, next, 'users', function (rows, fields) {
         if (fields) {
-            res.send(200, {code: 200, result: {"users": rows}})
+            res.status(200).send( {code: 200, result: {"users": rows}})
         }
 
     });
@@ -429,15 +429,15 @@ router.post('/get_current_user', function (req, res, next) {
                 area: userInfo[0].area,
                 wx_img: userInfo[0].user_img
             };
-            res.send(200, {code: 200, result: user_info, message: "获取当前用户信息成功"})
+            res.status(200).send( {code: 200, result: user_info, message: "获取当前用户信息成功"})
         } else {
-            res.send(200, {code: 200, result: {}, message: "获取用户信息失败"})
+            res.status(200).send( {code: 200, result: {}, message: "获取用户信息失败"})
         }
     }, res);
 });
 
 router.post('/get_wx_info', function (req, res, next) {
-    res.send(200, {code: 200, result: req.body.session})
+    res.status(200).send( {code: 200, result: req.body.session})
 });
 
 

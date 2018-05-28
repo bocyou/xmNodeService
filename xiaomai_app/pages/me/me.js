@@ -45,12 +45,16 @@ Page({
                     var data = res.data;
                     if (data.code == 200 && JSON.stringify(data.result) != '{}') {
                         console.log(data.result);
+                        var result_data=data.result;
                         var sun_money = 0;
-                        data.result.dinner.forEach(function (item, idx) {
-                            sun_money += parseInt(item.spread_money);
+                        result_data.dinner.forEach(function (item, idx) {
+                            sun_money += parseFloat(item.spread_money);
                         });
-                        data.result.lucky.forEach(function (item, idx) {
-                            sun_money += parseInt(item.money);
+                        result_data.lucky.forEach(function (item, idx) {
+                            sun_money += parseFloat(item.money);
+                        });
+                        result_data.shop_money.forEach(function(item,idx){
+                            sun_money+=parseFloat(item.money);
                         })
                         self.setData({
                             bill_money: sun_money
@@ -159,37 +163,47 @@ Page({
     },
     refreshFace:function(){
         var self=this;
-        wx.getUserInfo({
-            success: function(res) {
-                var userInfo = res.userInfo;
+        wx.showModal({
+            title: '',
+            content: '确定刷新您的头像吗？',
+            success: function (res) {
+                if (res.confirm) {
+                    wx.getUserInfo({
+                        success: function(res) {
+                            var userInfo = res.userInfo;
 
-                var avatarUrl = userInfo.avatarUrl;
-                console.log(avatarUrl);
-                util.request({
-                    url: util.api + '/me/refresh_user_face', param: {user_img: avatarUrl}, complete: function (res) {
-                        //获取当前用户账单信息
-                        var data = res.data;
-                        if (data.code == 200) {
-                            self.getUserInfo();
+                            var avatarUrl = userInfo.avatarUrl;
+                            console.log(avatarUrl);
+                            util.request({
+                                url: util.api + '/me/refresh_user_face', param: {user_img: avatarUrl}, complete: function (res) {
+                                    //获取当前用户账单信息
+                                    var data = res.data;
+                                    if (data.code == 200) {
+                                        self.getUserInfo();
 
-                        } else {
-                         wx.showToast({
-                             title:'更新失败',
-                             icon:'none',
-                             duration:'2000'
-                         });
+                                    } else {
+                                        wx.showToast({
+                                            title:'更新失败',
+                                            icon:'none',
+                                            duration:'2000'
+                                        });
+                                    }
+                                }
+                            });
+                        },
+                        fail:function(res){
+                            wx.showToast({
+                                title: '获取头像信息失败',
+                                icon: 'none',
+                                duration: 2000
+                            })
                         }
-                    }
-                });
-            },
-            fail:function(res){
-                wx.showToast({
-                    title: '获取头像信息失败',
-                    icon: 'none',
-                    duration: 2000
-                })
+                    })
+                } else if (res.cancel) {
+                }
             }
         })
+
      /*   util.request({
             url: util.api + '/me/user_pay_bill', param: {bill_id: bill_id}, complete: function (res) {
                 //获取当前用户账单信息

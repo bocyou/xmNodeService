@@ -27,10 +27,10 @@ router.post('/get_invite_list', function (req, res, next) {
     mysql.conditionSearch('invite_code','status="1"', function (result, err) {
         if (err==null&&result.length>0) {
 
-             res.send(200, {code: 200, result: result,message:"获取邀请码列表成功"})
+             res.status(200).send( {code: 200, result: result,message:"获取邀请码列表成功"})
             
           }else{
-            res.send(200, {code: 200, result: {},message:'没有查到数据'})
+            res.status(200).send( {code: 200, result: {},message:'没有查到数据'})
           }
 
         });
@@ -55,10 +55,10 @@ router.post('/create_invite',checkSession, function (req, res, next) {
 
    mysql.insert_more('invite_code(`code`, `create_time`,`status`,`expire_time`)',[val], function ( result,err) {
         if (result) {
-             res.send(200, {code: 200, result: 1,message:"生成邀请码成功"})
+             res.status(200).send( {code: 200, result: 1,message:"生成邀请码成功"})
             
           }else{
-             res.send(200, {code: 200, result: 0,message:'生成失败'})
+             res.status(200).send( {code: 200, result: 0,message:'生成失败'})
           }
 
         });

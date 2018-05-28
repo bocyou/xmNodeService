@@ -26,7 +26,7 @@ module.exports = {
             });
 
         }else{
-            res.send(200, {code: 502, result: [],massage:'session失效'})
+            res.status(200).send( {code: 502, result: [],massage:'session失效'})
         }
 
     });*/
@@ -38,7 +38,7 @@ getCurrentSession:function(session,callback,res){
            callback(result);
 
         }else{
-            res.send(200, {code: 502, result: result,massage:'session失效'})
+            res.status(200).send( {code: 502, result: result,massage:'session失效'})
         }
 
     });

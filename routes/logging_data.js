@@ -39,10 +39,10 @@ router.post('/resolveXls', function (req, res, next) {
             }
             wordBook.create(resultAry, function (error, doc) {
                 if (doc) {
-                    res.send(200, {code: 200, result: doc});
+                    res.status(200).send( {code: 200, result: doc});
                     //console.log(doc);
                 } else {
-                    res.send(200, {code: 501, result: doc});
+                    res.status(200).send( {code: 501, result: doc});
                 }
             });
         }

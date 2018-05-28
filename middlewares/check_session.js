@@ -9,7 +9,7 @@ module.exports = {
             next();
         }else{
            //res.redirect('http://localhost:4200/login');
-            res.send(200,{code:502,result:null,massage:'session异常'});
+            res.status(200).send({code:502,result:null,massage:'session异常'});
         }
 
      /*  if(!req.session.user){
@@ -36,7 +36,7 @@ module.exports = {
             next();
         }else{
             //res.redirect('http://localhost:4200/login');
-            res.send(200,{code:502,result:null,massage:'session异常'});
+            res.status(200).send({code:502,result:null,massage:'session异常'});
         }
     }
 };
