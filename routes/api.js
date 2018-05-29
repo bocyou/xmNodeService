@@ -12,7 +12,7 @@ var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var saveLogs=tool.saveLogs;
 var getCurrentSession = tool.getCurrentSession;
-var version='20180517';
+var version='20180518';
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});
