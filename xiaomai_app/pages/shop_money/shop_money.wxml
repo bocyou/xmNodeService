@@ -8,6 +8,6 @@
     <view class="tip-txt">正在识别价格……</view>
 </block>
 <block wx:else>
-    <view class="tip-txt">不要重复打开该页面</view>
+    <view class="tip-txt"></view>
 </block>
 

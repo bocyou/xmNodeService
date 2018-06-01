@@ -83,7 +83,7 @@ var  request=function(opt){
     header: {
       'content-type': 'application/json', // 默认值
       'sessionkey': userInfo.session,
-        'v':'20180517'
+        'v':'20180518'
     },
     success: function (res) {
 

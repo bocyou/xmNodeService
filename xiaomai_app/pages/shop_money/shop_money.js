@@ -62,9 +62,7 @@ Page({
     this.setData({
         money:0
     });
-      wx.switchTab({
-          url: '../index/index'
-      })
+
   },
 
   /**

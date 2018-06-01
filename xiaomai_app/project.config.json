@@ -67,7 +67,7 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 6,
 					"name": "小卖部扫码",
 					"pathName": "pages/shop_money/shop_money",
 					"query": "money=1",
