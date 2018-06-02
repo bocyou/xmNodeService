@@ -19,8 +19,8 @@ router.get('/', function (req, res) {
 
 var billWork = {
     postBill: function () {
-
-        mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)', function (err, result) {
+//查询上周是否分发过账单
+        mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
             console.log(err);
             if (err != null) {
                 console.log("您本周已分发账单");

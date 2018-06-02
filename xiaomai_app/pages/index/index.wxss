@@ -68,3 +68,171 @@ page{
   opacity: .6;
   text-shadow: 0 0 1px rgba(0,0,0,.5);
 }
+
+
+/*查单词*/
+/*page{
+  background:#e7ebf0;
+}*/
+.container{
+  padding:0;
+  min-height: 100vh;
+
+}
+/*头部搜索*/
+.dic-head{
+  background:#fff;
+  padding:30rpx;
+  width:100%;
+}
+.dic-head .ipt-box{
+  background:url(https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/wordshero/dic-search.png) left 16px center no-repeat #eff3f8;
+  background-size: 32rpx;
+  border-radius: 60rpx;
+  height: 100rpx;
+  text-align: left;
+  padding-left:88rpx;
+}
+.dic-head input{
+  display: block;
+  height: 100%;
+  font-size:28rpx;
+  color:#202636;
+}
+.dic-head .ipt-placeholder{
+  color:#b6b9c2;
+}
+.dic-head .dic-clear{
+  width: 32rpx;
+  display: inline-block;
+  padding:34rpx;
+}
+
+/*中间释义*/
+.dic-main{
+
+  padding:30rpx;
+  min-height: 900rpx;
+
+  position: relative;
+  z-index: 5;
+  width:100%;
+}
+/*查到内容*/
+.dic-main .main-cont{
+  background:#fff;
+  border-radius: 40rpx;
+  min-height: 600rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+
+.dic-main .word-info{
+  padding:60rpx 30rpx;
+  text-align: left;
+  line-height: 1;
+}
+
+.word-info .word{
+  font-size:48rpx;
+  color:#424a61;
+  font-weight: bold;
+  padding-bottom: 12rpx;
+}
+.word-info  .word-pron{
+  font-size:32rpx;
+  color:#b6b9c2;
+}
+.word-info .word-laba{
+  width:100rpx;
+  margin-left: 40rpx;
+}
+.word-laba .laba-img{
+  width: 100rpx;
+  height: 100rpx;
+  background:url(https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/wordshero/dic-laba.png)  center right no-repeat;
+  background-size: contain;
+}
+.dic-main .summarize{
+  padding:0 30rpx;
+  font-family: Arial;
+  font-size: 32rpx;
+  line-height: 1.5;
+  color:#6f7584;
+}
+.summarize .paraphrase{
+  padding:60rpx 0;
+  border-top:2rpx solid #eff1f6;
+  text-align: left;
+}
+.paraphrase .w-cn-meaning{
+  font-size:32rpx;
+  font-weight: bold;
+  color:#00a7a4;
+  line-height: 48rpx;
+  padding-bottom: 10rpx;
+}
+.paraphrase .w-posp{
+  font-size:20rpx;
+  color:#6f7584;
+  line-height: 1;
+  padding-bottom: 30rpx;
+}
+.paraphrase .w-en-meaning{
+  font-family: Arial;
+  font-size: 32rpx;
+  line-height: 1.5;
+  color:#202636;
+}
+.paraphrase .w-example{
+  padding-top: 50rpx;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.paraphrase .w-example .case-tag{
+  width:60rpx;
+  height: 36rpx;
+  display: inline-block;
+  background-color: #00a7a4;
+  border-radius: 18rpx;
+  line-height: 36rpx;
+  font-size:24rpx;
+  color:#fff;
+  text-align: center;
+  margin:8rpx 30rpx 0 0;
+}
+.paraphrase .w-example .case-info{
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.w-example .case-info .case-en{
+  padding-bottom: 10rpx;
+}
+.w-example .case-info .case-cn{
+  font-size:28rpx;
+  color:#6f7584;
+}
+
+
+/*没有查到内容*/
+.dic-main .main-empty{
+  padding-top:30rpx;
+  text-align: center;
+  font-size:32rpx;
+  color:#00a7a4;
+}
+
+/*来源*/
+.source-tip{
+  font-size:20rpx;
+  color:#a6acbf;
+  text-align: center;
+}
+
+/*底部logo*/
+.dic-bottom{
+  position: relative;
+  bottom:0;
+  left:0;
+  right:0;
+}

@@ -9,8 +9,9 @@ const formatTime = date => {
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
+const version=201801;
 //var api='http://localhost:8080/xm';
-var api ='https://xiaomai.towords.com/xm';
+var api ='http://localhost:8080/xm';
 //https://xiaomai.towords.com/xm
 const formatNumber = n => {
   n = n.toString()
@@ -83,7 +84,7 @@ var  request=function(opt){
     header: {
       'content-type': 'application/json', // 默认值
       'sessionkey': userInfo.session,
-        'v':'20180518'
+        'v':version
     },
     success: function (res) {
 

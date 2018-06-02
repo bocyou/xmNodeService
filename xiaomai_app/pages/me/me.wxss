@@ -170,3 +170,25 @@ button::after{
     opacity: .5;
 
 }
+
+
+
+/*小麦查词*/
+.xm-title{
+    text-align:center;
+    font-size:48rpx;
+    margin-top:50rpx;
+    color:#717171;
+}
+.xm-last-search{
+    margin-top:100rpx;
+    font-size:28rpx;
+    color: #9e9e9e;
+    padding:30rpx;
+}
+.xm-word{
+    padding:0 30rpx;
+    font-size:40rpx;
+    font-weight:bold;
+    color:#717171;
+}

@@ -1,68 +1,80 @@
 <!--pages/me/me.wxml-->
-<view class="header">
-    <view class="img-box">
-        <view bindtap="refreshFace" style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
+<block wx:if="{{version==1}}">
+    <view class="header">
+        <view class="img-box">
+            <view bindtap="refreshFace" style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
 
-            <!--<view class="refresh-btn" bindtap="refreshFace"></view>-->
+                <!--<view class="refresh-btn" bindtap="refreshFace"></view>-->
+            </view>
+
         </view>
 
+        <view style="position:relative; border-bottom:2px solid #eaeaeb;padding-bottom:60rpx">
+            <view class="user-info">
+                <view> {{user_info.user_name}}</view>
+                <view class="area">{{user_area[user_info.area]}}校区</view>
+            </view>
+            <view class="bill">
+                <view class="money">¥
+                    <text>{{bill_money}}</text>
+                </view>
+                <view class="txt">
+                    {{week_txt}}
+                </view>
+            </view>
+        </view>
     </view>
 
-    <view style="position:relative; border-bottom:2px solid #eaeaeb;padding-bottom:60rpx">
-        <view class="user-info">
-            <view> {{user_info.user_name}}</view>
-            <view class="area">{{user_area[user_info.area]}}校区</view>
+    <button class="service-btn menu-option" open-type="contact" session-from="imgcode">
+        <view>获取付款二维码<text class="text"> (若获取不到请发送<text class="tip"> pay</text>)</text>
         </view>
-        <view class="bill">
-            <view class="money">¥
-                <text>{{bill_money}}</text>
-            </view>
-            <view class="txt">
-                {{week_txt}}
-            </view>
+        <view class="right-icon"></view>
+    </button>
+    <navigator class="menu-option" url="../bill/bill" hover-class="navigator-hover">
+        <view>账单信息</view>
+        <view class="right-icon"></view>
+    </navigator>
+    <view class="content">
+        <view class="bill-list">
+            <block wx:if="{{bill_ary.length>0}}">
+                <!--    <view class="">本周账单已出</view>
+                    <view class="tip">请于周一前付款给王老师</view>-->
+            </block>
+
+            <block wx:else>
+                <view class="not-bill-tip">您尚无拖欠账单
+                    <text>(每周-账单日)</text>
+                </view>
+            </block>
+
         </view>
     </view>
-</view>
 
-<button class="service-btn menu-option" open-type="contact" session-from="imgcode">
-    <view>获取付款二维码<text class="text"> (若获取不到请发送<text class="tip"> pay</text>)</text>
-    </view>
-    <view class="right-icon"></view>
-</button>
-<navigator class="menu-option" url="../bill/bill" hover-class="navigator-hover">
-    <view>账单信息</view>
-    <view class="right-icon"></view>
-</navigator>
-<view class="content">
-    <view class="bill-list">
-        <block wx:if="{{bill_ary.length>0}}">
-            <!--    <view class="">本周账单已出</view>
-                <view class="tip">请于周一前付款给王老师</view>-->
-        </block>
 
-        <block wx:else>
-            <view class="not-bill-tip">您尚无拖欠账单
-                <text>(每周六账单日)</text>
+    <block wx:if="{{bill_ary.length>0}}">
+        <view class="bill-content">
+            <view class="title">您有未支付账单
+                <text>（请转账给王老师后点击下方确认付钱）</text>
             </view>
-        </block>
+            <view class="bar" wx:for="{{bill_ary}}" wx:key="i">
+                <view class="status"></view>
+                <view class="money">¥
+                    <text>{{item.money}}</text>
+                </view>
+                <view class="date">{{item.create_time}}</view>
 
-    </view>
-</view>
-
-
-<block wx:if="{{bill_ary.length>0}}">
-    <view class="bill-content">
-        <view class="title">您有未支付账单
-            <text>（请转账给王老师后点击下方确认付钱）</text>
-        </view>
-        <view class="bar" wx:for="{{bill_ary}}" wx:key="i">
-            <view class="status"></view>
-            <view class="money">¥
-                <text>{{item.money}}</text>
+                <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
             </view>
-            <view class="date">{{item.create_time}}</view>
-
-            <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
         </view>
+    </block>
+</block>
+<block wx:elif="{{version==0}}">
+    <view class="xm-title">小麦查词</view>
+    <view class="xm-last-search">最近一次搜索</view>
+    <view class="xm-word">{{search_word}}</view>
+</block>
+<block wx:else>
+    <view class="loading-main">
+        加载中……
     </view>
 </block>

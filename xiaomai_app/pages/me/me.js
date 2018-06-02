@@ -11,7 +11,9 @@ Page({
         week_txt: ' 本周已花费',
         user_area: {"bj": "北京", "nj": "南京", "sh": "上海"},
         bill_money: 0,
-        bill_ary: []
+        bill_ary: [],
+        version:-1,
+        search_word:'您还没有搜索过单词'
     },
 
     /**
@@ -36,41 +38,67 @@ Page({
      */
     onShow: function () {
         var self = this;
-        util.checkPermission(function (userInfo) {
+        util.request({
+            url: util.api+'/api/get_version_status', complete: function (res) {
+                var data = res.data;
 
-             self.getUserInfo();
-            util.request({
-                url: util.api + '/me/get_user_not_pay', param: '', complete: function (res) {
-                    //获取当前用户账单
-                    var data = res.data;
-                    if (data.code == 200 && JSON.stringify(data.result) != '{}') {
-                        console.log(data.result);
-                        var result_data=data.result;
-                        var sun_money = 0;
-                        result_data.dinner.forEach(function (item, idx) {
-                            sun_money += parseFloat(item.spread_money);
+                if(data.code==200&&data.result==1){
+                    //正常状态
+                    self.setData({
+                        version:1
+                    });
+
+                    util.checkPermission(function (userInfo) {
+
+                        self.getUserInfo();
+                        util.request({
+                            url: util.api + '/me/get_user_not_pay', param: '', complete: function (res) {
+                                //获取当前用户账单
+                                var data = res.data;
+                                if (data.code == 200 && JSON.stringify(data.result) != '{}') {
+                                    console.log(data.result);
+                                    var result_data=data.result;
+                                    var sun_money = 0;
+                                    result_data.dinner.forEach(function (item, idx) {
+                                        sun_money += parseFloat(item.spread_money);
+                                    });
+                                    result_data.lucky.forEach(function (item, idx) {
+                                        sun_money += parseFloat(item.money);
+                                    });
+                                    result_data.shop_money.forEach(function(item,idx){
+                                        sun_money+=parseFloat(item.money);
+                                    })
+                                    self.setData({
+                                        bill_money: sun_money
+                                    });
+                                } else {
+                                    wx.showToast({
+                                        title: '获取数据失败',
+                                        icon: 'none',
+                                        duration: 2000
+                                    })
+                                }
+                            }
                         });
-                        result_data.lucky.forEach(function (item, idx) {
-                            sun_money += parseFloat(item.money);
-                        });
-                        result_data.shop_money.forEach(function(item,idx){
-                            sun_money+=parseFloat(item.money);
-                        })
+                        self.getBill();
+
+                    });
+                } else{
+                    self.setData({
+                        version:0
+                    });
+                    var search_word = wx.getStorageSync('word');
+                    if(search_word){
                         self.setData({
-                            bill_money: sun_money
-                        });
-                    } else {
-                        wx.showToast({
-                            title: '获取数据失败',
-                            icon: 'none',
-                            duration: 2000
+                            search_word:search_word
                         })
                     }
-                }
-            });
-            self.getBill();
 
+
+                }
+            }
         });
+
 
     },
     getUserInfo:function(){

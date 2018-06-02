@@ -1,36 +1,93 @@
 <!--index.wxml-->
 
-<view>
+<block wx:if="{{version==1}}">
 
-    <view class="userinfo">
+<scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight}}">
+
+    <navigator open-type="navigateTo" class="app-entry shop-manage" url="../lucky_draw/lucky_draw">
+        <view class="content">
+            <div class="txt">
+                <view class="title">刮刮卡</view>
+
+            </div>
+        </view>
+
+    </navigator>
+    <navigator open-type="navigateTo" class="app-entry dinner-manage" url="../dinner/dinner">
+        <view class="content">
+
+            <view class="txt">
+
+                <view class="title">订餐系统</view>
 
 
-            <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight}}">
+            </view>
+        </view>
 
-                <navigator open-type="navigateTo" class="app-entry shop-manage" url="../lucky_draw/lucky_draw">
-                    <view class="content">
-                        <div class="txt">
-                            <view class="title">刮刮卡</view>
+    </navigator>
+</scroll-view>
+</block>
+<block wx:elif="{{version==0}}">
+    <view class="container">
+        <view class="dic-head">
+            <view class="ipt-box he-flex">
+                <vew class="he-flex-item">
+                    <input type="text" placeholder="小麦查词" confirm-type="search" placeholder-class="ipt-placeholder" bindconfirm="searchWord"/>
+                </vew>
+                <block wx:if="{{clearShowFlag }}">
+                    <icon class="dic-clear" type="clear" color="#d0d3e0" size="16" bindtap="clearIptHandler"></icon>
+                </block>
+            </view>
+        </view>
+        <view class="dic-main">
+            <block wx:if="{{resultFlag ==1 }}">
+                <view class="main-cont">
+                    <view class="word-info he-flex">
+                        <view class="he-flex-item">
+                            <view class="word">{{word}}</view>
+                            <view class="word-pron">{{wordPron}}</view>
+                        </view>
 
-                        </div>
                     </view>
-
-                </navigator>
-                <navigator open-type="navigateTo" class="app-entry dinner-manage" url="../dinner/dinner" wx:if="{{is_dinner}}">
-                    <view class="content">
-
-                        <view class="txt">
-
-                            <view class="title">订餐系统</view>
-
-
+                    <view class="summarize">
+                        <view class="paraphrase" wx:for="{{senseInfo}}" wx:for-item="item" wx:key="index" wx:for-index="idx">
+                            <view class="w-cn-meaning">{{idx+1}}. {{item.tran}}</view>
+                            <view class="w-posp">{{item.posp}}</view>
+                            <view class="w-en-meaning">{{item.def}}</view>
+                            <block wx:if="{{ item.exampleEx || item.exampleTran}}">
+                                <view class="w-example he-flex">
+                                    <view class="case-tag">
+                                        <text class="tag-oval">例</text>
+                                    </view>
+                                    <view class="case-info he-flex-item">
+                                        <view class="case-en">{{item.exampleEx}}</view>
+                                        <view class="case-cn">{{item.exampleTran}}</view>
+                                    </view>
+                                </view>
+                            </block>
 
                         </view>
+
                     </view>
 
-                </navigator>
-            </scroll-view>
+
+
+                </view>
+            </block>
+            <view class="source-tip">数据来源:《柯林斯高阶英汉双解词典》</view>
+            <block wx:if="{{ resultFlag == 0 }}">
+                <view class="main-empty">
+                    没有找到相关的内容
+                </view>
+            </block>
+        </view>
+        <view class="he-bottom dic-bottom"></view>
 
     </view>
+</block>
+<block wx:else>
+    <view class="loading-main">
+        加载中……
+    </view>
+</block>
 
-</view>

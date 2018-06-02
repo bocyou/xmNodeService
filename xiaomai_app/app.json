@@ -9,6 +9,7 @@
     "pages/shop_game/shop_game",
     "pages/bill/bill",
     "pages/shop_money/shop_money"
+   
   ],
   "window":{
     "backgroundTextStyle":"light",
