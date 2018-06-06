@@ -92,6 +92,8 @@ page{
   height: 100rpx;
   text-align: left;
   padding-left:88rpx;
+  position:relative;
+
 }
 .dic-head input{
   display: block;

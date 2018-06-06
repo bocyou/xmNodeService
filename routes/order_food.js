@@ -100,6 +100,7 @@ router.post('/all_dinner_list',checkSession, function (req, res, next) {
             for (var i = 0; i < rows.length;) {
                 var count = 0;
                 var name = rows[i].kind;
+                var merchant=rows[i].merchant;
                 var barAry = [];
                 for (var j = i; j < rows.length; j++) {
                     if (rows[i].kind == rows[j].kind) {
@@ -107,7 +108,7 @@ router.post('/all_dinner_list',checkSession, function (req, res, next) {
                         barAry.push(rows[j]);
                     }
                 }
-                titleAry.push(name);
+                titleAry.push({key:name,name:merchant});
                 resultObj[name] = barAry;
                 resultObj.sum = count;
                 i += count;
@@ -116,13 +117,13 @@ router.post('/all_dinner_list',checkSession, function (req, res, next) {
                 if (result && result.length > 0) {
                     res.status(200).send( {
                         code: 200,
-                        result: {"list": rows, sort_list: resultObj, titleAry: titleAry, is_start: 1},
+                        result: {"list": rows, sort_list: resultObj, title_ary: titleAry, is_start: 1},
                         message: '获取所有菜单成功!已经开启订餐'
                     })
                 } else {
                     res.status(200).send( {
                         code: 200,
-                        result: {"list": rows, sort_list: resultObj, titleAry: titleAry, is_start: 0},
+                        result: {"list": rows, sort_list: resultObj, title_ary: titleAry, is_start: 0},
                         message: '获取所有菜单成功！尚未开启订餐'
                     })
                 }

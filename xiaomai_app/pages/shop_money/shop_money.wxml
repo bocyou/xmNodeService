@@ -8,6 +8,8 @@
     <view class="tip-txt">正在识别价格……</view>
 </block>
 <block wx:else>
-    <view class="tip-txt"></view>
+          <navigator open-type="switchTab" style="display:block;margin-top:70%;"  url="../index/index">
+<button type="default"> 回到首页 </button>
+        </navigator>
 </block>
 

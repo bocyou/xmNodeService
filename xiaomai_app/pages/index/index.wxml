@@ -31,6 +31,7 @@
     <view class="container">
         <view class="dic-head">
             <view class="ipt-box he-flex">
+            <view></view>
                 <vew class="he-flex-item">
                     <input type="text" placeholder="小麦查词" confirm-type="search" placeholder-class="ipt-placeholder" bindconfirm="searchWord"/>
                 </vew>
