@@ -8,7 +8,8 @@
     "pages/signup/signup",
     "pages/shop_game/shop_game",
     "pages/bill/bill",
-    "pages/shop_money/shop_money"
+    "pages/shop_money/shop_money",
+    "pages/lottery/lottery"
    
   ],
   "window":{

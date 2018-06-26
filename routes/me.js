@@ -144,7 +144,22 @@ router.post('/get_all_user_bill_list', function (req, res, next) {
     })
 
 });
-//获取本周所有账单
+
+//获取所有用户未付款账单
+router.post('/get_all_user_not_bill_list',checkSession, function (req, res, next) {
+
+    mysql.sql('select area,create_time,money,status,update_time,user_img,user_name from users tab2 join user_bill tab1 on tab1.user_id=tab2.id where tab1.status=1 AND area="'+req.body.area+'"',function(err,result){
+        if (err == null) {
+            res.status(200).send( {code: 200, result: result, message: "获取所有用户未付款账单成功"})
+
+        } else {
+            res.status(200).send( {code: 200, result: [], message: "获取所有未付款用户账单失败" + err})
+        }
+    })
+
+});
+
+//获取上周所有账单
 router.post('/get_user_bill_list', function (req, res, next) {
     mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)' , function (result, err) {
         if (err == null) {
@@ -157,7 +172,20 @@ router.post('/get_user_bill_list', function (req, res, next) {
 
 
 });
+router.post('/get_area_bill_list',checkSession, function (req, res, next) {
 
+    mysql.findUserWeekBill('SELECT area,money,status,create_time,user_img,user_name FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1) AND area="'+ req.body.area + '"' , function (result, err) {
+        if (err == null) {
+            res.status(200).send( {code: 200, result: result, message: "获取周用户账单列表成功"})
+
+        } else {
+            res.status(200).send( {code: 200, result: {}, message: "获取用户账单列表失败" + err})
+        }
+    });
+
+
+});
+/*
 router.post('/get_user_bill_list', function (req, res, next) {
     mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE YEARWEEK(create_time,1) = YEARWEEK(now(),1)' , function (result, err) {
         if (err == null) {
@@ -167,7 +195,7 @@ router.post('/get_user_bill_list', function (req, res, next) {
             res.status(200).send( {code: 200, result: {}, message: "获取用户账单列表失败" + err})
         }
     });
-    /*
+    /!*
         mysql.conditionSearch('user_bill', 'status="1" AND user_id="' + user_id + '"', function (result, err) {
             if (err == null) {
                 if (result.length == 0) {
@@ -180,9 +208,9 @@ router.post('/get_user_bill_list', function (req, res, next) {
                 res.status(200).send( {code: 200, result: {}, message: "获取此用户账单失败" + err})
             }
 
-        })*/
+        })*!/
 
-});
+});*/
 //获取上月账单
 router.post('/get_user_lastmonth_bill_list', function (req, res, next) {
 
@@ -198,7 +226,21 @@ router.post('/get_user_lastmonth_bill_list', function (req, res, next) {
 
 
 });
+//获取地区上月账单
+router.post('/get_area_lastmonth_bill_list', function (req, res, next) {
 
+    mysql.findUserWeekBill('SELECT * FROM user_bill tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE  date_format(create_time,"%Y-%m")=date_format( DATE_ADD(now(),INTERVAL -1 MONTH) ,"%Y-%m") AND area="'+req.body.area+'"' , function (result, err) {
+        console.log(err);
+        if (err == null) {
+            res.status(200).send( {code: 200, result: result, message: "获取周用户账单列表成功"})
+
+        } else {
+            res.status(200).send( {code: 200, result: {}, message: "获取用户账单列表失败" + err})
+        }
+    });
+
+
+});
 
 //付款
 router.post('/user_pay_bill', function (req, res, next) {

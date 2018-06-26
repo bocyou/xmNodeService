@@ -6,7 +6,8 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('../lib/mysql');
 var session = require('express-session');
-var checkSession = require('../middlewares/check_session').checkAppSession;
+var checkAppSession = require('../middlewares/check_session').checkAppSession;
+var checkSession = require('../middlewares/check_session').checkSession;
 var tool = require('../middlewares/tool');
 var saveLogs = tool.saveLogs;
 var getUserInfo = tool.getUserInfo;
@@ -79,10 +80,11 @@ var rest_lucky_ary = schedule.scheduleJob(rule, function () {
 
 //管理列表获取今天的刮奖情况
 
-router.post('/area_user_draw_list', function (req, res, next) {
+router.post('/area_user_draw_list',checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     console.log(req.body);
     mysql.sql('SELECT area,user_id,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now()) AND area="' + req.body.area + '"', function (err, result) {
+        console.log(err);
         if (result && result.length > 0) {
             /*     var sum_mony = 0;
                  result.forEach(function (item, idx) {
@@ -90,7 +92,7 @@ router.post('/area_user_draw_list', function (req, res, next) {
                  });*/
             res.status(200).send({code: 200, result: result, message: "获取所有用户刮奖信息成功"})
         } else {
-            res.status(200).send({code: 200, result: 0, message: "未查找到刮奖用户"})
+            res.status(200).send({code: 200, result:[], message: "未查找到刮奖用户"})
         }
 
     })
@@ -126,7 +128,7 @@ function checkRepeat(obj, ary) {
     return -1
 }
 
-router.post('/month_top_list', checkSession, function (req, res, next) {
+router.post('/month_top_list', checkAppSession, function (req, res, next) {
 
     getUserInfo(req.headers.sessionkey, function (user_info) {
         if (user_info) {
@@ -192,7 +194,7 @@ router.post('/month_top_list', checkSession, function (req, res, next) {
 
 //获取所有用户(当天的)刮奖数据并区分当前用户
 
-router.post('/get_user_draw_list', checkSession, function (req, res, next) {
+router.post('/get_user_draw_list', checkAppSession, function (req, res, next) {
     getUserInfo(req.headers.sessionkey, function (user_info) {
         if (user_info) {
             mysql.sql('SELECT user_img,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now()) AND area="' + user_info[0].area + '"', function (err, result) {
@@ -219,7 +221,7 @@ router.post('/get_user_draw_list', checkSession, function (req, res, next) {
 
 
 //检查当前用户是否刮奖
-router.post('/check_current_user_draw', checkSession, function (req, res, next) {
+router.post('/check_current_user_draw', checkAppSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
 
     getUserInfo(req.headers.sessionkey, function (user_info) {

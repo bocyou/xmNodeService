@@ -1,0 +1,18 @@
+<!--pages/lottery/lottery.wxml-->
+<!--幸运数字-->
+<view></view>
+
+<!--单词列表区域-->
+<view class="word-bar" wx:for="{{word_list}}" wx:key="i">
+    <view class="user">
+        <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+        <view>{{item.user_name}}</view>
+    </view>
+    <view class="word">
+        {{item.word}}
+    </view>
+</view>
+
+<view>
+    押注
+</view>

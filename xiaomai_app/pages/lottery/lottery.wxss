@@ -1,0 +1,16 @@
+/* pages/lottery/lottery.wxss */
+.word-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.word-bar .user{
+    display: flex;
+}
+.word-bar .user .user-img{
+    width:100rpx;
+    height:100rpx;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
