@@ -16,7 +16,70 @@ router.get('/', function (req, res) {
 });
 
 
+//绑定手机号
+router.post('/bind_towords_phone', function (req, res, next) {
 
+    getCurrentSession(req.headers.sessionkey, function (user_info) {
+        if (user_info && user_info.length > 0) {
+            var user_id = user_info[0].user_id;
+
+           console.log(user_id);
+           console.log(req.body.phone);
+            mysql.sql('update users set towords_phone="'+req.body.phone+'" where id="' + user_id + '"', function (err, result) {
+                if (err) {
+                    res.status(200).send( {
+                        code: 500,
+                        result: false,
+                        message: "绑定拓词手机号失败"
+                    })
+                } else {
+
+                    res.status(200).send( {
+                        code: 200,
+                        result: true,
+                        message: "已成功绑定拓词手机号"
+                    })
+
+                }
+            });
+        }
+
+    }, res);
+
+
+});
+//获取钱包余额
+router.post('/get_user_wallet', function (req, res, next) {
+
+    getCurrentSession(req.headers.sessionkey, function (user_info) {
+        if (user_info && user_info.length > 0) {
+            var user_id = user_info[0].user_id;
+
+            console.log(user_id);
+            console.log(req.body.phone);
+            mysql.sql('select * from user_wallet  where user_id="' + user_id + '"', function (err, result) {
+                if (err) {
+                    res.status(200).send( {
+                        code: 500,
+                        result: [],
+                        message: "获取用户钱包失败"
+                    })
+                } else {
+
+                    res.status(200).send( {
+                        code: 200,
+                        result: result[0],
+                        message: "获取用户钱包成功"
+                    })
+
+                }
+            });
+        }
+
+    }, res);
+
+
+});
 
 //获取本周总钱数
 router.post('/get_user_not_pay', function (req, res, next) {

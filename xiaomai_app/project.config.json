@@ -79,6 +79,12 @@
 					"pathName": "pages/lottery/lottery",
 					"query": "",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "绑定手机号",
+					"pathName": "pages/get_user_phone/get_user_phone",
+					"query": ""
 				}
 			]
 		}

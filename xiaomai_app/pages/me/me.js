@@ -13,6 +13,7 @@ Page({
         bill_money: 0,
         bill_ary: [],
         version:-1,
+        user_wallet:0,
         search_word:'您还没有搜索过单词'
     },
 
@@ -81,6 +82,7 @@ Page({
                             }
                         });
                         self.getBill();
+                        self.getUserWallet();
 
                     });
                 } else{
@@ -114,6 +116,26 @@ Page({
                 } else {
                     wx.showToast({
                         title: '获取数据失败',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            }
+        });
+    },
+    getUserWallet:function(){
+        let self=this;
+        util.request({
+            url: util.api + '/me/get_user_wallet', param: '', complete: function (res) {
+                //获取当前用户信息
+                var data = res.data;
+                if (data.code == 200 ) {
+                    self.setData({
+                        user_wallet: data.result.money
+                    });
+                } else {
+                    wx.showToast({
+                        title: '获取钱包余额失败',
                         icon: 'none',
                         duration: 2000
                     })

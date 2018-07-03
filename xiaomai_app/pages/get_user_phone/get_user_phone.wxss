@@ -1,0 +1,11 @@
+/* pages/get_user_phone/get_user_phone.wxss */
+
+
+.main{
+    width:90%;
+    margin:200rpx auto 0;
+
+}
+.main button{
+    margin-top:100rpx;
+}

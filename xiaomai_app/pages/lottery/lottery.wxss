@@ -1,11 +1,17 @@
 /* pages/lottery/lottery.wxss */
+page{
+    color:#717171;
+}
 .word-bar{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding:0 30rpx 10rpx;
+    border-bottom:1px solid #f5f5f5;
+
 }
 .word-bar .user{
-    display: flex;
+
 }
 .word-bar .user .user-img{
     width:100rpx;
@@ -13,4 +19,79 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+.word-bar .user .user-name{
+  font-size:30rpx;
+    text-align:center;
+}
+.bottom-btn{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+}
+.form-bet{
+    width:100%;
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    background-color:rgba(0,0,0,.5);
+    color:#717171;
+    z-index: 100;
+}
+.form-bet .content{
+    width:80%;
+    margin:300rpx auto;
+    background-color:#fff;
+    border-radius: 8rpx;
+    padding:30rpx;
+}
+.form-bet .content button{
+    margin-top:60rpx;
+}
+.form-bet .title{
+    text-align:center;
+    line-height:60rpx;
+    font-size:50rpx;
+    margin-bottom:30rpx;
+}
+.form-bet .tip-err{
+    font-size:24rpx;
+    color: #bd3a29;
+}
+.rule{
+    color:#717171;
+    font-size:28rpx;
+    padding:20rpx 30rpx;
+    margin:20rpx 0 40rpx;
+}
+.rule .title{
+    font-size:32rpx;
+}
+.placeholder{
+    font-size:24rpx;
+    color: #dcdcdc;
+}
+.user-bet-main{
+    padding:0 30rpx;
+    margin-bottom:30rpx;
+}
+.user-bet-main .user-bet-title{
+    font-size:32rpx;
+    margin-bottom:20rpx;
+}
+.user-bet-main .content{
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.user-bet-main .content .bar{
+    width:80rpx;
+    line-height:60rpx;
+    text-align:center;
+    background-color: #dfdfdf;
+    margin:0 10rpx;
+
 }

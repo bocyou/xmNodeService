@@ -34,6 +34,10 @@
         <view>账单信息</view>
         <view class="right-icon"></view>
     </navigator>
+    <view class="menu-option" style="margin-top:2rpx;" >
+        <view>钱包余额</view>
+        <view class="">{{user_wallet}}</view>
+    </view>
     <view class="content">
         <view class="bill-list">
             <block wx:if="{{bill_ary.length>0}}">

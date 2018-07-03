@@ -6,13 +6,11 @@ page{
 
 }
 .dinner-manage{
-  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/stock-photo-summer-fresh-fruit-variety-with-rustic-wooden-tray-in-center-164277659.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 
 }
 .shop-manage{
-  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/shop.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -33,6 +31,7 @@ page{
   height:280rpx;
   display:flex;
   margin-bottom:2px;
+  background-color: #f8f8f8;
 }
 .app-entry:nth-child(2n){
   background-color:#eeeeee;

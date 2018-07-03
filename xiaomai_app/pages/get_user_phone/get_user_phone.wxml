@@ -1,0 +1,7 @@
+<!--pages/get_user_phone/get_user_phone.wxml-->
+<view class="main">
+<view class="section">
+    <input type="digit" placeholder="请输入注册拓词的手机号" bindinput="towordsPhone"/>
+</view>
+<button type="primary" disabled="{{disabled}}" bindtap="bindPhone"> 确定 </button>
+</view>

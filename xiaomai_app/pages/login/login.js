@@ -103,6 +103,7 @@ Page({
                           //缓存后台传来的sessionKey
                           var userInfo = app.globalData.userInfo;
                           userInfo.session = data.session;
+                          userInfo.towords_phone=data.towords_phone;
                           wx.setStorageSync('userInfo', userInfo);
                           wx.switchTab({
                             url: '../index/index'

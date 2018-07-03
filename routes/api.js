@@ -174,11 +174,11 @@ router.post('/user_login', function (req, res, next) {
                             create_time: new Date(),
                             open_id: userInfo.openid,
                             user_id: result[0].id,
-                            area: result[0].area,
+                            area: result[0].area
                         }, function (result, err) {
                             if (result) {
                                 //session存入数据库
-                                res.status(200).send({code: 200, result: true, session: randomSession});
+                                res.status(200).send({code: 200, result: true, session: randomSession,towords_phone:result[0].towords_phone});
 
                             } else {
                                 res.status(200).send({code: 200, result: false, message: '新建session失败'})
@@ -253,34 +253,55 @@ router.post('/user_sign_up', function (req, res, next) {
                             //将此邀请码更新为不可用
                             mysql.updateData('invite_code', 'id="' + invite_id + '"', 'status="0"', function (result, err) {
                                 if (result) {
+
+
                                     mysql.insertOne(addUser, function (result, err) {
                                         if (result) {
-
-                                            mysql.insert_one('custom_session', {
-                                                session_key: randomSession,
-                                                expires: expires,
-                                                create_time: new Date(),
-                                                open_id: userInfo.openid,
+                                            //创建钱包
+                                            mysql.insert_one('user_wallet', {
                                                 user_id: result.insertId,
-                                                area: req_data.area
+                                                money:0
+
                                             }, function (result, err) {
                                                 if (result) {
-                                                    res.status(200).send({
-                                                        code: 200,
-                                                        result: true,
-                                                        session: randomSession,
-                                                        message: '创建用户成功'
-                                                    })
+                                                    mysql.insert_one('custom_session', {
+                                                        session_key: randomSession,
+                                                        expires: expires,
+                                                        create_time: new Date(),
+                                                        open_id: userInfo.openid,
+                                                        user_id: result.insertId,
+                                                        area: req_data.area
+                                                    }, function (result, err) {
+                                                        if (result) {
+
+                                                            res.status(200).send({
+                                                                code: 200,
+                                                                result: true,
+                                                                session: randomSession,
+                                                                message: '创建用户成功'
+                                                            })
+
+
+                                                        } else {
+                                                            res.status(200).send({
+                                                                code: 200,
+                                                                result: '',
+                                                                message: '新建session失败'
+                                                            })
+                                                        }
+                                                    });
 
 
                                                 } else {
                                                     res.status(200).send({
-                                                        code: 200,
+                                                        code: 500,
                                                         result: '',
-                                                        message: '新建session失败'
+                                                        message: '新建钱包失败！请联系郭浩'
                                                     })
                                                 }
                                             });
+
+
 
                                         } else {
                                             res.status(200).send({code: 200, result: false, message: '创建用户失败'})

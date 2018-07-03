@@ -1,18 +1,78 @@
 <!--pages/lottery/lottery.wxml-->
 <!--幸运数字-->
-<view></view>
+<view>
+    <canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>
+
+</view>
+<view wx:if="{{issue_status==0}}">当前奖金池{{money_poor}}</view>
+<view>
+    <view wx:if="{{issue_status==1}}">第{{issue}}期押注已开始</view>
+    <view wx:else>本期中奖号码{{current_lucky_num}}</view>
+</view>
+<view class="rule" wx:if="{{issue_status==1}}">
+    <view class="title">规则：</view>
+    <view class="dsc">每周三周五10点单词总数的后两位即为中奖号码（如果单词数不足两位，则会随机产生一个三位数）用户可在开奖日前押注（每次押注需花费1元计入本周账单）</view>
+</view>
+
+<view wx:if="{{user_bet.length>0}}" class="user-bet-main">
+    <view class="user-bet-title">您本期已押注：</view>
+    <view class="content">
+        <view wx:for="{{user_bet}}" wx:key="item" class="bar">
+            {{item.num}}
+        </view>
+    </view>
+
+</view>
+<view wx:else>
+    您尚未押注
+</view>
+<block wx:if="{{issue_status==0}}">
+    <view wx:if="{{lucky_users.length>0}}">
+        <block wx:for="{{lucky_users}}" wx:key="i">
+        <view class="word-bar">
+        <view class="user">
+            <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+            <view class="user-name">{{item.user_name}}</view>
+        </view>
+        <view class="word">中奖金额{{item.get_money}}</view>
+        </view>
+        </block>
+    </view>
+    <view wx:else>
+        <view>本期无中奖人员，奖金将计入下一期</view>
+    </view>
+</block>
+
+<!--<button bindtap="test">结束</button>-->
 
 <!--单词列表区域-->
 <view class="word-bar" wx:for="{{word_list}}" wx:key="i">
     <view class="user">
         <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-        <view>{{item.user_name}}</view>
+        <view class="user-name">{{item.user_name}}</view>
     </view>
     <view class="word">
         {{item.word}}
     </view>
 </view>
+<block wx:if="{{is_show_bet}}">
+    <view class="form-bet" bindtap="hideBet">
+        <view class="content" catchtap="stop">
+            <view class="title">押注
+                <text style="font-size:24rpx;">(花费1元)</text>
+            </view>
+            <view class="section">
+                <view class="tip-err">{{tip_str}}</view>
+                <input bindinput="getUserNum" placeholder="请输入金额（2位数）" type="digit" placeholder-class="placeholder"/>
+            </view>
+            <button disabled="{{is_disabled}}" catchtap="saveBet" type="primary">
+                确定
+            </button>
+        </view>
+    </view>
+</block>
 
-<view>
+
+<button class="bottom-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
     押注
-</view>
+</button>

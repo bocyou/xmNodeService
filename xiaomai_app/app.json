@@ -9,7 +9,8 @@
     "pages/shop_game/shop_game",
     "pages/bill/bill",
     "pages/shop_money/shop_money",
-    "pages/lottery/lottery"
+    "pages/lottery/lottery",
+    "pages/get_user_phone/get_user_phone"
    
   ],
   "window":{
