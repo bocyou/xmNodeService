@@ -178,7 +178,7 @@ router.post('/user_login', function (req, res, next) {
                         }, function (result, err) {
                             if (result) {
                                 //session存入数据库
-                                res.status(200).send({code: 200, result: true, session: randomSession,towords_phone:result[0].towords_phone});
+                                res.status(200).send({code: 200, result: true, session: randomSession,towords_phone:''});
 
                             } else {
                                 res.status(200).send({code: 200, result: false, message: '新建session失败'})
