@@ -297,7 +297,7 @@ router.post('/get_user_words', checkAppSession, function (req, res, next) {
                 } else {
                     var towords_data = JSON.parse(body);
                     if (towords_data.code == 200) {
-                        console.log(towords_data);
+
 
                         users = users.map(function (item, idx) {
                             item.word = towords_data.result[item.towords_phone];
