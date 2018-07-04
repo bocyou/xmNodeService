@@ -164,8 +164,8 @@ router.post('/user_login', function (req, res, next) {
 
                 var expires = new Date(new Date().getTime() + 20 * 24 * 60 * 60 * 1000);//过期时间
                 //判断此用户是否注册
-                mysql.find_one('users', 'open_id', userInfo.openid, function (result) {
-                    if (result && result.length > 0) {
+                mysql.find_one('users', 'open_id', userInfo.openid, function (user_result) {
+                    if (user_result && user_result.length > 0) {
                         //已经注册
                         //存入一条session记录
                         mysql.insert_one('custom_session', {
@@ -173,12 +173,12 @@ router.post('/user_login', function (req, res, next) {
                             expires: expires,
                             create_time: new Date(),
                             open_id: userInfo.openid,
-                            user_id: result[0].id,
-                            area: result[0].area
+                            user_id: user_result[0].id,
+                            area: user_result[0].area
                         }, function (result, err) {
                             if (result) {
                                 //session存入数据库
-                                res.status(200).send({code: 200, result: true, session: randomSession,towords_phone:''});
+                                res.status(200).send({code: 200, result: true, session: randomSession,towords_phone:user_result[0].towords_phone});
 
                             } else {
                                 res.status(200).send({code: 200, result: false, message: '新建session失败'})
