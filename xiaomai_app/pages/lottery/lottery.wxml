@@ -55,6 +55,7 @@
         {{item.word}}
     </view>
 </view>
+<view style="height:100rpx;"></view>
 <block wx:if="{{is_show_bet}}">
     <view class="form-bet" bindtap="hideBet">
         <view class="content" catchtap="stop">

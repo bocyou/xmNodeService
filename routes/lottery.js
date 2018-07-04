@@ -246,7 +246,7 @@ var work = {
     }
 
 };
-//周三，周五00:00，开奖
+//周三，周五00:00，开奖(结束当前期)
 //周六，周四00：00开启新一期
 var begin_bet = new schedule.RecurrenceRule();
 begin_bet.dayOfWeek = [3, 5];
@@ -254,7 +254,7 @@ begin_bet.hour = 00;
 begin_bet.minute = 00;
 
 var begin_bet_work = schedule.scheduleJob(begin_bet, function () {
-    work.startBet();
+    work.closeBet();
 
 });
 
@@ -263,7 +263,8 @@ close_bet.dayOfWeek = [4, 6];
 close_bet.hour = 00;
 close_bet.minute = 00;
 var close_bet_work = schedule.scheduleJob(close_bet, function () {
-    work.closeBet();
+
+    work.startBet();
 
 });
 
