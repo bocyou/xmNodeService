@@ -20,7 +20,8 @@ Page({
         issue_status:-1,
         current_lucky_num:'',
         money_poor:0,//奖金池余额
-        lucky_users:[]
+        lucky_users:[],
+        last_lucky_users:[]
     },
 
     /**
@@ -51,13 +52,12 @@ Page({
 
         util.checkPermission(function (userInfo) {
             //已登陆
-           console.log(userInfo);
            if(userInfo.towords_phone!=undefined&&userInfo.towords_phone!=null&&userInfo.towords_phone!=''){
                self.getBetIssue();
            }else{
-             /*  wx.redirectTo({
+              wx.redirectTo({
                    url: '../get_user_phone/get_user_phone'
-               })*/
+               })
            }
 
        /*     let today=new Date().getDay();
@@ -132,18 +132,17 @@ Page({
                 let data = res.data;
 
                 if (data.code == 200) {
-                    console.log(data);
 
                     self.setData({
                         issue_status:data.result.status,
                         issue:data.result.issue
                     });
                     self.getCurrentBet();//当前用户的本期押注记录
+                    self.getUserWord();//所有用户的背单词记录\
+                  if(data.result.status==1||data.result.status==2){
+                      //==1开始押注，==2置灰押注按钮
 
-                  if(data.result.status==1){
-                      //开始押注
-                      self.getUserWord();//所有用户的背单词记录
-
+                      self.getLastLuckyUser();
                   }else{
                       //开奖结果
                       self.setData({
@@ -160,6 +159,21 @@ Page({
                 } else {
                 }
 
+            }
+        });
+    },
+    getLastLuckyUser:function(){
+        let self=this;
+
+        util.request({
+            url: util.api + '/lottery/get_lucky_users', param: {issue:(self.data.issue-1)}, complete: function (res) {
+                let data = res.data;
+                if (data.code == 200) {
+                    self.setData({
+                        last_lucky_users:data.result
+                    });
+                } else {
+                }
             }
         });
     },
@@ -218,6 +232,7 @@ Page({
                     is_show_bet:false
                 });
                 if (data.code == 200&&data.result==true) {
+
                     wx.showToast({
                         title: '押注成功',
                         icon: 'none',

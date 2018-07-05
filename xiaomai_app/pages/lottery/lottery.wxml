@@ -1,21 +1,81 @@
 <!--pages/lottery/lottery.wxml-->
 <!--幸运数字-->
-<view>
-    <canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>
 
-</view>
-<view wx:if="{{issue_status==0}}">当前奖金池{{money_poor}}</view>
-<view>
-    <view wx:if="{{issue_status==1}}">第{{issue}}期押注已开始</view>
-    <view wx:else>本期中奖号码{{current_lucky_num}}</view>
-</view>
-<view class="rule" wx:if="{{issue_status==1}}">
-    <view class="title">规则：</view>
-    <view class="dsc">每周三周五10点单词总数的后两位即为中奖号码（如果单词数不足两位，则会随机产生一个三位数）用户可在开奖日前押注（每次押注需花费1元计入本周账单）</view>
-</view>
 
-<view wx:if="{{user_bet.length>0}}" class="user-bet-main">
-    <view class="user-bet-title">您本期已押注：</view>
+<block wx:if="{{issue_status==1 || issue_status==2}}">
+    <view class="header-title">
+        <block wx:if="{{issue_status==1}}">第{{issue}}期押注进行中</block>
+        <block wx:else>第{{issue}}期已停止押注</block>
+        <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
+        </navigator>
+    </view>
+
+    <view class="canvas">
+        <canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>
+    </view>
+
+    <block wx:if="{{issue_status==1&&issue>1}}">
+        <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
+            <view class="title">第{{issue-1}}期中奖人员<text>（每人分得{{last_lucky_users[0].get_money}}元已发到个人钱包）</text></view>
+            <view class="lucky-user">
+                <block wx:for="{{last_lucky_users}}" wx:key="i">
+                    <view class="user-info">
+                        <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+                        <view class="user-name">{{item.user_name}}</view>
+                        <!--<view class="word">金额{{item.get_money}}</view>-->
+
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view wx:else>
+            <view class="content-tip">上期无中奖人员!</view>
+        </view>
+        <navigator open-type="navigateTo" class="go-term-more" url="../lottery_term_info/lottery_term_info?issue={{issue-1}}"><text>more</text>
+        </navigator>
+    </block>
+
+
+
+    <button class="bottom-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
+        押注
+    </button>
+</block>
+<block wx:else>
+    <view class="header-title">第{{issue}}期押注已结束
+        <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
+        </navigator>
+    </view>
+    <view class="result-title">
+        <view class="title-tip">本期瓜分奖金{{money_poor}}</view>
+        <view class="title-tip">本期幸运号码{{current_lucky_num}}</view>
+    </view>
+
+    <!--本期中奖人员-->
+
+
+    <view wx:if="{{lucky_users.length>0}}" class="lucky-user-content block-content">
+        <view class="title">第{{issue}}期中奖人员<text>（每人分得{{lucky_users[0].get_money}}元已发到个人钱包）</text></view>
+        <view class="lucky-user">
+            <block wx:for="{{lucky_users}}" wx:key="i">
+                <view class="user-info">
+                    <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+                    <view class="user-name">{{item.user_name}}</view>
+                    <!--<view class="word">金额{{item.get_money}}</view>-->
+                </view>
+            </block>
+        </view>
+    </view>
+    <view wx:else>
+        <block wx:if="{{issue>1}}">
+        <view class="content-tip">本期无中奖人员，奖金将计入下一期!</view>
+        </block>
+    </view>
+</block>
+
+<!--押注模块-->
+<view wx:if="{{user_bet.length>0}}" class="user-bet-main block-content">
+    <view class="user-bet-title title">您本期已押注：</view>
     <view class="content">
         <view wx:for="{{user_bet}}" wx:key="item" class="bar">
             {{item.num}}
@@ -23,39 +83,30 @@
     </view>
 
 </view>
-<view wx:else>
-    您尚未押注
+<view wx:else class="content-tip">
+    您本期尚未押注！
 </view>
-<block wx:if="{{issue_status==0}}">
-    <view wx:if="{{lucky_users.length>0}}">
-        <block wx:for="{{lucky_users}}" wx:key="i">
-        <view class="word-bar">
-        <view class="user">
-            <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-            <view class="user-name">{{item.user_name}}</view>
-        </view>
-        <view class="word">中奖金额{{item.get_money}}</view>
-        </view>
-        </block>
-    </view>
-    <view wx:else>
-        <view>本期无中奖人员，奖金将计入下一期</view>
-    </view>
-</block>
+
 
 <!--<button bindtap="test">结束</button>-->
 
 <!--单词列表区域-->
-<view class="word-bar" wx:for="{{word_list}}" wx:key="i">
-    <view class="user">
-        <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-        <view class="user-name">{{item.user_name}}</view>
-    </view>
-    <view class="word">
-        {{item.word}}
+<view class="block-content">
+    <view class="title">当前拓词列表</view>
+    <view class="word-bar" wx:for="{{word_list}}" wx:key="i">
+        <view class="user">
+            <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+            <view class="user-name">{{item.user_name}}</view>
+        </view>
+        <view class="word">
+            <text>已拓词</text>{{item.word}}
+        </view>
     </view>
 </view>
+
 <view style="height:100rpx;"></view>
+
+
 <block wx:if="{{is_show_bet}}">
     <view class="form-bet" bindtap="hideBet">
         <view class="content" catchtap="stop">
@@ -72,8 +123,6 @@
         </view>
     </view>
 </block>
+<navigator open-type="switchTab" class="bottom-menu" url="../index/index">
 
-
-<button class="bottom-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
-    押注
-</button>
+</navigator>

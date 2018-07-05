@@ -147,7 +147,7 @@
     display:flex;
     align-items: center;
     justify-content: space-between;
-    padding:20rpx 30rpx;
+    padding:36rpx 30rpx;
     color:#717171;
     font-size:30rpx;
     background-color: #f5f5f6;

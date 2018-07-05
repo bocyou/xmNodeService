@@ -34,10 +34,10 @@ page{
   background-color: #f8f8f8;
 }
 .app-entry:nth-child(2n){
-  background-color:#eeeeee;
+
 }
 .app-entry .content{
-  background-color:rgba(0,0,0,.4);
+  background-color: rgba(198, 198, 198, 0.4);
   width:100%;
   display:flex;
   align-items: center;
@@ -55,9 +55,9 @@ page{
 }
 .app-entry .txt .title{
   font-weight:bold;
-  color:#fff;
+  color: #434343;
   font-size:48rpx;
-  text-shadow: 0 0 4px rgba(0,0,0,.5);
+  text-shadow: 0 0 1rpx rgba(0,0,0,.4);
   letter-spacing: 4rpx;
 }
 .app-entry .txt .description{

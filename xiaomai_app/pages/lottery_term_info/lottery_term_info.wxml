@@ -1,0 +1,45 @@
+<!--pages/lottery_term_info/lottery_term_info.wxml-->
+<view class="header-title">第{{issue}}期详情</view>
+<view style="padding:0 30rpx;">
+    <view>瓜分金额{{money}}</view>
+
+    <view>幸运数字{{lucky_num}}</view>
+</view>
+
+
+
+
+    <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
+        <view class="title">第{{issue}}期中奖人员<text>（每人分得{{last_lucky_users[0].get_money}}元已发到个人钱包）</text></view>
+        <view class="lucky-user">
+            <block wx:for="{{last_lucky_users}}" wx:key="i">
+                <view class="user-info">
+                    <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+                    <view class="user-name">{{item.user_name}}</view>
+
+
+                </view>
+            </block>
+        </view>
+    </view>
+    <view wx:else>
+        <view class="content-tip">本期无中奖人员!</view>
+    </view>
+
+
+<view wx:if="{{user_bet.length>0}}" class="user-bet-main block-content">
+    <view class="user-bet-title title">您在本期押注：</view>
+    <view class="content">
+        <view wx:for="{{user_bet}}" wx:key="item" class="bar">
+            {{item.num}}
+        </view>
+    </view>
+
+</view>
+<view wx:else class="content-tip">
+    您本期尚未押注！
+</view>
+
+<navigator open-type="switchTab" class="bottom-menu" url="../index/index">
+
+</navigator>
