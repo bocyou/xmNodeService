@@ -4,8 +4,8 @@
 
 <block wx:if="{{issue_status==1 || issue_status==2}}">
     <view class="header-title">
-        <block wx:if="{{issue_status==1}}">第{{issue}}期押注进行中</block>
-        <block wx:else>第{{issue}}期已停止押注</block>
+        <block wx:if="{{issue_status==1}}">第{{issue}}期单词拉练进行中</block>
+        <block wx:else>第{{issue}}期已停止预测</block>
         <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
         </navigator>
     </view>
@@ -16,20 +16,20 @@
 
     <block wx:if="{{issue_status==1&&issue>1}}">
         <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
-            <view class="title">第{{issue-1}}期中奖人员<text>（每人分得{{last_lucky_users[0].get_money}}元已发到个人钱包）</text></view>
+            <view class="title">第{{issue-1}}期幸运人员<text>（每人分得{{last_lucky_users[0].get_money}}颗麦粒已发到个人口袋）</text></view>
             <view class="lucky-user">
                 <block wx:for="{{last_lucky_users}}" wx:key="i">
                     <view class="user-info">
                         <view class="user-img" style="background-image:url({{item.user_img}})"></view>
                         <view class="user-name">{{item.user_name}}</view>
-                        <!--<view class="word">金额{{item.get_money}}</view>-->
+                        <!--<view class="word">{{item.get_money}}</view>-->
 
                     </view>
                 </block>
             </view>
         </view>
         <view wx:else>
-            <view class="content-tip">上期无中奖人员!</view>
+            <view class="content-tip">上期无幸运人员!</view>
         </view>
         <navigator open-type="navigateTo" class="go-term-more" url="../lottery_term_info/lottery_term_info?issue={{issue-1}}"><text>more</text>
         </navigator>
@@ -38,24 +38,24 @@
 
 
     <button class="bottom-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
-        押注
+         我要预测
     </button>
 </block>
 <block wx:else>
-    <view class="header-title">第{{issue}}期押注已结束
+    <view class="header-title">第{{issue}}期预测已结束
         <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
         </navigator>
     </view>
     <view class="result-title">
-        <view class="title-tip">本期瓜分奖金{{money_poor}}</view>
-        <view class="title-tip">本期幸运号码{{current_lucky_num}}</view>
+        <view class="title-tip">本期总麦粒{{money_poor}}</view>
+        <view class="title-tip">本期幸运数字{{current_lucky_num}}</view>
     </view>
 
     <!--本期中奖人员-->
 
 
     <view wx:if="{{lucky_users.length>0}}" class="lucky-user-content block-content">
-        <view class="title">第{{issue}}期中奖人员<text>（每人分得{{lucky_users[0].get_money}}元已发到个人钱包）</text></view>
+        <view class="title">第{{issue}}期幸运人员<text>（每人分得{{lucky_users[0].get_money}}颗麦粒已发到个人口袋）</text></view>
         <view class="lucky-user">
             <block wx:for="{{lucky_users}}" wx:key="i">
                 <view class="user-info">
@@ -68,14 +68,14 @@
     </view>
     <view wx:else>
         <block wx:if="{{issue>1}}">
-        <view class="content-tip">本期无中奖人员，奖金将计入下一期!</view>
+        <view class="content-tip">本期无幸运人员，总麦粒将计入下一期!</view>
         </block>
     </view>
 </block>
 
-<!--押注模块-->
+<!--预测模块-->
 <view wx:if="{{user_bet.length>0}}" class="user-bet-main block-content">
-    <view class="user-bet-title title">您本期已押注：</view>
+    <view class="user-bet-title title">您本期已预测：</view>
     <view class="content">
         <view wx:for="{{user_bet}}" wx:key="item" class="bar">
             {{item.num}}
@@ -84,7 +84,7 @@
 
 </view>
 <view wx:else class="content-tip">
-    您本期尚未押注！
+    您本期尚未预测！
 </view>
 
 
@@ -99,7 +99,7 @@
             <view class="user-name">{{item.user_name}}</view>
         </view>
         <view class="word">
-            <text>已拓词</text>{{item.word}}
+            <text>已拓词： </text>{{item.word}}
         </view>
     </view>
 </view>
@@ -110,12 +110,12 @@
 <block wx:if="{{is_show_bet}}">
     <view class="form-bet" bindtap="hideBet">
         <view class="content" catchtap="stop">
-            <view class="title">押注
-                <text style="font-size:24rpx;">(花费1元)</text>
+            <view class="title">预测
+                <text style="font-size:24rpx;">(花费1麦粒)</text>
             </view>
             <view class="section">
                 <view class="tip-err">{{tip_str}}</view>
-                <input bindinput="getUserNum" placeholder="请输入金额（2位数）" type="digit" placeholder-class="placeholder"/>
+                <input bindinput="getUserNum" placeholder="请输入（2位数）" type="digit" placeholder-class="placeholder"/>
             </view>
             <button disabled="{{is_disabled}}" catchtap="saveBet" type="primary">
                 确定

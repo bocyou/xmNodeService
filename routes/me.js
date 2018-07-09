@@ -96,12 +96,35 @@ router.post('/get_user_not_pay', function (req, res, next) {
 
                             mysql.findWeek('shop_money', 'user_id="' + user_id +'"', function (result3, err) {
                                 if (err == null) {
+                                    mysql.findWeek('user_bet', 'user_id="' + user_id +'"', function (result4, err) {
+                                        if (err == null) {
+                                          var money=0;
+                                          result1.forEach(function(item,idx){
+                                              money+=parseFloat(item.money)
+                                          });
+                                            result2.forEach(function(item,idx){
+                                                money+=parseFloat(item.money)
+                                            });
+                                            result3.forEach(function(item,idx){
+                                                money+=parseFloat(item.money)
+                                            });
+                                            result4.forEach(function(item,idx){
+                                                money+=parseFloat(item.pay_money)
+                                            });
 
-                                    res.status(200).send( {
-                                        code: 200,
-                                        result: {lucky: result1, dinner: result2,shop_money:result3},
-                                        message: "获取此用户本周账单成功"
+                                            res.status(200).send( {
+                                                code: 200,
+                                                result: {lucky: [{money:money}], dinner: [],shop_money:[]},
+                                                message: "获取此用户本周账单成功"
+                                            })
+                                        } else {
+
+                                            res.status(200).send( {code: 200, result: {}, message: "获取此用户有押注信息失败"})
+                                        }
+
                                     })
+
+
                                 } else {
 
                                     res.status(200).send( {code: 200, result: {}, message: "获取此用户订餐信息失败"})

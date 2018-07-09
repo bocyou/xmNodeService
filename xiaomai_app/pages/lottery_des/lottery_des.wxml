@@ -1,9 +1,9 @@
 <!--pages/lottery_des/lottery_des.wxml-->
 <view class="title">拓词猜猜看-规则</view>
 <view class="dsc">
-    <view class="p">1.每周三周五0点停止押注早上10点单词总数的后两位即为中奖号码（如果单词数不足两位，则会随机产生一个三位数）</view>
-    <view class="p">2.用户可在开奖日前押注（每次押注需花费1元计入本周账单）</view>
-    <view class="p">3.押中人员平分总奖金，计入个人钱包，若无中奖人员则奖金计入下一期</view>
+    <view class="p">1.每周三周五0点停止预测早上10点单词总数的后两位即为幸运号码（如果单词数不足两位，则会随机产生一个三位数）</view>
+    <view class="p">2.用户可在结果日前预测（每次预测需花费1元计入本周账单,每期预测不能超过10次）</view>
+    <view class="p">3.幸运人员平分总麦粒，计入个人口袋，若无幸运人员则麦粒计入下一期</view>
 </view>
 <navigator open-type="switchTab" class="bottom-menu" url="../index/index">
 

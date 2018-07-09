@@ -9,7 +9,7 @@
                <view style="color:#717171">网络较慢，正在拼命获取刮奖结果</view>
             </block>
             <block wx:elif="{{current_user_money==-2}}">
-                <view style="color:#717171">出现错误了！请退出重新抽奖</view>
+                <view style="color:#717171">出现错误了！请退出重新刮卡</view>
             </block>
             <block wx:else>
                 <view>

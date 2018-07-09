@@ -35,53 +35,75 @@ var billWork = {
                                 //上周小卖部差价
                                 mysql.findtest('shop_money', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result3) {
                                     if (err == null) {
-                                        var result_ary = result1.concat(result2, result3);
-
-                                        //提取userid相同的用户
-                                        var res_ary = [];
-                                        result_ary.sort(function (a, b) {
-                                            return a.user_id - b.user_id
-                                        });
-                                        var num = 0;
-                                        var usr = [];
-                                        for (var i = 0; i < result_ary.length;) {
-                                            var count = 0;
-                                            var sum_money = 0;
-                                            for (var j = i; j < result_ary.length; j++) {
-                                                if (result_ary[i].user_id == result_ary[j].user_id) {
-                                                    count++;
-                                                    sum_money += parseFloat(result_ary[j].spread_money == undefined ? result_ary[j].money : result_ary[j].spread_money);
-                                                }
-                                            }
-                                            usr[num] = [];
-                                            usr[num][0] = result_ary[i].user_id;
-                                            usr[num][1] = sum_money;
-                                            usr[num][2] = '1';
-                                            usr[num][3] = new Date();
-                                            usr[num][4] = '';
-                                            num++;
-
-                                            res_ary.push({
-                                                user_name: result_ary[i].user_name,
-                                                user_face: result_ary[i].user_img,
-                                                user_id: result_ary[i].user_id,
-                                                num: count,
-                                                money: sum_money
-                                            });
-                                            i += count;
-                                        }
-
-                                        mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`)', [usr], function (result, err) {
-                                            console.log(err);
+                                        mysql.findtest('user_bet', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result4) {
                                             if (err == null) {
-                                                console.log("本周账单分发成功" + new Date());
-                                                // res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
+                                                var result_ary = result1.concat(result2, result3,result4);
+
+                                                //提取userid相同的用户
+                                                var res_ary = [];
+                                                result_ary.sort(function (a, b) {
+                                                    return a.user_id - b.user_id
+                                                });
+                                                var num = 0;
+                                                var usr = [];
+                                                for (var i = 0; i < result_ary.length;) {
+                                                    var count = 0;
+                                                    var sum_money = 0;
+                                                    for (var j = i; j < result_ary.length; j++) {
+                                                        if (result_ary[i].user_id == result_ary[j].user_id) {
+                                                            count++;
+                                                            var money_num=0;
+                                                            if(result_ary[j].spread_money==undefined||result_ary[j].pay_money==undefined){
+                                                                if(result_ary[j].spread_money==undefined){
+                                                                    money_num=result_ary[j].pay_money;
+                                                                }else{
+                                                                    money_num=result_ary[j].spread_money;
+                                                                }
+
+                                                            }else {
+                                                                money_num=result_ary[j].money;
+                                                            }
+                                                            sum_money += parseFloat(money_num);
+                                                        }
+                                                    }
+                                                    usr[num] = [];
+                                                    usr[num][0] = result_ary[i].user_id;
+                                                    usr[num][1] = sum_money;
+                                                    usr[num][2] = '1';
+                                                    usr[num][3] = new Date();
+                                                    usr[num][4] = '';
+                                                    num++;
+
+                                                    res_ary.push({
+                                                        user_name: result_ary[i].user_name,
+                                                        user_face: result_ary[i].user_img,
+                                                        user_id: result_ary[i].user_id,
+                                                        num: count,
+                                                        money: sum_money
+                                                    });
+                                                    i += count;
+                                                }
+
+                                                mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`)', [usr], function (result, err) {
+                                                    console.log(err);
+                                                    if (err == null) {
+                                                        console.log("本周账单分发成功" + new Date());
+                                                        // res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
+                                                    } else {
+                                                        console.log("本周账单分发失败" + new Date());
+                                                        //res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
+                                                    }
+
+                                                });
+
+
                                             } else {
-                                                console.log("本周账单分发失败" + new Date());
-                                                //res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
+                                                console.log("获取用户押注金额失败" + new Date());
+                                                // res.status(200).send( {code: 200, result: {}, message: "获取此用户抽奖信息失败"})
                                             }
 
-                                        });
+                                        })
+
 
 
                                     } else {

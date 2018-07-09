@@ -22,13 +22,13 @@
 
 
 
-<!--未抽奖-->
+<!--未刮卡-->
 <block wx:elif="{{dinner_status=='no_draw'}}">
 <view class="no-draw" style="height:{{screenInfo.screenHeight}}px;">
 <view class="no-draw-block">
   <navigator open-type="redirectTo" class="app-entry" url="../lucky_draw/lucky_draw"> 
-  <view class="go-draw">去抽奖</view>
-   <view class="tip">检测到您还没有抽奖</view>
+  <view class="go-draw">去刮卡</view>
+   <view class="tip">检测到您还没有刮卡</view>
   </navigator>
 </view>
 </view>
