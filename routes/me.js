@@ -97,20 +97,31 @@ router.post('/get_user_not_pay', function (req, res, next) {
                             mysql.findWeek('shop_money', 'user_id="' + user_id +'"', function (result3, err) {
                                 if (err == null) {
                                     mysql.findWeek('user_bet', 'user_id="' + user_id +'"', function (result4, err) {
+
                                         if (err == null) {
                                           var money=0;
-                                          result1.forEach(function(item,idx){
-                                              money+=parseFloat(item.money)
-                                          });
-                                            result2.forEach(function(item,idx){
-                                                money+=parseFloat(item.money)
-                                            });
-                                            result3.forEach(function(item,idx){
-                                                money+=parseFloat(item.money)
-                                            });
-                                            result4.forEach(function(item,idx){
-                                                money+=parseFloat(item.pay_money)
-                                            });
+
+                                          if(result1.length>0){
+                                              result1.forEach(function(item,idx){
+                                                  money+=parseFloat(item.money)
+                                              });
+                                          }
+                                            if(result2.length>0){
+                                                result2.forEach(function(item,idx){
+                                                    money+=parseFloat(item.spread_money)
+                                                });
+                                            }
+                                            if(result3.length>0){
+                                                result3.forEach(function(item,idx){
+                                                    money+=parseFloat(item.money)
+                                                });
+                                            }
+                                            if(result4.length>0){
+                                                result4.forEach(function(item,idx){
+                                                    money+=parseFloat(item.pay_money)
+                                                })
+                                            }
+
 
                                             res.status(200).send( {
                                                 code: 200,
