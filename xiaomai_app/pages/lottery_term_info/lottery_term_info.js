@@ -110,7 +110,7 @@ Page({
         let self=this;
 
         util.request({
-            url: util.api + '/lottery/get_lucky_users', param: {issue:(self.data.issue-1)}, complete: function (res) {
+            url: util.api + '/lottery/get_lucky_users', param: {issue:(self.data.issue)}, complete: function (res) {
                 let data = res.data;
                 if (data.code == 200) {
                     self.setData({

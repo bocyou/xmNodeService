@@ -74,7 +74,7 @@ var work = {
                                                 var current_money = 0;//当期押注总金额
                                                 result.forEach(function (item, idx) {
                                                     current_money += parseFloat(item.pay_money);
-                                                    if (item.num == 12) {
+                                                    if (item.num == lucky_num) {
                                                         //中奖人员
                                                         val[i] = [];
                                                         val[i][0] = word_sum;
@@ -109,7 +109,7 @@ var work = {
                                                                         if (err) {
                                                                             console.log('计入用户钱包失败' + err);
                                                                         } else {
-                                                                            console.log('已计入用户钱包' + err);
+                                                                            console.log('已计入用户钱包');
                                                                             self.startBet();
 
                                                                         }
@@ -447,8 +447,7 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
 router.post('/get_lucky_users', checkAppSession, function (req, res, next) {
     //获取本期中奖人员
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
-        if (userInfo) {
+
             mysql.sql('SELECT lucky_num, user_img,user_name,get_money FROM lucky_num tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + req.body.issue + '"', function (err, result) {
                 if (err) {
                     res.status(200).send({code: 500, result: [], message: '获取本期中奖用户失败'});
@@ -457,10 +456,7 @@ router.post('/get_lucky_users', checkAppSession, function (req, res, next) {
                 }
             })
 
-        } else {
-            res.status(200).send({code: 502, result: false, message: "用户不合法"})
-        }
-    });
+
 
 });
 
