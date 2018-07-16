@@ -34,6 +34,7 @@ router.post('/save_shop_money', function (req, res, next) {
                            shopInjection({
                                way: 2,
                                money:1,
+                               user_id:userInfo[0].id,
                                success: function (data) {
                                    res.status(200).send( {code: 200, result: true,is_injection:true, message: '扫码入账成功,注资成功'})
                                },

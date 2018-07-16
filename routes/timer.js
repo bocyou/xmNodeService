@@ -252,7 +252,7 @@ var billWork = {
 
     },
     clearFormId: function () {
-        mysql.sql('delete from user_formid where create_time<DATE_ADD(now(),INTERVAL -7 day)', function (err, result) {
+        mysql.sql('delete from user_formid where create_time<DATE_ADD(now(),INTERVAL -3 day)', function (err, result) {
 
             if (result && err == null) {
                 console.log('删除formid成功');

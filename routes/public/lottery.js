@@ -125,7 +125,7 @@ module.exports = {
                                         console.log('计入本期赛事成功');
                                         //添加注资记录
 
-                                        mysql.insert_one('injection', {issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
+                                        mysql.insert_one('injection', {user_id:opt.user_id,issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
                                             if (result && err == null) {
 
                                                 //  res.status(200).send({code: 200, result: true, message: "注资成功"});
