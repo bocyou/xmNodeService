@@ -127,7 +127,7 @@ module.exports = {
 
                                         mysql.insert_one('injection', {user_id:opt.user_id,issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
                                             if (result && err == null) {
-
+                                                console.log('已注资');
                                                 //  res.status(200).send({code: 200, result: true, message: "注资成功"});
                                                 opt.success(result)
                                             } else {

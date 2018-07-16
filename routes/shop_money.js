@@ -29,6 +29,7 @@ router.post('/save_shop_money', function (req, res, next) {
             }, function (result, err) {
                 if (result&&err==null) {
                     if(money>0){
+                        console.log(Math.round(Math.random()));
                        if(Math.round(Math.random())==1){
                            //在奖池中注入1元
                            shopInjection({
@@ -36,13 +37,17 @@ router.post('/save_shop_money', function (req, res, next) {
                                money:1,
                                user_id:userInfo[0].id,
                                success: function (data) {
+                                   console.log(1);
+                                   console.log(data);
                                    res.status(200).send( {code: 200, result: true,is_injection:true, message: '扫码入账成功,注资成功'})
                                },
                                error: function (data) {
+                                   console.log(data);
                                    res.status(200).send( {code: 200, result: true,is_injection:false, message: '扫码入账成功,注资失败'+data})
                                }
                            });
                        }else{
+
                            res.status(200).send( {code: 200, result: true, message: '扫码入账成功'})
                        }
 

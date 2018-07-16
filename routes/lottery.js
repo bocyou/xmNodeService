@@ -222,36 +222,7 @@ var work = {
 
                 }
             });
-  /*          mysql.sql('SELECT * FROM bet_issue bi,(SELECT max(create_time) as max_time FROM bet_issue) max_bi WHERE bi.create_time = max_bi.max_time', function (err, result) {
-                if (err) {
-                    console.log('查询当前期失败' + err);
-                } else {
-                    if (result.length > 0) {
 
-                    } else {
-                        var term = {
-                            status: 1,
-                            create_time: new Date(),
-                            issue: 1,
-                            lucky_num: '',
-                            current_poor: '',
-                            is_win: '',
-                            begin_poor: 0,
-                            is_new:1
-                        };
-
-                        mysql.insert_one('bet_issue', term, function (result, err) {
-                            if (err) {
-                                console.log('开始下一期失败' + err);
-
-                            } else {
-                                console.log('成功开启下一期');
-
-                            }
-                        });
-                    }
-                }
-            })*/
 
         } catch (err) {
             console.log(err);
