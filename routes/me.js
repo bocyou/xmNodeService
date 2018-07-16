@@ -99,35 +99,49 @@ router.post('/get_user_not_pay', function (req, res, next) {
                                     mysql.findWeek('user_bet', 'user_id="' + user_id +'"', function (result4, err) {
 
                                         if (err == null) {
-                                          var money=0;
+                                            mysql.findWeek('injection', 'user_id="' + user_id +'"', function (result5, err) {
 
-                                          if(result1.length>0){
-                                              result1.forEach(function(item,idx){
-                                                  money+=parseFloat(item.money)
-                                              });
-                                          }
-                                            if(result2.length>0){
-                                                result2.forEach(function(item,idx){
-                                                    money+=parseFloat(item.spread_money)
-                                                });
-                                            }
-                                            if(result3.length>0){
-                                                result3.forEach(function(item,idx){
-                                                    money+=parseFloat(item.money)
-                                                });
-                                            }
-                                            if(result4.length>0){
-                                                result4.forEach(function(item,idx){
-                                                    money+=parseFloat(item.pay_money)
-                                                })
-                                            }
+                                                if (err == null) {
+                                                    var money=0;
 
+                                                    if(result1.length>0){
+                                                        result1.forEach(function(item,idx){
+                                                            money+=parseFloat(item.money)
+                                                        });
+                                                    }
+                                                    if(result2.length>0){
+                                                        result2.forEach(function(item,idx){
+                                                            money+=parseFloat(item.spread_money)
+                                                        });
+                                                    }
+                                                    if(result3.length>0){
+                                                        result3.forEach(function(item,idx){
+                                                            money+=parseFloat(item.money)
+                                                        });
+                                                    }
+                                                    if(result4.length>0){
+                                                        result4.forEach(function(item,idx){
+                                                            money+=parseFloat(item.pay_money)
+                                                        })
+                                                    }
+                                                    if(result5.length>0){
+                                                        result5.forEach(function(item,idx){
+                                                            money+=parseFloat(item.money)
+                                                        })
+                                                    }
 
-                                            res.status(200).send( {
-                                                code: 200,
-                                                result: {lucky: [{money:money}], dinner: [],shop_money:[]},
-                                                message: "获取此用户本周账单成功"
+                                                    res.status(200).send( {
+                                                        code: 200,
+                                                        result: {lucky: [{money:money}], dinner: [],shop_money:[]},
+                                                        message: "获取此用户本周账单成功"
+                                                    })
+                                                } else {
+
+                                                    res.status(200).send( {code: 200, result: {}, message: "获取此用户注资信息失败"})
+                                                }
+
                                             })
+
                                         } else {
 
                                             res.status(200).send( {code: 200, result: {}, message: "获取此用户有押注信息失败"})

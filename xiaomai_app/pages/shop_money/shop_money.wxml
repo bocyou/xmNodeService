@@ -3,10 +3,12 @@
 <block wx:if="{{money>0}}">
     <view class="money">{{money}}<text>元</text></view>
     <view class="tip">已计入本周消费</view>
+    <view class="tip-txt" wx:if="{{is_injection==1}}">由于您的消费小麦已向奖池注资1麦粒</view>
 </block>
 <block wx:elif="{{money==-1}}">
     <view class="tip-txt">正在识别价格……</view>
 </block>
+
 <block wx:else>
           <navigator open-type="switchTab" style="display:block;margin-top:70%;"  url="../index/index">
 <button type="default"> 回到首页 </button>

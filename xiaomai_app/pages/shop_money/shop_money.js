@@ -6,7 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-     money:-1
+     money:-1,
+      is_injection:0,
   },
 
   /**
@@ -18,13 +19,22 @@ Page({
      var money=options.money;
       wx.hideShareMenu();
      if(money>0){
-         util.request({
+/*         util.request({
              url: util.api+'/shop_money/save_shop_money',param:{money:money} ,complete: function (res) {
                  var data = res.data;
                  if(data.code==200){
-                     self.setData({
+                 if(data.is_injection){
+                       self.setData({
+                     is_injection:1,
                          money:money
                      });
+                 }else{
+                    self.setData({
+
+                         money:money
+                     });
+                 }
+
 
                  }else{
                      self.setData({
@@ -35,7 +45,7 @@ Page({
 
 
              }
-         });
+         });*/
      }
 
 

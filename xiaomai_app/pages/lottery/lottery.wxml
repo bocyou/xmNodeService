@@ -9,14 +9,18 @@
         <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
         </navigator>
     </view>
+    <view class="poor-title"><text>{{current_money}}</text> 麦粒</view>
 
-    <view class="canvas">
-        <canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>
+    <view class="week_words">
+        <view>本周拓词数：{{num1}}<text>{{num2}}</text></view>
+        <!--<canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>-->
     </view>
+
+    <button bindtap="showInjection">我要注资</button>
 
     <block wx:if="{{issue_status==1&&issue>1}}">
         <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
-            <view class="title">第{{issue-1}}期幸运人员<text>（每人分得{{last_lucky_users[0].get_money}}颗麦粒已发到个人口袋）</text></view>
+            <view class="title">第{{issue-1}}期幸运人员<view class="text">（每人分得<text class="particle">{{last_lucky_users[0].get_money}}</text>颗麦粒已发到个人口袋）</view></view>
             <view class="lucky-user">
                 <block wx:for="{{last_lucky_users}}" wx:key="i">
                     <view class="user-info">
@@ -118,6 +122,23 @@
                 <input bindinput="getUserNum" placeholder="请输入（2位数）" type="digit" placeholder-class="placeholder"/>
             </view>
             <button disabled="{{is_disabled}}" catchtap="saveBet" type="primary">
+                确定
+            </button>
+        </view>
+    </view>
+</block>
+
+<block wx:if="{{is_show_injection}}">
+    <view class="form-bet" bindtap="hideInjection">
+        <view class="content" catchtap="stop">
+            <view class="title">注资
+                <text style="font-size:24rpx;">(1麦粒起)</text>
+            </view>
+            <view class="section">
+                <view class="tip-err">{{inject_tip_str}}</view>
+                <input bindinput="getInjectionNum" placeholder="请输入金额" type="digit" placeholder-class="placeholder"/>
+            </view>
+            <button disabled="{{is_inject_disabled}}" catchtap="saveInjection" type="primary">
                 确定
             </button>
         </view>
