@@ -19,7 +19,7 @@ Page({
      var money=options.money;
       wx.hideShareMenu();
      if(money>0){
-/*         util.request({
+         util.request({
              url: util.api+'/shop_money/save_shop_money',param:{money:money} ,complete: function (res) {
                  var data = res.data;
                  if(data.code==200){
@@ -45,7 +45,7 @@ Page({
 
 
              }
-         });*/
+         });
      }
 
 

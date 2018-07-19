@@ -102,12 +102,14 @@ var work = {
                                                     //发送中奖消息
                                                 });
 
+                                                var last_all_money=current_money + begin_poor;//上一期总金额
 
                                                 if(val.length > 0 ){
                                                     //有中奖人员
                                                     //存入本期中奖人员20%抽入到小卖部
-                                                    var share_money = parseInt((current_money + begin_poor)*0.8 / i);//平均每个人所得钱数
-                                                    var shop_get_money=(current_money + begin_poor)-share_money*i;
+
+                                                    var share_money = parseInt(last_all_money*0.8 / i);//平均每个人所得钱数
+                                                    var shop_get_money=last_all_money-share_money*i;
                                                     for (var j = 0; j < val.length; j++) {
                                                         val[j].push(share_money);
                                                     }
@@ -117,7 +119,7 @@ var work = {
                                                             console.log('更新本期状态失败' + err);
                                                         } else {
                                                             //插入一条小麦收入记录,1代表拓词猜猜看
-                                                            mysql.insert_one('xm_get_money', {money:shop_get_money,way:1,issue:issue,create_time:new Date()}, function (result, err) {
+                                                            mysql.insert_one('xm_get_lottery', {money:shop_get_money,way:1,issue:issue,create_time:new Date()}, function (result, err) {
                                                                 if (err) {
                                                                     console.log('插入小麦收入记录失败' + err);
 
@@ -154,12 +156,23 @@ var work = {
 
                                                 }else{
                                                     console.log(word_sum);
+                                                    //更新当前期记录
                                                     mysql.sql('update bet_issue set is_new="0", status="0",lucky_num="' + word_sum + '",close_time="' + new Date().Format('yy-MM-dd HH:mm:ss') + '",is_win="0",current_poor="' + current_money + '" where id="' + term_id + '"', function (err, result) {
                                                         if (err) {
                                                             console.log('更新本期状态失败' + err);
                                                         } else {
-                                                            self.startBet(0,issue,current_money + begin_poor);
-                                                            console.log('本期无中奖人员');
+                                                            //插入一条小麦收入记录,1代表拓词猜猜看
+                                                            var xm_get_money=parseFloat(last_all_money*0.2);//小麦分成20%；
+                                                            mysql.insert_one('xm_get_lottery', {money:xm_get_money,way:1,issue:issue,create_time:new Date()}, function (result, err) {
+                                                                if (err) {
+                                                                    console.log('插入小麦收入记录失败' + err);
+                                                                } else {
+                                                                    self.startBet(0,issue,last_all_money-xm_get_money);
+                                                                    console.log('本期无中奖人员');
+
+                                                                }
+                                                            });
+
 
 
                                                         }
@@ -666,18 +679,87 @@ router.post('/injection_money', checkSession, function (req, res, next) {
 
 
 router.post('/injection_info', checkSession, function (req, res, next) {
-    //获取注资金额
+    //获取本期注资金额
     res.header("Access-Control-Allow-Origin", "*");
-
-    mysql.sql('SELECT * FROM injection', function (err, result) {
+    mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
         if (err) {
-            res.status(200).send({code: 500, result: [], message: '获取所有押注信息失败'});
+            console.log('获取期数失败');
         } else {
+            var issue = result[0].issue;
+            var term_id = result[0].id;
+            mysql.sql('SELECT way, user_img,user_name,money,tab1.create_time,issue FROM injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="'+issue+'"', function (err, result) {
+                if (err) {
+                    console.log(err)
+                    res.status(200).send({code: 500, result: [], message: '获取本期注资失败'});
+                } else {
 
-            res.status(200).send({code: 200, result: result, message: '获取所有押注信息成功'});
+                    res.status(200).send({code: 200, result: result, message: '获取本期注资信息成功'});
+                }
+            })
         }
-    })
+    });
+
 });
 
+
+
+router.post('/current_user_bet', checkSession, function (req, res, next) {
+    //获取本期押注信息
+    res.header("Access-Control-Allow-Origin", "*");
+    mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
+        if (err) {
+            console.log('获取期数失败');
+        } else {
+            var issue = result[0].issue;
+            var term_id = result[0].id;
+            mysql.sql('SELECT  user_img,user_name,num,tab1.create_time,issue,tab1.user_id FROM user_bet tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="'+(issue)+'"', function (err, result) {
+                if (err) {
+
+                    res.status(200).send({code: 500, result: [], message: '获取本期押注信息失败'});
+                } else {
+
+                    var ary=result;
+                    var result_ary = [];
+                    ary.sort(function(a,b){
+                        return a.user_id-b.user_id;
+                    });
+                    for (var i = 0; i < ary.length;) {
+                        var count = 0;
+                        var bet_ary=[];
+                        for (var j = i; j < ary.length; j++) {
+
+                            if (ary[i].user_id == ary[j].user_id) {
+                                bet_ary.push(ary[j].num);
+                                count++;
+                            }
+                        }
+                        result_ary.push({issue:ary[i].issue,user_name:ary[i].user_name,user_img:ary[i].user_img,bet:bet_ary});
+                        i += count;
+                    }
+
+
+                    res.status(200).send({code: 200, result: result_ary, message: '获取本期押注信息成功'});
+                }
+            })
+        }
+    });
+
+});
+
+
+router.post('/xm_get_lottery_money', checkSession, function (req, res, next) {
+    //获取小麦收益
+    res.header("Access-Control-Allow-Origin", "*");
+    mysql.sql('SELECT * FROM xm_get_lottery', function (err, result) {
+        if (err) {
+            console.log(err)
+            res.status(200).send({code: 500, result: [], message: '获取小麦收益失败'});
+        } else {
+
+            res.status(200).send({code: 200, result: result, message: '获取小麦收益成功'});
+        }
+    })
+
+});
 
 module.exports = router;

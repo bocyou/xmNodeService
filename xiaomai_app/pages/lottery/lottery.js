@@ -142,6 +142,7 @@ Page({
                         self.setData({
                             current_money:data.result.poor_money
                         });
+                        self.getCurrentBet();//当前用户的本期记录
                     }else{
                         self.setData({
                             issue_status:data.result.term_info.status,
