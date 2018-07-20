@@ -64,8 +64,8 @@ var work = {
                                 if (word_sum < 100) {
                                     word_sum = Math.round(Math.random() * 1000);
                                 }
-                                var lucky_num = word_sum.toString().substr(word_sum.length - 2, 2);
-
+                                var lucky_num = word_sum.toString().substr(word_sum.toString().length - 2,2);
+                            console.log(lucky_num);
 
                                 //获取当前是第几期
                                 mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
