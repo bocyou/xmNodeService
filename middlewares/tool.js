@@ -16,7 +16,8 @@ module.exports = {
         })
 
 },
-getCurrentSession:function(session,callback,res){
+getCurrentSession:function(req,res,callback){
+    var session=req.headers.sessionkey;
         mysql.find_one('custom_session','session_key',[session], function (result) {
 
         if (result) {

@@ -574,7 +574,7 @@ router.post('/get_dinner_list', function(req, res, next) {
 
     var day=new Date().getDay();
 
-  getCurrentSession(req.headers.sessionkey, function(user_info) {
+  getCurrentSession(req,res, function(user_info) {
     if (user_info && user_info.length > 0) {
       var user_id = user_info[0].user_id;
       if (user_info[0].area == 'bj') {

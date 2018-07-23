@@ -51,7 +51,7 @@ router.post('/bind_towords_phone', function (req, res, next) {
 //获取钱包余额
 router.post('/get_user_wallet', function (req, res, next) {
 
-    getCurrentSession(req.headers.sessionkey, function (user_info) {
+    getCurrentSession(req,res, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
 
@@ -84,7 +84,7 @@ router.post('/get_user_wallet', function (req, res, next) {
 //获取本周总钱数
 router.post('/get_user_not_pay', function (req, res, next) {
 
-    getCurrentSession(req.headers.sessionkey, function (user_info) {
+    getCurrentSession(req,res, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
 
@@ -180,7 +180,7 @@ router.post('/get_user_not_pay', function (req, res, next) {
 //获取本月用户账单
 router.post('/get_user_month_bill', function (req, res, next) {
 
-    getCurrentSession(req.headers.sessionkey, function (user_info) {
+    getCurrentSession(req,res,function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
 
@@ -220,7 +220,7 @@ router.post('/get_all_user_bill', function (req, res, next) {
 //获取当前用户本周账单
 router.post('/get_user_bill', function (req, res, next) {
 
-    getCurrentSession(req.headers.sessionkey, function (user_info) {
+    getCurrentSession(req,res, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
             mysql.conditionSearch('user_bill', 'status="1" AND user_id="' + user_id + '"', function (result, err) {
