@@ -12,7 +12,8 @@
     "pages/lottery/lottery",
     "pages/lottery_des/lottery_des",
     "pages/lottery_term_info/lottery_term_info",
-    "pages/get_user_phone/get_user_phone"
+    "pages/get_user_phone/get_user_phone",
+    "pages/xm_rule/xm_rule"
    
   ],
   "window":{

@@ -1,0 +1,14 @@
+/* pages/xm_rule/xm_rule.wxss */
+.block{
+    padding:0 30rpx;
+    background-color:#fff;
+
+}
+.block .title{
+    font-size:36rpx;
+}
+
+.block .txt{
+    font-size:28rpx;
+    color:#717171;
+}

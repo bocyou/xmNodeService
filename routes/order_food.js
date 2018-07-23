@@ -650,7 +650,7 @@ router.post('/get_dinner_list', function(req, res, next) {
 
 //保存用客户订餐信息order_food_user
 router.post('/save_user_dinnerlist', function(req, res, next) {
-  getUserInfo(req.headers.sessionkey, function(userInfo) {
+  getUserInfo(req,res, function(userInfo) {
     if (userInfo) {
       var dinner_list = req.body.dinner_list;
       var spread_money = req.body.spread_money;
