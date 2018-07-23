@@ -258,8 +258,10 @@ router.post('/user_sign_up', function (req, res, next) {
                                     mysql.insertOne(addUser, function (result, err) {
                                         if (result) {
                                             //创建钱包
+                                            console.log(result);
+                                            var user_id=result.insertId;
                                             mysql.insert_one('user_wallet', {
-                                                user_id: result.insertId,
+                                                user_id: user_id,
                                                 money:0
 
                                             }, function (result, err) {
@@ -269,7 +271,7 @@ router.post('/user_sign_up', function (req, res, next) {
                                                         expires: expires,
                                                         create_time: new Date(),
                                                         open_id: userInfo.openid,
-                                                        user_id: result.insertId,
+                                                        user_id: user_id,
                                                         area: req_data.area
                                                     }, function (result, err) {
                                                         if (result) {

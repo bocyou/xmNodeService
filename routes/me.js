@@ -23,8 +23,6 @@ router.post('/bind_towords_phone', function (req, res, next) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
 
-           console.log(user_id);
-           console.log(req.body.phone);
             mysql.sql('update users set towords_phone="'+req.body.phone+'" where id="' + user_id + '"', function (err, result) {
                 if (err) {
                     res.status(200).send( {
@@ -55,8 +53,7 @@ router.post('/get_user_wallet', function (req, res, next) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
 
-            console.log(user_id);
-            console.log(req.body.phone);
+
             mysql.sql('select * from user_wallet  where user_id="' + user_id + '"', function (err, result) {
                 if (err) {
                     res.status(200).send( {
@@ -357,7 +354,6 @@ router.post('/get_area_lastmonth_bill_list', function (req, res, next) {
 router.post('/user_pay_bill', function (req, res, next) {
 
     var bill_id = req.body.bill_id;
-    console.log(new Date().Format('yyyy-MM-dd HH:mm:ss'));
     mysql.updateData('user_bill', 'bill_id="' + bill_id + '"', 'status=0,update_time="' + new Date().Format('yyyy-MM-dd HH:mm:ss') + '"', function (result, err) {
         if (result) {
             res.status(200).send( {code: 200, result: true, message: '账单已结清'});
@@ -374,7 +370,6 @@ router.post('/refresh_user_face', function (req, res, next) {
 
     getUserInfo(req,res, function (user_info) {
         if (user_info) {
-            console.log(req.body.user_img);
                 mysql.sql('update users set user_img = '+JSON.stringify(req.body.user_img)+' where id = ' + user_info[0].id,function(err,result){
 
                     if (result) {
