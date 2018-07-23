@@ -19,7 +19,7 @@ router.get('/', function (req, res) {
 //绑定手机号
 router.post('/bind_towords_phone', function (req, res, next) {
 
-    getCurrentSession(req.headers.sessionkey, function (user_info) {
+    getCurrentSession(req,res, function (user_info) {
         if (user_info && user_info.length > 0) {
             var user_id = user_info[0].user_id;
 
@@ -372,7 +372,7 @@ router.post('/user_pay_bill', function (req, res, next) {
 
 router.post('/refresh_user_face', function (req, res, next) {
 
-    getUserInfo(req.headers.sessionkey, function (user_info) {
+    getUserInfo(req,res, function (user_info) {
         if (user_info) {
             console.log(req.body.user_img);
                 mysql.sql('update users set user_img = '+JSON.stringify(req.body.user_img)+' where id = ' + user_info[0].id,function(err,result){

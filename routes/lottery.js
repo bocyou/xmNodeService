@@ -406,11 +406,11 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
     //保存用户押注数据同时检查是否存在相同押注
 
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res,function (userInfo) {
         if (userInfo) {
             //获取当前期的状态
-            if (userInfo[0].id == 71) {
-                console.log('延姐');
+            if (userInfo[0].id == 48) {
+                console.log('延姐押注');
 
 
                 mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
@@ -583,7 +583,7 @@ router.post('/get_lucky_users', checkAppSession, function (req, res, next) {
 router.post('/get_user_bet', checkAppSession, function (req, res, next) {
     //获取本人押注号码
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo) {
             mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
                 if (err) {
@@ -618,7 +618,7 @@ router.post('/get_users_bet', checkAppSession, function (req, res, next) {
 router.post('/get_bet_issue', checkAppSession, function (req, res, next) {
     //获取期数
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res,function (userInfo) {
         if (userInfo) {
             mysql.sql('SELECT * FROM bet_issue bi,(SELECT max(create_time) as max_time FROM bet_issue) max_bi WHERE bi.create_time = max_bi.max_time', function (err, result) {
                 if (err) {
@@ -652,7 +652,7 @@ router.post('/get_custom_bet_issue', checkAppSession, function (req, res, next) 
 router.post('/user_injection_money', checkAppSession, function (req, res, next) {
     //
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo) {
 
             userInjectionMethod({

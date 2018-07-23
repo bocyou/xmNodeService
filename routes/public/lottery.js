@@ -113,7 +113,6 @@ module.exports = {
                                 injection_money+=parseFloat(item.money)
                             });
                             if(injection_money>=30){
-                                console.log('注入资金已超过30');
                                 opt.error('注入资金已超过30');
                             }else{
                                 //更新本期的begin_poor

@@ -104,7 +104,7 @@ router.post('/area_user_draw_list',checkSession, function (req, res, next) {
 
 
 router.post('/check_current_user', function (req, res, next) {
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo.length > 0) {
             res.status(200).send({code: 200, result: true, message: "该用户合法"})
         } else {
@@ -130,7 +130,7 @@ function checkRepeat(obj, ary) {
 
 router.post('/month_top_list', checkAppSession, function (req, res, next) {
 
-    getUserInfo(req.headers.sessionkey, function (user_info) {
+    getUserInfo(req,res, function (user_info) {
         if (user_info) {
             mysql.sql('SELECT * FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE date_format(create_time,"%Y-%m")=date_format(now(),"%Y-%m") and area="' + user_info[0].area + '"', function (err, result) {
 
@@ -195,7 +195,7 @@ router.post('/month_top_list', checkAppSession, function (req, res, next) {
 //获取所有用户(当天的)刮奖数据并区分当前用户
 
 router.post('/get_user_draw_list', checkAppSession, function (req, res, next) {
-    getUserInfo(req.headers.sessionkey, function (user_info) {
+    getUserInfo(req,res,function (user_info) {
         if (user_info) {
             mysql.sql('SELECT user_img,user_name,money FROM lucky_user_list tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE to_days(create_time) = to_days(now()) AND area="' + user_info[0].area + '"', function (err, result) {
                 if (result && result.length > 0) {
@@ -224,7 +224,7 @@ router.post('/get_user_draw_list', checkAppSession, function (req, res, next) {
 router.post('/check_current_user_draw', checkAppSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
 
-    getUserInfo(req.headers.sessionkey, function (user_info) {
+    getUserInfo(req,res,function (user_info) {
         if (user_info) {
             mysql.findToday('lucky_user_list', 'user_id="' + user_info[0].id + '"', function (result, err) {
                 if (result && result.length > 0) {
@@ -245,7 +245,7 @@ router.post('/check_current_user_draw', checkAppSession, function (req, res, nex
 
 router.post('/save_user_draw', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res,function (userInfo) {
         if (userInfo.length > 0) {
 
             var bar = {

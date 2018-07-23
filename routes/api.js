@@ -86,7 +86,7 @@ router.post('/get_current_userinfo', checkSession, function (req, res, next) {
 
 
 router.post('/check_current_user', function (req, res, next) {
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo.length > 0) {
             res.status(200).send({code: 200, result: true, message: "该用户合法"})
         } else {
@@ -118,7 +118,7 @@ router.post('/get_version_status', function (req, res, next) {
 
 router.post('/get_user_info', function (req, res, next) {
 
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo.length > 0) {
             var user_info=userInfo[0];
             console.log(req.headers.v);
@@ -335,7 +335,7 @@ router.post('/user_sign_up', function (req, res, next) {
 //收集用户formid
 router.post('/save_user_fromid', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo.length > 0) {
             mysql.insert_one('user_formid', {
                 formid: req.body.formid,
@@ -460,7 +460,7 @@ router.post('/get_all_user', function (req, res, next) {
 });
 router.post('/get_current_user', function (req, res, next) {
 //获取当前用户信息
-    getUserInfo(req.headers.sessionkey, function (userInfo) {
+    getUserInfo(req,res, function (userInfo) {
         if (userInfo && userInfo.length > 0) {
             var user_info = {
                 wx_name: userInfo[0].wx_name,
