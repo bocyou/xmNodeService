@@ -10,7 +10,7 @@ var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
 var injectionMethod = require('../routes/public/lottery').injection;
-var userInjectionMethod=require('../routes/public/lottery').userInjectionMethod;
+var userInjectionMethod = require('../routes/public/lottery').userInjectionMethod;
 var schedule = require('node-schedule');
 
 router.get('/', function (req, res) {
@@ -30,7 +30,7 @@ var work = {
             mysql.sql('SELECT area,id,user_name,user_img,towords_phone FROM users  WHERE area="bj" AND towords_phone is not null', function (err, result) {
                 if (err) {
 
-                    throw {err:err,message:'查询拓词数量失败'};
+                    throw {err: err, message: '查询拓词数量失败'};
                 } else {
                     var users = result;
                     var phone_ary = [];
@@ -45,7 +45,7 @@ var work = {
                     }, function optionalCallback(err, httpResponse, body) {
                         if (err) {
                             //res.status(200).send({code: 500, result: [],message:'与拓词服务器交互失败'});
-                            throw {err:err,message:'与拓词服务器交互失败'};
+                            throw {err: err, message: '与拓词服务器交互失败'};
                         } else {
                             var towords_data = JSON.parse(body);
                             if (towords_data.code == 200) {
@@ -56,23 +56,23 @@ var work = {
 
                                 for (var item in towords_data.result) {
 
-                                    var words=towords_data.result[item];
-                                    if(words.toString().search(/\D/ig)==-1){
+                                    var words = towords_data.result[item];
+                                    if (words.toString().search(/\D/ig) == -1) {
                                         word_sum += parseInt(towords_data.result[item]);
                                     }
                                 }
                                 if (word_sum < 100) {
                                     word_sum = Math.round(Math.random() * 1000);
                                 }
-                                var lucky_num = word_sum.toString().substr(word_sum.toString().length - 2,2);
-                            console.log(lucky_num);
+                                var lucky_num = word_sum.toString().substr(word_sum.toString().length - 2, 2);
+                                console.log(lucky_num);
 
                                 //获取当前是第几期
                                 mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
                                     if (err) {
                                         console.log('获取期数失败');
                                     } else {
-                                        var current_term=result[0];
+                                        var current_term = result[0];
                                         var issue = result[0].issue;
                                         var term_id = result[0].id;
                                         var begin_poor = parseInt(result[0].begin_poor);
@@ -102,14 +102,14 @@ var work = {
                                                     //发送中奖消息
                                                 });
 
-                                                var last_all_money=current_money + begin_poor;//上一期总金额
+                                                var last_all_money = current_money + begin_poor;//上一期总金额
 
-                                                if(val.length > 0 ){
+                                                if (val.length > 0) {
                                                     //有中奖人员
                                                     //存入本期中奖人员20%抽入到小卖部
 
-                                                    var share_money = parseInt(last_all_money*0.8 / i);//平均每个人所得钱数
-                                                    var shop_get_money=last_all_money-share_money*i;
+                                                    var share_money = parseInt(last_all_money * 0.8 / i);//平均每个人所得钱数
+                                                    var shop_get_money = last_all_money - share_money * i;
                                                     for (var j = 0; j < val.length; j++) {
                                                         val[j].push(share_money);
                                                     }
@@ -119,7 +119,12 @@ var work = {
                                                             console.log('更新本期状态失败' + err);
                                                         } else {
                                                             //插入一条小麦收入记录,1代表拓词猜猜看
-                                                            mysql.insert_one('xm_get_lottery', {money:shop_get_money,way:1,issue:issue,create_time:new Date()}, function (result, err) {
+                                                            mysql.insert_one('xm_get_lottery', {
+                                                                money: shop_get_money,
+                                                                way: 1,
+                                                                issue: issue,
+                                                                create_time: new Date()
+                                                            }, function (result, err) {
                                                                 if (err) {
                                                                     console.log('插入小麦收入记录失败' + err);
 
@@ -134,7 +139,7 @@ var work = {
                                                                                     console.log('计入用户钱包失败' + err);
                                                                                 } else {
                                                                                     console.log('已计入用户钱包');
-                                                                                    self.startBet(1,issue,0);
+                                                                                    self.startBet(1, issue, 0);
 
                                                                                 }
                                                                             })
@@ -150,11 +155,10 @@ var work = {
                                                             });
 
 
-
                                                         }
                                                     });
 
-                                                }else{
+                                                } else {
                                                     console.log(word_sum);
                                                     //更新当前期记录
                                                     mysql.sql('update bet_issue set is_new="0", status="0",lucky_num="' + word_sum + '",close_time="' + new Date().Format('yy-MM-dd HH:mm:ss') + '",is_win="0",current_poor="' + current_money + '" where id="' + term_id + '"', function (err, result) {
@@ -162,25 +166,27 @@ var work = {
                                                             console.log('更新本期状态失败' + err);
                                                         } else {
                                                             //插入一条小麦收入记录,1代表拓词猜猜看
-                                                            var xm_get_money=parseFloat(last_all_money*0.2);//小麦分成20%；
-                                                            mysql.insert_one('xm_get_lottery', {money:xm_get_money,way:1,issue:issue,create_time:new Date()}, function (result, err) {
+                                                            var xm_get_money = parseFloat(last_all_money * 0.2);//小麦分成20%；
+                                                            mysql.insert_one('xm_get_lottery', {
+                                                                money: xm_get_money,
+                                                                way: 1,
+                                                                issue: issue,
+                                                                create_time: new Date()
+                                                            }, function (result, err) {
                                                                 if (err) {
                                                                     console.log('插入小麦收入记录失败' + err);
                                                                 } else {
-                                                                    self.startBet(0,issue,last_all_money-xm_get_money);
+                                                                    self.startBet(0, issue, last_all_money - xm_get_money);
                                                                     console.log('本期无中奖人员');
 
                                                                 }
                                                             });
 
 
-
                                                         }
                                                     });
 
                                                 }
-
-
 
 
                                             }
@@ -204,7 +210,7 @@ var work = {
 
 
     },
-    startBet: function (is_win,issue,begin_money) {
+    startBet: function (is_win, issue, begin_money) {
         var self = this;
         try {
 
@@ -216,7 +222,7 @@ var work = {
                 current_poor: '',
                 is_win: '',
                 begin_poor: 0,
-                is_new:1
+                is_new: 1
             };
 
 
@@ -376,10 +382,10 @@ router.post('/get_user_words', checkAppSession, function (req, res, next) {
 
 
                         users = users.map(function (item, idx) {
-                            if(towords_data.result[item.towords_phone]){
+                            if (towords_data.result[item.towords_phone]) {
                                 item.word = towords_data.result[item.towords_phone];
-                            }else{
-                                item.word=0
+                            } else {
+                                item.word = 0
                             }
 
                             return item;
@@ -403,73 +409,152 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
     getUserInfo(req.headers.sessionkey, function (userInfo) {
         if (userInfo) {
             //获取当前期的状态
-            mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
-                if (err) {
-                    console.log('获取期数失败');
-                } else {
-                    var issue = result[0].issue;
-                    var term_id = result[0].id;
-                    var term_status = result[0].status;
-                    if (term_status == 1) {
-                        mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
-                            if (err) {
-                                res.status(200).send({code: 500, result: [], message: '查询数据库时失败'});
-                            } else {
-                                var user_num = req.body.num;
-
-                                function isRepeat(ary) {
-                                    for (var i = 0; i < ary.length; i++) {
-                                        if (ary[i].num == user_num) {
-                                            //说明存在重复号码
-                                            return true
-                                        }
-                                    }
-                                    return false
-                                }
-
-                                if (result.length >= 0 && result.length < 10) {
-                                    //保存
-
-                                    if (isRepeat(result)) {
-                                        //重复
-                                        res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
-                                    } else {
-                                        var param = {
-                                            user_id: userInfo[0].id,
-                                            create_time: new Date(),
-                                            num: req.body.num,
-                                            pay_money: 1,
-                                            issue: req.body.issue
-                                        };
-
-                                        mysql.insert_one('user_bet', param, function (result, err) {
-                                            console.log(err);
-                                            if (result && err == null) {
-                                                res.status(200).send({code: 200, result: true, message: "保存成功"});
-
-                                            } else {
-                                                res.status(200).send({code: 500, result: false, message: '保存失败'});
-
-                                            }
-                                        });
-                                    }
+            if (userInfo[0].id == 71) {
+                console.log('延姐');
 
 
-                                } else if (result.length >= 10) {
-                                    res.status(200).send({code: 500, result: [], message: '每期押注不能超过10个'});
-                                } else {
-                                    res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
-                                }
-                            }
-                        });
-                    } else if (term_status == 2) {
-                        res.status(200).send({code: 500, result: [], message: '本期已停止押注'});
+                mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
+                    if (err) {
+                        console.log('获取期数失败');
                     } else {
-                        res.status(200).send({code: 500, result: [], message: '本期已结束'});
-                    }
+                        var issue = result[0].issue;
+                        var term_id = result[0].id;
+                        var term_status = result[0].status;
+                        if (term_status == 1) {
+                            mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
+                                if (err) {
+                                    res.status(200).send({code: 500, result: [], message: '查询数据库时失败'});
+                                } else {
+                                    var user_num = req.body.num;
 
-                }
-            });
+                                    function isRepeat(ary) {
+                                        for (var i = 0; i < ary.length; i++) {
+                                            if (ary[i].num == user_num) {
+                                                //说明存在重复号码
+                                                return true
+                                            }
+                                        }
+                                        return false
+                                    }
+
+                                    if (result.length >= 0 && result.length < 10) {
+                                        //保存
+
+                                        if (isRepeat(result)) {
+                                            //重复
+                                            res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
+                                        } else {
+                                            var param = {
+                                                user_id: userInfo[0].id,
+                                                create_time: new Date(),
+                                                num: req.body.num,
+                                                pay_money: 1,
+                                                issue: req.body.issue
+                                            };
+                                            if (result.length <= 1) {
+                                                param.pay_money = 0;
+                                            }
+
+
+                                            mysql.insert_one('user_bet', param, function (result, err) {
+                                                console.log(err);
+                                                if (result && err == null) {
+                                                    res.status(200).send({code: 200, result: true, message: "保存成功"});
+
+                                                } else {
+                                                    res.status(200).send({code: 500, result: false, message: '保存失败'});
+
+                                                }
+                                            });
+                                        }
+
+
+                                    } else if (result.length >= 10) {
+                                        res.status(200).send({code: 500, result: [], message: '每期押注不能超过10个'});
+                                    } else {
+                                        res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
+                                    }
+                                }
+                            });
+                        } else if (term_status == 2) {
+                            res.status(200).send({code: 500, result: [], message: '本期已停止押注'});
+                        } else {
+                            res.status(200).send({code: 500, result: [], message: '本期已结束'});
+                        }
+
+                    }
+                });
+
+
+            } else {
+                mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
+                    if (err) {
+                        console.log('获取期数失败');
+                    } else {
+                        var issue = result[0].issue;
+                        var term_id = result[0].id;
+                        var term_status = result[0].status;
+                        if (term_status == 1) {
+                            mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
+                                if (err) {
+                                    res.status(200).send({code: 500, result: [], message: '查询数据库时失败'});
+                                } else {
+                                    var user_num = req.body.num;
+
+                                    function isRepeat(ary) {
+                                        for (var i = 0; i < ary.length; i++) {
+                                            if (ary[i].num == user_num) {
+                                                //说明存在重复号码
+                                                return true
+                                            }
+                                        }
+                                        return false
+                                    }
+
+                                    if (result.length >= 0 && result.length < 10) {
+                                        //保存
+
+                                        if (isRepeat(result)) {
+                                            //重复
+                                            res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
+                                        } else {
+                                            var param = {
+                                                user_id: userInfo[0].id,
+                                                create_time: new Date(),
+                                                num: req.body.num,
+                                                pay_money: 1,
+                                                issue: req.body.issue
+                                            };
+
+                                            mysql.insert_one('user_bet', param, function (result, err) {
+                                                console.log(err);
+                                                if (result && err == null) {
+                                                    res.status(200).send({code: 200, result: true, message: "保存成功"});
+
+                                                } else {
+                                                    res.status(200).send({code: 500, result: false, message: '保存失败'});
+
+                                                }
+                                            });
+                                        }
+
+
+                                    } else if (result.length >= 10) {
+                                        res.status(200).send({code: 500, result: [], message: '每期押注不能超过10个'});
+                                    } else {
+                                        res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
+                                    }
+                                }
+                            });
+                        } else if (term_status == 2) {
+                            res.status(200).send({code: 500, result: [], message: '本期已停止押注'});
+                        } else {
+                            res.status(200).send({code: 500, result: [], message: '本期已结束'});
+                        }
+
+                    }
+                });
+            }
 
 
         } else {
@@ -572,12 +657,12 @@ router.post('/user_injection_money', checkAppSession, function (req, res, next) 
 
             userInjectionMethod({
                 way: 3,
-                user_id:userInfo[0].id,
+                user_id: userInfo[0].id,
                 money: req.body.inject_money,
                 success: function (data) {
                     res.status(200).send({code: 200, result: true, message: "注资成功"});
                 }, error: function (data) {
-                    res.status(200).send({code: 500, result: false, message: '注资失败'+data});
+                    res.status(200).send({code: 500, result: false, message: '注资失败' + data});
                 }
             });
 
@@ -639,7 +724,7 @@ router.post('/injection_money', checkSession, function (req, res, next) {
         success: function (data) {
             res.status(200).send({code: 200, result: true, message: "注资成功"});
         }, error: function (data) {
-            res.status(200).send({code: 500, result: false, message: '注资失败'+data});
+            res.status(200).send({code: 500, result: false, message: '注资失败' + data});
         }
     });
     /*    mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
@@ -677,7 +762,6 @@ router.post('/injection_money', checkSession, function (req, res, next) {
 });
 
 
-
 router.post('/injection_info', checkSession, function (req, res, next) {
     //获取本期注资金额
     res.header("Access-Control-Allow-Origin", "*");
@@ -687,7 +771,7 @@ router.post('/injection_info', checkSession, function (req, res, next) {
         } else {
             var issue = result[0].issue;
             var term_id = result[0].id;
-            mysql.sql('SELECT way, user_img,user_name,money,tab1.create_time,issue FROM injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="'+issue+'"', function (err, result) {
+            mysql.sql('SELECT way, user_img,user_name,money,tab1.create_time,issue FROM injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + issue + '"', function (err, result) {
                 if (err) {
                     console.log(err)
                     res.status(200).send({code: 500, result: [], message: '获取本期注资失败'});
@@ -702,7 +786,6 @@ router.post('/injection_info', checkSession, function (req, res, next) {
 });
 
 
-
 router.post('/current_user_bet', checkSession, function (req, res, next) {
     //获取本期押注信息
     res.header("Access-Control-Allow-Origin", "*");
@@ -712,20 +795,20 @@ router.post('/current_user_bet', checkSession, function (req, res, next) {
         } else {
             var issue = result[0].issue;
             var term_id = result[0].id;
-            mysql.sql('SELECT  user_img,user_name,num,tab1.create_time,issue,tab1.user_id FROM user_bet tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="'+(issue)+'"', function (err, result) {
+            mysql.sql('SELECT  user_img,user_name,num,tab1.create_time,issue,tab1.user_id FROM user_bet tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
                 if (err) {
 
                     res.status(200).send({code: 500, result: [], message: '获取本期押注信息失败'});
                 } else {
 
-                    var ary=result;
+                    var ary = result;
                     var result_ary = [];
-                    ary.sort(function(a,b){
-                        return a.user_id-b.user_id;
+                    ary.sort(function (a, b) {
+                        return a.user_id - b.user_id;
                     });
                     for (var i = 0; i < ary.length;) {
                         var count = 0;
-                        var bet_ary=[];
+                        var bet_ary = [];
                         for (var j = i; j < ary.length; j++) {
 
                             if (ary[i].user_id == ary[j].user_id) {
@@ -733,7 +816,12 @@ router.post('/current_user_bet', checkSession, function (req, res, next) {
                                 count++;
                             }
                         }
-                        result_ary.push({issue:ary[i].issue,user_name:ary[i].user_name,user_img:ary[i].user_img,bet:bet_ary});
+                        result_ary.push({
+                            issue: ary[i].issue,
+                            user_name: ary[i].user_name,
+                            user_img: ary[i].user_img,
+                            bet: bet_ary
+                        });
                         i += count;
                     }
 

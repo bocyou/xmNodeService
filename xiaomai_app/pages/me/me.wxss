@@ -95,6 +95,10 @@
     color:#717171;
     padding:30rpx;
 }
+.bill-content .bar .th{
+    font-size:24rpx!important;
+    color: #bebebe;
+}
 
 .bill-content .bar .status{
     width:18rpx;
@@ -104,6 +108,7 @@
 }
 .bill-content .bar .money{
     font-size:28rpx;
+    width:140rpx;
 }
 .bill-content .bar .money text{
     font-size:38rpx;
@@ -111,6 +116,7 @@
 }
 .bill-content .bar .date{
     font-size:28rpx;
+    width:160rpx;
 
 }
 .bill-content .bar .pay-money{
@@ -120,6 +126,30 @@
     padding:15rpx 30rpx;
     border-radius: 8rpx;
     font-size:24rpx;
+}
+.bill-content .bar .editor{
+    width:180rpx;
+}
+.bill-content .thead{
+    padding-bottom:0;
+}
+.bill-no{
+    position:relative;
+    color: #b3b3b3;
+
+}
+.bill-no .text{
+    font-weight: normal;
+}
+.bill-no .line{
+    width:100rpx;
+    height:1px;
+    background-color:red;
+    position:absolute;
+    top:26rpx;
+    left:-6rpx;
+    transform: rotate(25deg);
+    opacity: .5;
 }
 .not-bill-tip{
     font-size:28rpx;

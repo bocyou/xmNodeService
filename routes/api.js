@@ -472,7 +472,7 @@ router.post('/get_current_user', function (req, res, next) {
             };
             res.status(200).send({code: 200, result: user_info, message: "获取当前用户信息成功"})
         } else {
-            res.status(200).send({code: 200, result: {}, message: "获取用户信息失败"})
+            res.status(200).send({code: 502, result: {}, message: "获取用户信息失败"})
         }
     }, res);
 });

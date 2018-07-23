@@ -357,7 +357,6 @@ router.post('/get_area_lastmonth_bill_list', function (req, res, next) {
 router.post('/user_pay_bill', function (req, res, next) {
 
     var bill_id = req.body.bill_id;
-    console.log(bill_id);
     console.log(new Date().Format('yyyy-MM-dd HH:mm:ss'));
     mysql.updateData('user_bill', 'bill_id="' + bill_id + '"', 'status=0,update_time="' + new Date().Format('yyyy-MM-dd HH:mm:ss') + '"', function (result, err) {
         if (result) {

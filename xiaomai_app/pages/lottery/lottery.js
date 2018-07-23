@@ -28,7 +28,8 @@ Page({
         is_show_injection:false,
         is_inject_disabled:true,
         inject_tip_str:'',
-        inject_money:0//注资金额
+        inject_money:0,//注资金额
+        is_yan:0
     },
 
     /**
@@ -60,7 +61,27 @@ Page({
         util.checkPermission(function (userInfo) {
             //已登陆
            if(userInfo.towords_phone!=undefined&&userInfo.towords_phone!=null&&userInfo.towords_phone!=''){
-               self.getBetIssue();
+               util.request({
+                   url: util.api + '/api/get_user_info', param: {}, complete: function (res) {
+                       let data = res.data;
+                       if (data.code == 200) {
+                           self.getBetIssue();
+                           if(data.result.user_id==48){
+                               console.log(12);
+                               self.setData({
+                                   is_yan:1
+                               })
+                           }
+                       } else {
+                           wx.showToast({
+                               title: '获取用户信息失败',
+                               icon: 'none',
+                               duration: 2000
+                           });
+                       }
+                   }
+               });
+
            }else{
               wx.redirectTo({
                    url: '../get_user_phone/get_user_phone'

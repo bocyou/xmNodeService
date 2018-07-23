@@ -20,7 +20,8 @@ router.get('/', function (req, res) {
 
 router.post('/save_shop_money', function (req, res, next) {
     getUserInfo(req.headers.sessionkey, function (userInfo) {
-        if (userInfo) {
+        console.log(userInfo);
+        if (userInfo&&userInfo.length>0) {
             var money=req.body.money;
             mysql.insert_one('shop_money', {
                 user_id: userInfo[0].id,
@@ -60,7 +61,7 @@ router.post('/save_shop_money', function (req, res, next) {
                 }
             });
         } else {
-            res.status(200).send({code:500, result: [], message: '获取该用户信息失败'});
+            res.status(200).send({code:502, result: [], message: '获取该用户信息失败'});
         }
     });
 

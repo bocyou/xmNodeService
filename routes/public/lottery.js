@@ -113,7 +113,8 @@ module.exports = {
                                 injection_money+=parseFloat(item.money)
                             });
                             if(injection_money>=30){
-                                throw "注入资金已超过30";
+                                console.log('注入资金已超过30');
+                                opt.error('注入资金已超过30');
                             }else{
                                 //更新本期的begin_poor
                                 mysql.sql('update bet_issue set begin_poor = begin_poor + ' +opt.money+ ' where id in (' + term_id+ ')', function (err, result) {

@@ -57,7 +57,6 @@ Page({
                                 //获取当前用户账单
                                 var data = res.data;
                                 if (data.code == 200 && JSON.stringify(data.result) != '{}') {
-                                    console.log(data.result);
                                     var result_data=data.result;
                                     var sun_money = 0;
                                     result_data.dinner.forEach(function (item, idx) {
@@ -74,7 +73,7 @@ Page({
                                     });
                                 } else {
                                     wx.showToast({
-                                        title: '获取数据失败',
+                                        title: '获取未付款账单失败',
                                         icon: 'none',
                                         duration: 2000
                                     })
@@ -115,7 +114,7 @@ Page({
                     });
                 } else {
                     wx.showToast({
-                        title: '获取数据失败',
+                        title: '获取用户数据失败',
                         icon: 'none',
                         duration: 2000
                     })
@@ -151,11 +150,13 @@ Page({
             url: util.api + '/me/get_user_bill', param: '', complete: function (res) {
                 //获取当前用户账单信息
                 var data = res.data;
+                console.log(data);
                 if (data.code == 200) {
                     if (data.result.length > 0) {
                         self.setData({
                             bill_ary: data.result.map(function (item, idx) {
                                 item.create_time = new Date(item.create_time).Format('MM月dd日');
+                                item.deduction=(item.deduction==null?0:item.deduction);
                                 return item
                             })
                         })
@@ -177,7 +178,6 @@ Page({
     payMoney: function (e) {
         var self = this;
         var bill_id = e.currentTarget.dataset.billid;
-        console.log(bill_id);
         wx.showModal({
             title: '',
             content: '确定已付款给王老师了？',
@@ -211,6 +211,32 @@ Page({
         })
 
     },
+    payBegMoney: function (e) {
+        var self = this;
+        var bill_id = e.currentTarget.dataset.billid;
+        util.request({
+            url: util.api + '/me/user_pay_bill', param: {bill_id: bill_id}, complete: function (res) {
+
+                var data = res.data;
+                if (data.code == 200) {
+                    wx.showToast({
+                        title: '确认成功',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                    self.getBill();
+
+                } else {
+                    wx.showToast({
+                        title: '确认失败',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            }
+        });
+
+    },
     refreshFace:function(){
         var self=this;
         wx.showModal({
@@ -223,7 +249,6 @@ Page({
                             var userInfo = res.userInfo;
 
                             var avatarUrl = userInfo.avatarUrl;
-                            console.log(avatarUrl);
                             util.request({
                                 url: util.api + '/me/refresh_user_face', param: {user_img: avatarUrl}, complete: function (res) {
                                     //获取当前用户账单信息

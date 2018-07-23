@@ -19,7 +19,7 @@ page{
 } 
 .bottom-menu{
   position:fixed;
-  bottom:60rpx;
+  bottom:120rpx;
   right:30rpx;
   width:100rpx;
   height:100rpx;

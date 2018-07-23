@@ -1,6 +1,9 @@
 var mysql = require('../../lib/mysql');
 
+//用户消费，所有用户的消费，都会更新添加到users_spend，
+//还账时都会减users_spend,同时生成一条还款记录存入user_bill
 
+//在所有消费接口添加addspend
 
 
 module.exports = {

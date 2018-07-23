@@ -12,11 +12,13 @@
     <view class="poor-title"><text>{{current_money}}</text> 麦粒</view>
 
     <view class="week_words">
+
         <view>本周拓词数：{{num1}}<text>{{num2}}</text></view>
+        <view class="injection-btn"  bindtap="showInjection">我要注资</view>
         <!--<canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>-->
     </view>
 
-    <button bindtap="showInjection">我要注资</button>
+
 
     <block wx:if="{{issue_status==1&&issue>1}}">
         <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
@@ -40,10 +42,19 @@
     </block>
 
 
+    <view  class="bottom-btn">
+        <block wx:if="{{is_yan==1}}">
+            <view class="yan-btn"  bindtap="showBet"></view>
+        </block>
+        <block wx:else>
+            <button type="primary" bindtap="showBet" wx:if="{{issue_status==1}}">
+                我要预测
+            </button>
+        </block>
 
-    <button class="bottom-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
-         我要预测
-    </button>
+
+    </view>
+
 </block>
 <block wx:else>
     <view class="header-title">第{{issue}}期预测已结束
@@ -115,7 +126,7 @@
     <view class="form-bet" bindtap="hideBet">
         <view class="content" catchtap="stop">
             <view class="title">预测
-                <text style="font-size:24rpx;">(花费1麦粒)</text>
+                <text style="font-size:24rpx;">{{is_yan==1?'(您有两次免费机会)':'(花费1麦粒)'}}</text>
             </view>
             <view class="section">
                 <view class="tip-err">{{tip_str}}</view>
