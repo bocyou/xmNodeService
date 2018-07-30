@@ -24,20 +24,25 @@
             </view>
         </view>
     </view>
+    <view class="menu-option" style="margin-top:2rpx;" >
+        <view>钱包余额</view>
+        <view class="">{{user_wallet}}</view>
+    </view>
 
+    <navigator class="menu-option" url="../bill/bill" hover-class="navigator-hover">
+        <view>账单信息</view>
+        <view class="right-icon"></view>
+    </navigator>
+
+    <navigator  style="margin-top:2rpx;" class="menu-option" url="../xm_rule/xm_rule" hover-class="navigator-hover">
+        <view>小麦规则</view>
+        <view class="right-icon"></view>
+    </navigator>
     <button class="service-btn menu-option" open-type="contact" session-from="imgcode">
         <view>获取付款二维码<text class="text"> (若获取不到请发送<text class="tip"> pay</text>)</text>
         </view>
         <view class="right-icon"></view>
     </button>
-    <navigator class="menu-option" url="../bill/bill" hover-class="navigator-hover">
-        <view>账单信息</view>
-        <view class="right-icon"></view>
-    </navigator>
-    <view class="menu-option" style="margin-top:2rpx;" >
-        <view>钱包余额</view>
-        <view class="">{{user_wallet}}</view>
-    </view>
     <view class="content">
         <view class="bill-list">
             <block wx:if="{{bill_ary.length>0}}">

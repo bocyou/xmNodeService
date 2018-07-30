@@ -4,8 +4,8 @@ var mysql = require('../../lib/mysql');
 //1为小麦官方,2为扫码付款，3为个人
 
 module.exports = {
-    injection: function(opt){
-        //为当期拓词猜猜看注资
+    xmManageInjection: function(opt){
+        //小麦后台注资
         try{
             mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
                 if (err) {
@@ -23,7 +23,7 @@ module.exports = {
                             console.log('计入本期赛事成功');
                             //添加注资记录
                             //1为小麦官方,2为扫码付款，3为个人
-                            mysql.insert_one('injection', {issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
+                            mysql.insert_one('xm_injection', {issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
                                 if (result && err == null) {
 
                                     //  res.status(200).send({code: 200, result: true, message: "注资成功"});
@@ -48,7 +48,8 @@ module.exports = {
         }
 
     },
-    userInjectionMethod:function(opt){
+    usersInjection:function(opt){
+        //个人用户客户端注资
         try{
             mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
                 if (err) {
@@ -94,6 +95,7 @@ module.exports = {
         }
     },
     shopInjection:function(opt){
+        //扫码注资
         try{
             mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
                 if (err) {
@@ -125,7 +127,7 @@ module.exports = {
                                         console.log('计入本期赛事成功');
                                         //添加注资记录
 
-                                        mysql.insert_one('injection', {user_id:opt.user_id,issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
+                                        mysql.insert_one('scan_injection', {user_id:opt.user_id,issue:term_num,way:opt.way,money:opt.money,create_time:new Date()}, function (result, err) {
                                             if (result && err == null) {
                                                 console.log('已注资');
                                                 //  res.status(200).send({code: 200, result: true, message: "注资成功"});

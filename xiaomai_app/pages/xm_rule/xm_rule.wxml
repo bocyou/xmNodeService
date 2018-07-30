@@ -2,7 +2,7 @@
 <view class="block">
     <view class="title">关于刮刮卡</view>
     <view class="txt">
-        周一到周五上班日需要抽奖，所得金额用于赞助小卖部，小卖部的东西可随便吃（部分商品需要扫码补差价）
+        周一到周五上班日需要刮刮卡，所得金额用于赞助小卖部，小卖部的东西可随便吃（部分商品需要扫码补差价）
     </view>
 </view>
 
@@ -28,3 +28,6 @@
         您在小麦的所有消费，都会被计入您的账单，每周一会出上周的账单。请在（我的）页面获取二维码付款。
     </view>
 </view>
+<navigator  open-type="switchTab" url="../index/index">
+<button type="primary" style="width:80%;margin:80rpx auto 0">确定</button>
+</navigator>

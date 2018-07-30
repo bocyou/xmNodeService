@@ -9,8 +9,8 @@ var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
-var injectionMethod = require('../routes/public/lottery').injection;
-var userInjectionMethod = require('../routes/public/lottery').userInjectionMethod;
+var xmManageInjection = require('../routes/public/lottery').xmManageInjection;
+var usersInjection = require('../routes/public/lottery').usersInjection;
 var schedule = require('node-schedule');
 
 router.get('/', function (req, res) {
@@ -159,6 +159,7 @@ var work = {
                                                     });
 
                                                 } else {
+                                                    //无中奖人员
                                                     console.log(word_sum);
                                                     //更新当前期记录
                                                     mysql.sql('update bet_issue set is_new="0", status="0",lucky_num="' + word_sum + '",close_time="' + new Date().Format('yy-MM-dd HH:mm:ss') + '",is_win="0",current_poor="' + current_money + '" where id="' + term_id + '"', function (err, result) {
@@ -166,7 +167,7 @@ var work = {
                                                             console.log('更新本期状态失败' + err);
                                                         } else {
                                                             //插入一条小麦收入记录,1代表拓词猜猜看
-                                                            var xm_get_money = parseFloat(last_all_money * 0.2);//小麦分成20%；
+                                                            var xm_get_money = parseFloat(last_all_money * 0.1);//小麦分成10%；
                                                             mysql.insert_one('xm_get_lottery', {
                                                                 money: xm_get_money,
                                                                 way: 1,
@@ -655,7 +656,7 @@ router.post('/user_injection_money', checkAppSession, function (req, res, next) 
     getUserInfo(req,res, function (userInfo) {
         if (userInfo) {
 
-            userInjectionMethod({
+            usersInjection({
                 way: 3,
                 user_id: userInfo[0].id,
                 money: req.body.inject_money,
@@ -718,7 +719,7 @@ router.post('/get_current_term_info', checkAppSession, function (req, res, next)
 router.post('/injection_money', checkSession, function (req, res, next) {
     //后台注入资金
     res.header("Access-Control-Allow-Origin", "*");
-    injectionMethod({
+    xmManageInjection({
         way: 1,
         money: req.body.money,
         success: function (data) {

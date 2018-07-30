@@ -1,14 +1,29 @@
 /* pages/xm_rule/xm_rule.wxss */
+page{
+    padding-top:30rpx;
+}
 .block{
     padding:0 30rpx;
     background-color:#fff;
+    margin-bottom:60rpx;
 
 }
 .block .title{
     font-size:36rpx;
+    font-weight: bold;
+    margin-bottom:16rpx;
+    color:#717171;
 }
 
 .block .txt{
     font-size:28rpx;
     color:#717171;
+}
+.block .txt navigator{
+    display: inline-block;
+}
+.block .txt navigator text{
+
+    color:#0C4475;
+    text-decoration: underline;
 }

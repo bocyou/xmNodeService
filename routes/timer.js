@@ -127,6 +127,7 @@ var billWork = {
                                                                     i += count;
                                                                 }
 
+
                                                                 function downMoney(user_id,money){
                                                                     mysql.sql('update user_wallet set money = money - ' + money + ' where user_id in (' + user_id + ')', function (err, result) {
                                                                         if (err) {
@@ -137,8 +138,8 @@ var billWork = {
                                                                     })
                                                                 }
 
-                                                                console.log(usr);
-                                                                /*      mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`,`deduction`)', [usr], function (result, err) {
+
+                                                                      mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`,`deduction`)', [usr], function (result, err) {
                                                                           console.log(err);
                                                                           if (err == null) {
                                                                               console.log("本周账单分发成功" + new Date());
@@ -148,7 +149,7 @@ var billWork = {
                                                                               //res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
                                                                           }
 
-                                                                      });*/
+                                                                      });
 
 
                                                             } else {

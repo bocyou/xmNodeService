@@ -115,8 +115,8 @@ Page({
 
 
                     wx.setStorageSync('userInfo', userInfo);
-                    wx.switchTab({
-                      url: '../index/index'
+                    wx.redirectTo({
+                      url: '../xm_rule/xm_rule'
                     })
                   } else if (data.code == 200 && data.result == 3) {
                       wx.showModal({
