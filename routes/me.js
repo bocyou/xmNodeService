@@ -349,6 +349,21 @@ router.post('/get_area_lastmonth_bill_list', function (req, res, next) {
 
 
 });
+//获取上月刮刮卡详细信息
+router.post('/get_area_lastmonth_shop_list', function (req, res, next) {
+
+    mysql.findUserWeekBill('SELECT * FROM shop_money tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE  date_format(create_time,"%Y-%m")=date_format( DATE_ADD(now(),INTERVAL -1 MONTH) ,"%Y-%m") AND area="'+req.body.area+'"' , function (result, err) {
+        console.log(err);
+        if (err == null) {
+            res.status(200).send( {code: 200, result: result, message: "获取上月刮刮卡信息列表成功"})
+
+        } else {
+            res.status(200).send( {code: 200, result: {}, message: "获取上月刮刮卡信息列表失败" + err})
+        }
+    });
+
+
+});
 
 //付款
 router.post('/user_pay_bill', function (req, res, next) {

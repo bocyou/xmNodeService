@@ -1,4 +1,7 @@
 /* pages/me/me.wxss */
+page{
+    background-color: #f5f6f8;
+}
 
 .header{
 
@@ -200,6 +203,84 @@ button::after{
     opacity: .5;
 
 }
+.navigator-hover{
+    background-color: initial;
+}
+
+
+.shadow-box{
+    box-shadow:0 0 80rpx rgba(0,0,0,.1);
+    margin:30rpx;
+    padding:30rpx 40rpx;
+    border-radius:16rpx;
+    background-color: #fff;
+}
+
+
+.shadow-box .info-block{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top:30rpx;
+
+
+}
+.shadow-box  .info-block .right{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex:1;
+    border-bottom:2rpx solid #e6e6e6;
+    padding-bottom:30rpx;
+}
+
+.shadow-box .info{
+    color:#272727;
+    font-size:28rpx;
+    flex: 1;
+    text-align:left;
+    padding-left:20rpx;
+}
+.shadow-box .info-block .icon{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon_right.png");
+    background-repeat: no-repeat;
+    width:50rpx;
+    height:50rpx;
+    background-size:cover;
+}
+
+
+.shadow-box .go-icon{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon_right.png");
+    background-repeat: no-repeat;
+    width:26rpx;
+    height:26rpx;
+    background-size:contain;
+    opacity: .5;
+
+}
+.icon-rule{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/ruls.png")!important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

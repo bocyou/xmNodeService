@@ -2,14 +2,15 @@
 <block wx:if="{{version==1}}">
     <view class="header">
         <view class="img-box">
-            <view bindtap="refreshFace" style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
+            <view bindtap="refreshFace"
+                  style="position:relative;width:300rpx;height:300rpx;margin:0 auto;background-size:cover;border-radius:0 0 20rpx 20rpx;background-image:url({{user_info.wx_img}})">
 
                 <!--<view class="refresh-btn" bindtap="refreshFace"></view>-->
             </view>
 
         </view>
 
-        <view style="position:relative; border-bottom:2px solid #eaeaeb;padding-bottom:60rpx">
+        <view style="position:relative;padding-bottom:60rpx">
             <view class="user-info">
                 <view> {{user_info.user_name}}</view>
                 <view class="area">{{user_area[user_info.area]}}校区</view>
@@ -24,22 +25,56 @@
             </view>
         </view>
     </view>
-    <view class="menu-option" style="margin-top:2rpx;" >
+
+
+    <view class="shadow-box">
+        <navigator class="" url="../bill/bill" hover-class="navigator-hover">
+            <view class="info-block">
+                <view class="icon"></view>
+                <view class="right">
+                    <view class="info">
+                        账单信息
+                    </view>
+                    <view class="go-icon"></view>
+                </view>
+
+            </view>
+        </navigator>
+        <navigator class="" url="../xm_rule/xm_rule" hover-class="navigator-hover">
+            <view class="info-block">
+                <view class="icon icon-rule"></view>
+                <view class="right" style="border-bottom:none;">
+                    <view class="info">
+                        小麦规则
+                    </view>
+                    <view class="go-icon"></view>
+                </view>
+
+            </view>
+        </navigator>
+    </view>
+
+
+    <view class="menu-option" style="margin-top:2rpx;">
         <view>钱包余额</view>
         <view class="">{{user_wallet}}</view>
     </view>
 
-    <navigator class="menu-option" url="../bill/bill" hover-class="navigator-hover">
+ <!--   <navigator class="menu-option" url="../bill/bill" hover-class="navigator-hover">
         <view>账单信息</view>
         <view class="right-icon"></view>
     </navigator>
 
-    <navigator  style="margin-top:2rpx;" class="menu-option" url="../xm_rule/xm_rule" hover-class="navigator-hover">
+    <navigator style="margin-top:2rpx;" class="menu-option" url="../xm_rule/xm_rule" hover-class="navigator-hover">
         <view>小麦规则</view>
         <view class="right-icon"></view>
-    </navigator>
+    </navigator>-->
     <button class="service-btn menu-option" open-type="contact" session-from="imgcode">
-        <view>获取付款二维码<text class="text"> (若获取不到请发送<text class="tip"> pay</text>)</text>
+        <view>获取付款二维码
+            <text class="text"> (若获取不到请发送
+                <text class="tip"> pay</text>
+                )
+            </text>
         </view>
         <view class="right-icon"></view>
     </button>
@@ -125,6 +160,8 @@
             </block>
         </view>
     </block>
+
+
 </block>
 <block wx:elif="{{version==0}}">
     <view class="xm-title">小麦查词</view>
