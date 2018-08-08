@@ -1,5 +1,5 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/me/me",
     "pages/dinner/dinner",
@@ -14,27 +14,29 @@
     "pages/lottery_term_info/lottery_term_info",
     "pages/get_user_phone/get_user_phone",
     "pages/xm_rule/xm_rule"
-   
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
-  }, "tabBar": {
-  "selectedColor": "#515151",
-  "list": [{
-    "iconPath":"/img/home1.png",
-    "selectedIconPath": "/img/home2.png",
-    "pagePath": "pages/index/index",
-    "text": "首页",
-    "color":"#dbdbdb"
-  }, {
-    "iconPath":"/img/me1.png",
-    "selectedIconPath": "/img/me2.png",
-    "pagePath": "pages/me/me",
-    "text": "我的",
-    "color":"#dbdbdb"
-  }]
-}
+    "navigationBarTitleText": "小麦",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#515151",
+    "color":"#cdcdcd",
+    "list": [
+      {
+        "iconPath": "/img/home1.png",
+        "selectedIconPath": "/img/home2.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "/img/me1.png",
+        "selectedIconPath": "/img/me2.png",
+        "pagePath": "pages/me/me",
+        "text": "我的"
+      }
+    ]
+  }
 }

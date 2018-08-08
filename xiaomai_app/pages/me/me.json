@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "我"
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#fafafa",
+  "navigationBarTitleText": "我",
+  "navigationBarTextStyle": "black"
 
 }

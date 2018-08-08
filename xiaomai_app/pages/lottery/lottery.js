@@ -67,7 +67,6 @@ Page({
                        if (data.code == 200) {
                            self.getBetIssue();
                            if(data.result.user_id==48){
-                               console.log(12);
                                self.setData({
                                    is_yan:1
                                })
@@ -442,6 +441,8 @@ Page({
 
                     self.setData({word_list: data.result.sort(function(a,b){
                         return b.word-a.word;
+                        }).filter(function(item,idx){
+                            return item.word>0;
                         })});
                     let lucky_num = 0;
                     data.result.forEach(function (item, idx) {
@@ -455,7 +456,6 @@ Page({
                         lucky_num = Math.round(Math.random() * 1000);
                     }
                     let lucky_str=lucky_num.toString();
-                    console.log(lucky_str);
                     let num2 = lucky_str.substr(lucky_str.length - 2, 2);
                     let num1 = lucky_str.substr(0, lucky_str.length - 2);
                     self.setData({

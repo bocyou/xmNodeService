@@ -3,14 +3,18 @@
 
 
 <block wx:if="{{issue_status==1 || issue_status==2}}">
+
+    <view class="poor-title">
+        <view><text>{{current_money}}</text></view>
+        <view class="tip">本期累计麦粒</view>
+    </view>
     <view class="header-title">
         <block wx:if="{{issue_status==1}}">第{{issue}}期单词拉练进行中</block>
         <block wx:else>第{{issue}}期已停止预测</block>
         <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
         </navigator>
     </view>
-    <view class="poor-title"><text>{{current_money}}</text> 麦粒</view>
-
+ <!--   <div class="font">jQ22<span>.</span>com</div>-->
     <view class="week_words">
 
         <view>本周拓词数：{{num1}}<text>{{num2}}</text></view>
@@ -47,9 +51,9 @@
             <view class="yan-btn"  bindtap="showBet"></view>
         </block>
         <block wx:else>
-            <button type="primary" bindtap="showBet" wx:if="{{issue_status==1}}">
+            <view class="yuce-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
                 我要预测
-            </button>
+            </view>
         </block>
 
 
@@ -111,10 +115,12 @@
     <view class="word-bar" wx:for="{{word_list}}" wx:key="i">
         <view class="user">
             <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-            <view class="user-name">{{item.user_name}}</view>
         </view>
-        <view class="word">
-            <text>已拓词： </text>{{item.word}}
+        <view class="right">
+            <view class="user-name">{{item.user_name}}</view>
+            <view class="word-info">
+                <text class="">已拓词： </text>{{item.word}}
+            </view>
         </view>
     </view>
 </view>

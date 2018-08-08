@@ -15,6 +15,9 @@ Page({
       searchType: '', //搜索内容的类型,单词 or 词组
       senseInfo: []  //义项列表
   },
+    onShareAppMessage: function () {
+//
+    },
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
