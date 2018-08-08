@@ -3,24 +3,30 @@
 
 
 <block wx:if="{{issue_status==1 || issue_status==2}}">
+    <view class="header-title">
+        <block wx:if="{{issue_status==1}}">第{{issue}}期单词拉练进行中</block>
+        <block wx:else>第{{issue}}期已停止预测</block>
+        <view>
+            <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des"><text>查看规则</text>
+            </navigator>
+        </view>
 
+    </view>
     <view class="poor-title">
         <view><text>{{current_money}}</text></view>
         <view class="tip">本期累计麦粒</view>
     </view>
-    <view class="header-title">
-        <block wx:if="{{issue_status==1}}">第{{issue}}期单词拉练进行中</block>
-        <block wx:else>第{{issue}}期已停止预测</block>
-        <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
-        </navigator>
-    </view>
- <!--   <div class="font">jQ22<span>.</span>com</div>-->
-    <view class="week_words">
 
-        <view>本周拓词数：{{num1}}<text>{{num2}}</text></view>
-        <view class="injection-btn"  bindtap="showInjection">我要注资</view>
+ <!--   <div class="font">jQ22<span>.</span>com</div>-->
+
+    <view class="week_words">
+        <view class="word-info">
+            <view class="txt">{{num1}}<text>{{num2}}</text></view>
+            <view class="tip">本周总拓词数</view>
+        </view>
         <!--<canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>-->
     </view>
+
 
 
 
@@ -39,7 +45,7 @@
             </view>
         </view>
         <view wx:else>
-            <view class="content-tip">上期无幸运人员!</view>
+            <view class="content-tip">上期无幸运人员！</view>
         </view>
         <navigator open-type="navigateTo" class="go-term-more" url="../lottery_term_info/lottery_term_info?issue={{issue-1}}"><text>more</text>
         </navigator>
@@ -58,6 +64,7 @@
 
 
     </view>
+
 
 </block>
 <block wx:else>
@@ -87,7 +94,7 @@
     </view>
     <view wx:else>
         <block wx:if="{{issue>1}}">
-        <view class="content-tip">本期无幸运人员，总麦粒将计入下一期!</view>
+        <view class="content-tip">本期无幸运人员，总麦粒将计入下一期！</view>
         </block>
     </view>
 </block>
@@ -105,7 +112,7 @@
 <view wx:else class="content-tip">
     您本期尚未预测！
 </view>
-
+<view class="injection-btn"  bindtap="showInjection">为本期注资</view>
 
 <!--<button bindtap="test">结束</button>-->
 

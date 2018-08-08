@@ -12,6 +12,7 @@ var getCurrentSession = tool.getCurrentSession;
 var xmManageInjection = require('../routes/public/lottery').xmManageInjection;
 var usersInjection = require('../routes/public/lottery').usersInjection;
 var schedule = require('node-schedule');
+var postUsersNews=require('../routes/public/post_news').postUsersNews;
 
 router.get('/', function (req, res) {
 
@@ -242,13 +243,27 @@ var work = {
                                                                                 } else {
                                                                                     console.log('已计入用户钱包');
                                                                                     self.startBet(1, issue, 0);
-                                                                                    try{
-                                                                                        postNews.postNews(lucky_names.join(','),share_money)
 
-                                                                                    }catch (e) {
-                                                                                        console.log('发送中奖消息失败'+e);
+                                                                                        postUsersNews({
+                                                                                            data:{
+                                                                                                "keyword1": {
+                                                                                                    "value": "拓词猜猜看",
+                                                                                                    "color": "#173177"
+                                                                                                },
+                                                                                                "keyword2": {
+                                                                                                    "value": share_money,
+                                                                                                    "color": "#173177"
+                                                                                                },
+                                                                                                "keyword3": {
+                                                                                                    "value":lucky_names.join(',') ,
+                                                                                                    "color": "#173177"
+                                                                                                }
+                                                                                            },
+                                                                                            template_id:'AfGclvsdQslwt1CgTMUS5LeVFfwrgkmcIqkHBGHAeRA',
+                                                                                            page:'pages/lottery/lottery'
+                                                                                        });
 
-                                                                                    }
+
 
                                                                                 }
                                                                             })
@@ -414,6 +429,28 @@ var work = {
             }
         })
 
+    },
+    postBetNews:function(){
+        var self=this;
+        postUsersNews({
+            data:{
+                "keyword1": {
+                    "value": "小麦-拓词猜猜看",
+                    "color": "#173177"
+                },
+                "keyword2": {
+                    "value": "今晚0点",
+                    "color": "#173177"
+                },
+                "keyword3": {
+                    "value":"拓词猜猜看将于今晚0点停止预测，点击参与即有机会瓜分麦粒",
+                    "color": "#173177"
+                }
+            },
+            template_id:'-luQWpwuTIKETJlH3FujmICZ59LJIFp1Lf000H3S0EY',
+            page:'pages/lottery/lottery'
+        });
+
     }
 
 };
@@ -444,6 +481,16 @@ begin_bet.minute = 00;
 
 var begin_bet_work = schedule.scheduleJob(begin_bet, function () {
     work.closeBet();
+
+});
+//周二，周四下午6：00（发送押注提醒）
+var post_bet_message = new schedule.RecurrenceRule();
+post_bet_message.dayOfWeek = [2, 4];
+post_bet_message.hour = 18;
+post_bet_message.minute = 00;
+
+schedule.scheduleJob(post_bet_message, function () {
+    work.postBetNews();
 
 });
 
