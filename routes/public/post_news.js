@@ -61,7 +61,7 @@ module.exports = {
                 postNews.getUsers(function(users){
                     users.forEach(function(item, idx) {
                         request.post({
-                            url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + self.access_token,
+                            url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + token,
                             form: JSON.stringify({
                                 "touser": item.open_id,
                                 "template_id": opt.template_id,
