@@ -1,4 +1,5 @@
 var mysql = require('../../lib/mysql');
+var request = require('request');
 //小程序发送消息模块
 var postNews={
     getToken:function(callback){

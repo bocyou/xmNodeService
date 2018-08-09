@@ -407,6 +407,11 @@ router.post('/disable', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     work.disableBet();
 });
+router.post('/post_news', function (req, res, next) {
+    //获取所有用户统计手机号(仅北京地区)
+    res.header("Access-Control-Allow-Origin", "*");
+    work.postBetNews();
+});
 
 router.post('/get_user_words', checkAppSession, function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
