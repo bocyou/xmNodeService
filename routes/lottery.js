@@ -395,15 +395,7 @@ schedule.scheduleJob(post_bet_message, function () {
 
 });
 
-/*var close_bet = new schedule.RecurrenceRule();
-close_bet.dayOfWeek = [4, 6];
-close_bet.hour = 00;
-close_bet.minute = 00;
-var close_bet_work = schedule.scheduleJob(close_bet, function () {
 
-    work.startBet();
-
-});*/
 
 router.post('/close', function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
@@ -848,12 +840,9 @@ router.post('/injection_info', checkSession, function (req, res, next) {
 router.post('/current_user_bet', checkSession, function (req, res, next) {
     //获取本期押注信息
     res.header("Access-Control-Allow-Origin", "*");
-    mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
-        if (err) {
-            console.log('获取期数失败');
-        } else {
-            var issue = result[0].issue;
-            var term_id = result[0].id;
+
+            var issue = req.body.issue;
+
             mysql.sql('SELECT  user_img,user_name,num,tab1.create_time,issue,tab1.user_id FROM user_bet tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
                 if (err) {
 
@@ -888,8 +877,7 @@ router.post('/current_user_bet', checkSession, function (req, res, next) {
                     res.status(200).send({code: 200, result: result_ary, message: '获取本期押注信息成功'});
                 }
             })
-        }
-    });
+
 
 });
 
@@ -909,4 +897,66 @@ router.post('/xm_get_lottery_money', checkSession, function (req, res, next) {
 
 });
 
+router.post('/xm_issue_info', checkSession, function (req, res, next) {
+    //获取本期信息
+    res.header("Access-Control-Allow-Origin", "*");
+
+    mysql.sql('SELECT * FROM bet_issue where is_new=1', function (err, result) {
+        if (err) {
+            console.log(err)
+            res.status(200).send({code: 500, result: {}, message: '获取小麦收益失败'});
+        } else {
+
+            res.status(200).send({code: 200, result: result[0], message: '获取小麦收益成功'});
+        }
+    })
+
+});
+
+router.post('/xm_san_code_money', checkSession, function (req, res, next) {
+    //获取扫码注资信息
+    res.header("Access-Control-Allow-Origin", "*");
+    var issue=req.body.issue;
+    mysql.sql('SELECT  user_img,user_name,money,tab1.create_time,issue FROM scan_injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
+        if (err) {
+            console.log(err)
+            res.status(200).send({code: 500, result: [], message: '获取小麦收益失败'});
+        } else {
+
+            res.status(200).send({code: 200, result: result, message: '获取小麦收益成功'});
+        }
+    })
+
+});
+
+router.post('/xm_injection_info', checkSession, function (req, res, next) {
+    //小麦后台注资信息
+    res.header("Access-Control-Allow-Origin", "*");
+
+    mysql.sql('select * from xm_injection', function (err, result) {
+        if (err) {
+            console.log(err)
+            res.status(200).send({code: 500, result: [], message: '获取小麦后台注资信息失败'});
+        } else {
+
+            res.status(200).send({code: 200, result: result, message: '获取小麦后台注资信息成功'});
+        }
+    })
+
+});
+router.post('/user_injection_info', checkSession, function (req, res, next) {
+    //获取用户注资信息
+    res.header("Access-Control-Allow-Origin", "*");
+    var issue=req.body.issue;
+    mysql.sql('SELECT  user_img,user_name,money,tab1.create_time,issue FROM injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
+        if (err) {
+            console.log(err)
+            res.status(200).send({code: 500, result: [], message: '获取小麦收益失败'});
+        } else {
+
+            res.status(200).send({code: 200, result: result, message: '获取小麦收益成功'});
+        }
+    })
+
+});
 module.exports = router;

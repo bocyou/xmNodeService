@@ -76,14 +76,14 @@ module.exports = {
 
                                 if (JSON.parse(body).errcode == 0) {
                                     console.log(item.user_name + ' 发送成功');
-                                    mysql.sql('update user_formid set status=0 where formid="' + item.form_id[0] + '"', function(err, result) {
+                                    mysql.sql('delete from user_formid where formid="' + item.form_id[0] + '"', function (err, result) {
 
-                                        if (err) {
-                                            console.log('重置formid失败');
-                                            console.log(err)
+                                        if (result && err == null) {
+                                            console.log('删除formid成功');
+
                                         } else {
-
-
+                                            console.log('删除formid失败');
+                                            // res.status(200).send({code: 500, result: result, message: '删除formid失败'});
                                         }
                                     });
                                 } else {
