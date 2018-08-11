@@ -86,7 +86,7 @@ router.post('/get_current_userinfo', checkSession, function (req, res, next) {
 
 
 router.post('/check_current_user', function (req, res, next) {
-    getUserInfo(req,res, function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo.length > 0) {
             res.status(200).send({code: 200, result: true, message: "该用户合法"})
         } else {
@@ -100,13 +100,13 @@ router.post('/check_current_user', function (req, res, next) {
 
 router.post('/get_version_status', function (req, res, next) {
     mysql.sql('SELECT * FROM xm_version WHERE id=1', function (err, result) {
-        if(err){
+        if (err) {
             res.status(200).send({code: 200, result: 0, message: "搜索单词"})
-        }else{
+        } else {
 
-            if(req.headers.v==result[0].v){
+            if (req.headers.v == result[0].v) {
                 res.status(200).send({code: 200, result: 0, message: "搜索单词"})
-            }else{
+            } else {
                 res.status(200).send({code: 200, result: 1, message: "正常状态"})
             }
         }
@@ -118,17 +118,27 @@ router.post('/get_version_status', function (req, res, next) {
 
 router.post('/get_user_info', function (req, res, next) {
 
-    getUserInfo(req,res, function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo.length > 0) {
-            var user_info=userInfo[0];
+            var user_info = userInfo[0];
             console.log(req.headers.v);
-            var is_show_dinner=true;
-            if(req.headers.v==version){
-                is_show_dinner=false;
+            var is_show_dinner = true;
+            if (req.headers.v == version) {
+                is_show_dinner = false;
             }
 
 
-            res.status(200).send({code: 200, result: {area:user_info.area,user_id:user_info.user_id,user_name:user_info.user_name,img:is_show_dinner}, message: "该用户合法"})
+            res.status(200).send({
+                code: 200,
+                result: {
+                    area: user_info.area,
+                    user_id: user_info.user_id,
+                    user_name: user_info.user_name,
+                    img: is_show_dinner,
+                    towords_phone:user_info.towords_phone
+                },
+                message: "该用户合法"
+            })
         } else {
             res.status(200).send({code: 200, result: [], message: "用户不合法"})
         }
@@ -178,7 +188,12 @@ router.post('/user_login', function (req, res, next) {
                         }, function (result, err) {
                             if (result) {
                                 //session存入数据库
-                                res.status(200).send({code: 200, result: true, session: randomSession,towords_phone:user_result[0].towords_phone});
+                                res.status(200).send({
+                                    code: 200,
+                                    result: true,
+                                    session: randomSession,
+                                    towords_phone: user_result[0].towords_phone
+                                });
 
                             } else {
                                 res.status(200).send({code: 200, result: false, message: '新建session失败'})
@@ -259,10 +274,10 @@ router.post('/user_sign_up', function (req, res, next) {
                                         if (result) {
                                             //创建钱包
                                             console.log(result);
-                                            var user_id=result.insertId;
+                                            var user_id = result.insertId;
                                             mysql.insert_one('user_wallet', {
                                                 user_id: user_id,
-                                                money:0
+                                                money: 0
 
                                             }, function (result, err) {
                                                 if (result) {
@@ -304,7 +319,6 @@ router.post('/user_sign_up', function (req, res, next) {
                                             });
 
 
-
                                         } else {
                                             res.status(200).send({code: 200, result: false, message: '创建用户失败'})
                                         }
@@ -337,7 +351,7 @@ router.post('/user_sign_up', function (req, res, next) {
 //收集用户formid
 router.post('/save_user_fromid', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req,res, function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo.length > 0) {
             mysql.insert_one('user_formid', {
                 formid: req.body.formid,
@@ -462,7 +476,7 @@ router.post('/get_all_user', function (req, res, next) {
 });
 router.post('/get_current_user', function (req, res, next) {
 //获取当前用户信息
-    getUserInfo(req,res, function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo && userInfo.length > 0) {
             var user_info = {
                 wx_name: userInfo[0].wx_name,

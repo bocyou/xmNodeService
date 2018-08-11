@@ -1,13 +1,9 @@
 // pages/lottery/lottery.js
-const app = getApp();
+//拓词娱乐活动
 const util = require('../../utils/util.js');
-import NumberAnimate from "../../utils/number_animate";
+let socket_timer=null;
 
 Page({
-
-    /**
-     * 页面的初始数据
-     */
     data: {
         screenInfo: {},
         word_list: [],
@@ -36,6 +32,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.createSocket();
 
 
     },
@@ -58,46 +55,35 @@ Page({
             })
         });
 
-        util.checkPermission(function (userInfo) {
-            //已登陆
-           if(userInfo.towords_phone!=undefined&&userInfo.towords_phone!=null&&userInfo.towords_phone!=''){
-               util.request({
-                   url: util.api + '/api/get_user_info', param: {}, complete: function (res) {
-                       let data = res.data;
-                       if (data.code == 200) {
-                           self.getBetIssue();
-                           if(data.result.user_id==48){
-                               self.setData({
-                                   is_yan:1
-                               })
-                           }
-                       } else {
-                           wx.showToast({
-                               title: '获取用户信息失败',
-                               icon: 'none',
-                               duration: 2000
-                           });
-                       }
-                   }
-               });
+        util.request({
+            url: util.api + '/api/get_user_info', param: {}, complete: function (res) {
+                let data = res.data;
+                console.log(data);
+                if (data.code == 200) {
 
-           }else{
-              wx.redirectTo({
-                   url: '../get_user_phone/get_user_phone'
-               })
-           }
+                    if(data.result.towords_phone==''||data.result.towords_phone==null){
+                        //没有绑定手机号
+                        wx.redirectTo({
+                            url: '../get_user_phone/get_user_phone'
+                        })
+                    }else{
+                        self.getBetIssue();
+                    }
 
-       /*     let today=new Date().getDay();
-            if(today==3||today==5){
-                //获取本次幸运数字统计及中人员
-                self.setData({
-                    is_show_btn:false
-                });
-            }*/
-
+                    if(data.result.user_id==48){
+                        self.setData({
+                            is_yan:1
+                        })
+                    }
+                } else {
+                    wx.showToast({
+                        title: '获取用户信息失败',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                }
+            }
         });
-
-
     },
 
     /**
@@ -105,13 +91,14 @@ Page({
      */
     onHide: function () {
 
+
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+        wx.closeSocket();
     },
 
     /**
@@ -133,6 +120,80 @@ Page({
      */
     onShareAppMessage: function () {
 //
+    },
+    createSocket:function(){
+        const self=this;
+        //创建链接
+ /*       wx.connectSocket({
+            url: 'ws://localhost:8081'
+        })*/
+        wx.connectSocket({
+            url: 'ws://localhost:8081',
+            data:{},
+            header:{
+                'content-type': 'application/json'
+            },
+            protocols: ['protocol1'],
+            method:"GET",
+            complete:function(res){
+                console.log(res);
+            }
+        })
+
+        wx.onSocketOpen(function (res) {
+            //监听WebSocket连接打开事件
+            console.log('WebSocket连接已打开！');
+            let num=0;
+            wx.sendSocketMessage({
+                data:'user_words',
+            });
+            clearInterval(socket_timer);
+            socket_timer=setInterval(function(){
+                wx.sendSocketMessage({
+                    data:'user_words',
+                })
+            },2000);
+
+
+        })
+
+        wx.onSocketMessage(function (res) {
+            //监听WebSocket接受到服务器的消息事件
+
+            var data=JSON.parse(res.data);
+
+            if(data.code==200){
+                self.setData({word_list: data.result.sort(function(a,b){
+                        return b.word-a.word;
+                    }).filter(function(item,idx){
+                        return item.word>0;
+                    })});
+                let lucky_num = 0;
+                data.result.forEach(function (item, idx) {
+                    if(item.word){
+                        lucky_num += parseInt(item.word);
+                    }
+
+                });
+                if (lucky_num < 100) {
+                    //如果单词总数小于100
+                    lucky_num = Math.round(Math.random() * 1000);
+                }
+                let lucky_str=lucky_num.toString();
+                let num2 = lucky_str.substr(lucky_str.length - 2, 2);
+                let num1 = lucky_str.substr(0, lucky_str.length - 2);
+                self.setData({
+                    num1:num1,
+                    num2:num2
+                });
+            }
+        })
+
+        wx.onSocketClose(function (res) {
+            //监听关闭事件
+            clearInterval(socket_timer);
+            console.log('WebSocket连接已关闭！')
+        })
     },
     getBetUsers:function(){
         let self=this;
@@ -159,6 +220,7 @@ Page({
 
                 if (data.code == 200) {
                     if(is_reload){
+                        //只更新奖金池
                         self.setData({
                             current_money:data.result.poor_money
                         });
@@ -169,30 +231,12 @@ Page({
                             issue:data.result.term_info.issue,
                             current_money:data.result.poor_money
                         });
-                        self.getUserWord();//所有用户的背单词记录
                         self.getCurrentBet();//当前用户的本期记录
 
                         self.getLastLuckyUser();
                     }
 
 
-            /*      if(data.result.term_info.status==1||data.result.term_info.status==2){
-                      //==1开始，==2置灰按钮
-
-                      self.getLastLuckyUser();
-                  }else{
-                      //开结果
-                      self.setData({
-                          current_lucky_num:data.result.term_info.lucky_num,
-                          money_poor:parseFloat(data.result.term_info.begin_poor)+parseFloat(data.result.term_info.current_poor)
-                      });
-                      //有获用户获取本期中用户
-                      if(data.result.term_info.is_win==1){
-                          self.getCurrentLuckyUser();
-                      }
-                     // self.getBetUsers();// 计算本期总
-
-                  }*/
                 } else {
                 }
 
@@ -276,6 +320,7 @@ Page({
         });
     },
     saveBet: function () {
+        //保存用户预测信息
         let self = this;
         util.request({
             url: util.api + '/lottery/save_user_bet', param: {num: self.data.user_num,issue:self.data.issue}, complete: function (res) {
@@ -309,7 +354,7 @@ Page({
     },
     saveInjection:function(){
         let self=this;
-
+        //保存用户注资信息
         util.request({
             url: util.api + '/lottery/user_injection_money', param: {inject_money: self.data.inject_money,issue:self.data.issue}, complete: function (res) {
                 let data = res.data;
@@ -410,96 +455,5 @@ Page({
             }
         }
 
-    },
-    test:function(){
-        util.request({
-            url: util.api + '/lottery/test', param: '', complete: function (res) {
-                //获取所有用户的单词量
-                var data = res.data;
-                if (data.code == 200) {
-
-
-                } else {
-
-                }
-
-            }
-        });
-    },
-    injection:function(){
-        let self=this;
-
-    },
-    getUserWord: function () {
-        var self = this;
-
-        util.request({
-            url: util.api + '/lottery/get_user_words', param: '', complete: function (res) {
-                //获取所有用户的单词量
-                var data = res.data;
-                if (data.code == 200) {
-
-                    self.setData({word_list: data.result.sort(function(a,b){
-                        return b.word-a.word;
-                        }).filter(function(item,idx){
-                            return item.word>0;
-                        })});
-                    let lucky_num = 0;
-                    data.result.forEach(function (item, idx) {
-                        if(item.word){
-                            lucky_num += parseInt(item.word);
-                        }
-
-                    });
-                    if (lucky_num < 100) {
-                        //如果单词总数小于100
-                        lucky_num = Math.round(Math.random() * 1000);
-                    }
-                    let lucky_str=lucky_num.toString();
-                    let num2 = lucky_str.substr(lucky_str.length - 2, 2);
-                    let num1 = lucky_str.substr(0, lucky_str.length - 2);
-                    self.setData({
-                        num1:num1,
-                        num2:num2
-                    });
-                    
-               /*     let width = self.data.screenInfo.windowWidth;
-                    let ctx1 = wx.createCanvasContext('total-word');
-                    let n2 = new NumberAnimate({
-                        from: lucky_num,
-                        speed: 2600,
-                        decimals: 0,
-                        refreshTime: 120,
-                        onUpdate: () => {
-                            let value = n2.tempValue.toString();
-                            let num2 = value.substr(value.length - 2, 2);
-                            let num1 = value.substr(0, value.length - 2);
-
-
-                            ctx1.setFillStyle('#000000');
-                            ctx1.setFontSize(35);
-                            ctx1.setTextAlign('center');
-                            ctx1.fillText(num1, Math.round(width / 2) - 46, 50);
-
-                            ctx1.setFontSize(45);
-                            ctx1.setTextAlign('center');
-                            ctx1.fillText(num2, Math.round(width / 2), 50);
-                            /!*
-                                            let metrics1 = ctx1.measureText(n2.tempValue.toString()).width;
-                                            ctx1.setFontSize(16);
-                                            ctx1.fillText('个', 60 + Math.round(metrics1 / 2), 34);*!/
-                            ctx1.draw();
-                        },
-                        onComplete: () => {
-
-                        }
-                    });*/
-
-                } else {
-
-                }
-
-            }
-        });
     }
 })

@@ -2,23 +2,115 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 var mysql = require('../lib/mysql');
-var session = require('express-session');
 var checkSession = require('../middlewares/check_session').checkSession;
 var checkAppSession = require('../middlewares/check_session').checkAppSession;
-var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
-var getCurrentSession = tool.getCurrentSession;
 var xmManageInjection = require('../routes/public/lottery').xmManageInjection;
 var usersInjection = require('../routes/public/lottery').usersInjection;
 var schedule = require('node-schedule');
-var postUsersNews=require('../routes/public/post_news').postUsersNews;
-
+var postUsersNews = require('../routes/public/post_news').postUsersNews;
+var WebSocketServer = require('websocket').server;
+var http = require('http');
 router.get('/', function (req, res) {
 
     res.status(200).send('彩票')
 
 });
+
+const getUsersTowords=(opt)=>{
+    let self=this;
+    //获取所有人本周背单词情况
+    try{
+        mysql.sql('SELECT area,id,user_name,user_img,towords_phone FROM users  WHERE area="bj" AND towords_phone is not null', function (err, result) {
+            if (err) {
+                throw '查询用户失败users'
+            } else {
+                var users = result;
+                var phone_ary = [];
+                users.forEach(function (item, idx) {
+                    phone_ary.push(item.towords_phone);
+                })
+                request.post({
+                    url: 'http://preapi.towords.com/fun/count_user_word_week_data.do', formData: {
+                        mobile_phone_list: phone_ary
+                    }
+                }, function optionalCallback(err, httpResponse, body) {
+
+                    var towords_data = JSON.parse(body);
+                    if (towords_data.code == 200) {
+                        users = users.map(function (item, idx) {
+                            if (towords_data.result[item.towords_phone]) {
+                                item.word = towords_data.result[item.towords_phone];
+                            } else {
+                                item.word = 0
+                            }
+
+                            return item;
+                        });
+                        opt.success(users);
+
+
+                    } else {
+
+                        throw '从拓词获取数据失败'
+                    }
+
+                });
+            }
+        })
+    }catch (e) {
+        opt.error(e)
+
+    }
+
+}
+
+
+const httpServer = http.createServer((request, response) => {
+    console.log('[' + new Date + '] Received request for ' + request.url)
+    response.writeHead(404)
+    response.end()
+});
+
+const wsServer = new WebSocketServer({
+    httpServer:httpServer,
+    autoAcceptConnections: true
+});
+
+wsServer.on('connect', connection => {
+    connection.on('message', message => {
+        if (message.type === 'utf8') {
+           /* console.log('>> message content from client: ' + message.utf8Data)*/
+
+            switch (message.utf8Data) {
+                case 'user_words':
+                    getUsersTowords({success:function(users){
+                            connection.sendUTF(JSON.stringify({result:users,code:200}))
+                        },error:function(err){
+                            connection.sendUTF({result:[],code:500})
+                        }});
+                    break;
+            }
+
+        }
+    }).on('close', (reasonCode, description) => {
+        console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
+    })
+});
+
+httpServer.listen(8081, () => {
+    console.log('[' + new Date() + '] Serveris listening on port 8081')
+});
+
+
+
+
+
+
+
+
+
 
 
 //每周三，周五 10点开奖  获取一次数据，计算中奖用户存入表lucky_num
@@ -78,7 +170,7 @@ var work = {
                                         var issue = result[0].issue;
                                         var term_id = result[0].id;
                                         var begin_poor = parseInt(result[0].begin_poor);
-                                        var lucky_names=[];
+                                        var lucky_names = [];
                                         //查询本期押注情况
                                         mysql.sql('SELECT * FROM user_bet tab1 JOIN users tab2  ON tab1.user_id = tab2.id WHERE issue="' + issue + '"', function (err, result) {
                                             if (err) {
@@ -145,25 +237,24 @@ var work = {
                                                                                     console.log('已计入用户钱包');
                                                                                     self.startBet(1, issue, 0);
 
-                                                                                        postUsersNews({
-                                                                                            data:{
-                                                                                                "keyword1": {
-                                                                                                    "value": "拓词猜猜看",
-                                                                                                    "color": "#173177"
-                                                                                                },
-                                                                                                "keyword2": {
-                                                                                                    "value": share_money,
-                                                                                                    "color": "#173177"
-                                                                                                },
-                                                                                                "keyword3": {
-                                                                                                    "value":lucky_names.join(',') ,
-                                                                                                    "color": "#173177"
-                                                                                                }
+                                                                                    postUsersNews({
+                                                                                        data: {
+                                                                                            "keyword1": {
+                                                                                                "value": "拓词猜猜看",
+                                                                                                "color": "#173177"
                                                                                             },
-                                                                                            template_id:'AfGclvsdQslwt1CgTMUS5LeVFfwrgkmcIqkHBGHAeRA',
-                                                                                            page:'pages/lottery/lottery'
-                                                                                        });
-
+                                                                                            "keyword2": {
+                                                                                                "value": share_money,
+                                                                                                "color": "#173177"
+                                                                                            },
+                                                                                            "keyword3": {
+                                                                                                "value": lucky_names.join(','),
+                                                                                                "color": "#173177"
+                                                                                            }
+                                                                                        },
+                                                                                        template_id: 'AfGclvsdQslwt1CgTMUS5LeVFfwrgkmcIqkHBGHAeRA',
+                                                                                        page: 'pages/lottery/lottery'
+                                                                                    });
 
 
                                                                                 }
@@ -331,10 +422,10 @@ var work = {
         })
 
     },
-    postBetNews:function(){
-        var self=this;
+    postBetNews: function () {
+        var self = this;
         postUsersNews({
-            data:{
+            data: {
                 "keyword1": {
                     "value": "小麦-拓词猜猜看",
                     "color": "#173177"
@@ -344,12 +435,12 @@ var work = {
                     "color": "#173177"
                 },
                 "keyword3": {
-                    "value":"拓词猜猜看将于今晚0点停止预测，点击参与即有机会瓜分麦粒",
+                    "value": "拓词猜猜看将于今晚0点停止预测，点击参与即有机会瓜分麦粒",
                     "color": "#173177"
                 }
             },
-            template_id:'-luQWpwuTIKETJlH3FujmICZ59LJIFp1Lf000H3S0EY',
-            page:'pages/lottery/lottery'
+            template_id: '-luQWpwuTIKETJlH3FujmICZ59LJIFp1Lf000H3S0EY',
+            page: 'pages/lottery/lottery'
         });
 
     }
@@ -358,8 +449,16 @@ var work = {
 router.post('/test', function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
-    work.closeBet();
+    try{
+        //throw 'yichang'
+    }catch (e) {
+        console.log(e);
+    }
 });
+
+
+
+
 //周三，周五00:00，结束押注(结束当前期)
 var disable_bet = new schedule.RecurrenceRule();
 disable_bet.dayOfWeek = [3, 5];
@@ -396,7 +495,6 @@ schedule.scheduleJob(post_bet_message, function () {
 });
 
 
-
 router.post('/close', function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
@@ -413,48 +511,17 @@ router.post('/post_news', function (req, res, next) {
     work.postBetNews();
 });
 
+
+
 router.post('/get_user_words', checkAppSession, function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
-    mysql.sql('SELECT area,id,user_name,user_img,towords_phone FROM users  WHERE area="bj" AND towords_phone is not null', function (err, result) {
-        if (err) {
-            res.status(200).send({code: 500, result: [], message: '查询失败'});
-        } else {
-            var users = result;
-            var phone_ary = [];
-            users.forEach(function (item, idx) {
-                phone_ary.push(item.towords_phone);
-            })
-            request.post({
-                url: 'http://preapi.towords.com/fun/count_user_word_week_data.do', formData: {
-                    mobile_phone_list: phone_ary
-                }
-            }, function optionalCallback(err, httpResponse, body) {
-                if (err) {
-                    res.status(200).send({code: 500, result: [], message: '获取用户单词数失败'});
-                } else {
-                    var towords_data = JSON.parse(body);
-                    if (towords_data.code == 200) {
+    getUsersTowords({success:function(users){
+            res.status(200).send({code: 200, result: users, message: '获取用户单词数成功'});
+        },error:function(err){
+            res.status(200).send({code: 500, result: [], message:err});
+        }});
 
-
-                        users = users.map(function (item, idx) {
-                            if (towords_data.result[item.towords_phone]) {
-                                item.word = towords_data.result[item.towords_phone];
-                            } else {
-                                item.word = 0
-                            }
-
-                            return item;
-                        });
-                        res.status(200).send({code: 200, result: users, message: '获取用户单词数成功'});
-
-                    } else {
-                        res.status(200).send({code: 500, result: [], message: '获取数据失败'});
-                    }
-                }
-            });
-        }
-    })
 });
 
 
@@ -462,7 +529,7 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
     //保存用户押注数据同时检查是否存在相同押注
 
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req,res,function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
             //获取当前期的状态
             if (userInfo[0].id == 48) {
@@ -639,7 +706,7 @@ router.post('/get_lucky_users', checkAppSession, function (req, res, next) {
 router.post('/get_user_bet', checkAppSession, function (req, res, next) {
     //获取本人押注号码
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req,res, function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
             mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
                 if (err) {
@@ -674,7 +741,7 @@ router.post('/get_users_bet', checkAppSession, function (req, res, next) {
 router.post('/get_bet_issue', checkAppSession, function (req, res, next) {
     //获取期数
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req,res,function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
             mysql.sql('SELECT * FROM bet_issue bi,(SELECT max(create_time) as max_time FROM bet_issue) max_bi WHERE bi.create_time = max_bi.max_time', function (err, result) {
                 if (err) {
@@ -708,7 +775,7 @@ router.post('/get_custom_bet_issue', checkAppSession, function (req, res, next) 
 router.post('/user_injection_money', checkAppSession, function (req, res, next) {
     //
     res.header("Access-Control-Allow-Origin", "*");
-    getUserInfo(req,res, function (userInfo) {
+    getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
 
             usersInjection({
@@ -846,42 +913,42 @@ router.post('/current_user_bet', checkSession, function (req, res, next) {
     //获取本期押注信息
     res.header("Access-Control-Allow-Origin", "*");
 
-            var issue = req.body.issue;
+    var issue = req.body.issue;
 
-            mysql.sql('SELECT  user_img,user_name,num,tab1.create_time,issue,tab1.user_id FROM user_bet tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
-                if (err) {
+    mysql.sql('SELECT  user_img,user_name,num,tab1.create_time,issue,tab1.user_id FROM user_bet tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
+        if (err) {
 
-                    res.status(200).send({code: 500, result: [], message: '获取本期押注信息失败'});
-                } else {
+            res.status(200).send({code: 500, result: [], message: '获取本期押注信息失败'});
+        } else {
 
-                    var ary = result;
-                    var result_ary = [];
-                    ary.sort(function (a, b) {
-                        return a.user_id - b.user_id;
-                    });
-                    for (var i = 0; i < ary.length;) {
-                        var count = 0;
-                        var bet_ary = [];
-                        for (var j = i; j < ary.length; j++) {
+            var ary = result;
+            var result_ary = [];
+            ary.sort(function (a, b) {
+                return a.user_id - b.user_id;
+            });
+            for (var i = 0; i < ary.length;) {
+                var count = 0;
+                var bet_ary = [];
+                for (var j = i; j < ary.length; j++) {
 
-                            if (ary[i].user_id == ary[j].user_id) {
-                                bet_ary.push(ary[j].num);
-                                count++;
-                            }
-                        }
-                        result_ary.push({
-                            issue: ary[i].issue,
-                            user_name: ary[i].user_name,
-                            user_img: ary[i].user_img,
-                            bet: bet_ary
-                        });
-                        i += count;
+                    if (ary[i].user_id == ary[j].user_id) {
+                        bet_ary.push(ary[j].num);
+                        count++;
                     }
-
-
-                    res.status(200).send({code: 200, result: result_ary, message: '获取本期押注信息成功'});
                 }
-            })
+                result_ary.push({
+                    issue: ary[i].issue,
+                    user_name: ary[i].user_name,
+                    user_img: ary[i].user_img,
+                    bet: bet_ary
+                });
+                i += count;
+            }
+
+
+            res.status(200).send({code: 200, result: result_ary, message: '获取本期押注信息成功'});
+        }
+    })
 
 
 });
@@ -921,7 +988,7 @@ router.post('/xm_issue_info', checkSession, function (req, res, next) {
 router.post('/xm_san_code_money', checkSession, function (req, res, next) {
     //获取扫码注资信息
     res.header("Access-Control-Allow-Origin", "*");
-    var issue=req.body.issue;
+    var issue = req.body.issue;
     mysql.sql('SELECT  user_img,user_name,money,tab1.create_time,issue FROM scan_injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
         if (err) {
             console.log(err)
@@ -952,7 +1019,7 @@ router.post('/xm_injection_info', checkSession, function (req, res, next) {
 router.post('/user_injection_info', checkSession, function (req, res, next) {
     //获取用户注资信息
     res.header("Access-Control-Allow-Origin", "*");
-    var issue=req.body.issue;
+    var issue = req.body.issue;
     mysql.sql('SELECT  user_img,user_name,money,tab1.create_time,issue FROM injection tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE issue="' + (issue) + '"', function (err, result) {
         if (err) {
             console.log(err)
