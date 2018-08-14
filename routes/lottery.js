@@ -11,7 +11,8 @@ var usersInjection = require('../routes/public/lottery').usersInjection;
 var schedule = require('node-schedule');
 var postUsersNews = require('../routes/public/post_news').postUsersNews;
 var WebSocketServer = require('websocket').server;
-var http = require('http');
+var http = require('https');
+var fs=require('fs');
 router.get('/', function (req, res) {
 
     res.status(200).send('彩票')

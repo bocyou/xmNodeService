@@ -128,7 +128,7 @@ Page({
             url: 'ws://localhost:8081'
         })*/
         wx.connectSocket({
-            url: 'ws://localhost:8081',
+            url: 'wss://xiaomai.towords.com/wss',
             data:{},
             header:{
                 'content-type': 'application/json'
@@ -159,8 +159,9 @@ Page({
 
         wx.onSocketMessage(function (res) {
             //监听WebSocket接受到服务器的消息事件
+            console.log(res);
 
-            var data=JSON.parse(res.data);
+            let data=JSON.parse(res.data);
 
             if(data.code==200){
                 self.setData({word_list: data.result.sort(function(a,b){

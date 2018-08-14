@@ -1,7 +1,7 @@
 var mysql = require('../../lib/mysql');
 
 
-//1为小麦官方,2为扫码付款，3为个人
+
 
 module.exports = {
     xmManageInjection: function(opt){
@@ -100,7 +100,7 @@ module.exports = {
                     var  term_num=result[0].issue;
                     var term_id=result[0].id;
                     //统计本期扫码注入金额超过30则不再注入
-                    mysql.sql('SELECT * FROM injection  WHERE way=2 AND issue="'+term_num+'"', function (err, result1) {
+                    mysql.sql('SELECT * FROM scan_injection  WHERE issue="'+term_num+'"', function (err, result1) {
                         if (err) {
                             throw "获取本期注入金额失败";
                             //res.status(200).send({code: 500, result: {}, message: '获取本期信息失败'});

@@ -11,8 +11,8 @@ const formatTime = date => {
 }
 const version=18080815;
 const ws_api='ws://localhost:8081';
-var api='http://localhost:8080/xm';
-//var api ='https://xiaomai.towords.com/xm';
+//var api='http://localhost:8080/xm';
+var api ='https://xiaomai.towords.com/xm';
 //https://xiaomai.towords.com/xm
 const formatNumber = n => {
   n = n.toString()
