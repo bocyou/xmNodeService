@@ -12,7 +12,7 @@ var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var saveLogs = tool.saveLogs;
 var getCurrentSession = tool.getCurrentSession;
-var version = '20180518';
+var version = '1';
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});
@@ -99,18 +99,12 @@ router.post('/check_current_user', function (req, res, next) {
 /*我start*/
 
 router.post('/get_version_status', function (req, res, next) {
-    mysql.sql('SELECT * FROM xm_version WHERE id=1', function (err, result) {
-        if (err) {
-            res.status(200).send({code: 200, result: 0, message: "搜索单词"})
-        } else {
 
-            if (req.headers.v == result[0].v) {
-                res.status(200).send({code: 200, result: 0, message: "搜索单词"})
-            } else {
-                res.status(200).send({code: 200, result: 1, message: "正常状态"})
-            }
-        }
-    })
+    if (req.headers.v == version) {
+        res.status(200).send({code: 200, result: 0, message: "搜索单词"})
+    } else {
+        res.status(200).send({code: 200, result: 1, message: "正常状态"})
+    }
 
 
 });

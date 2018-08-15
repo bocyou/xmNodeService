@@ -58,7 +58,7 @@ Page({
         util.request({
             url: util.api + '/api/get_user_info', param: {}, complete: function (res) {
                 let data = res.data;
-                console.log(data);
+               // console.log(data);
                 if (data.code == 200) {
 
                     if(data.result.towords_phone==''||data.result.towords_phone==null){
@@ -136,13 +136,13 @@ Page({
             protocols: ['protocol1'],
             method:"GET",
             complete:function(res){
-                console.log(res);
+               // console.log(res);
             }
         })
 
         wx.onSocketOpen(function (res) {
             //监听WebSocket连接打开事件
-            console.log('WebSocket连接已打开！');
+           // console.log('WebSocket连接已打开！');
             let num=0;
             wx.sendSocketMessage({
                 data:'user_words',
@@ -159,7 +159,7 @@ Page({
 
         wx.onSocketMessage(function (res) {
             //监听WebSocket接受到服务器的消息事件
-            console.log(res);
+            //console.log(res);
 
             let data=JSON.parse(res.data);
 
@@ -193,7 +193,7 @@ Page({
         wx.onSocketClose(function (res) {
             //监听关闭事件
             clearInterval(socket_timer);
-            console.log('WebSocket连接已关闭！')
+            //console.log('WebSocket连接已关闭！')
         })
     },
     getBetUsers:function(){

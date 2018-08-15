@@ -1,0 +1,39 @@
+<!--pages/audio_course/audio_course.wxml-->
+<!--<view class="cover-img"></view>-->
+<view class="audio-info" >
+    <view class="disc-box">
+
+    </view>
+    <canvas canvas-id="disc" style="width:{{screen_info.screenWidth}}px;height:400px"></canvas>
+</view>
+
+<view class="bottom-editor">
+    <view class="section section_gap">
+        <view class="body-view">
+            <slider value="{{progress_num}}" bindchange="progressChange" bindchanging="stop_progress" activeColor="#545454" block-size="22"/>
+        </view>
+        <view class="bar"></view>
+    </view>
+    <view class="time-info">
+        <view class="start-time">{{progress_time}}</view>
+        <view class="end-time">{{total_time}}</view>
+    </view>
+
+    <view class="tool-btns">
+        <view class="round-box" bindtap="playBtn">
+            <view class="round">
+                <block wx:if="{{playing==0}}">
+                    <view class="play-icon icon bg"></view>
+
+                </block>
+                <block wx:else>
+                    <view class="pause-icon icon bg"></view>
+
+                </block>
+            </view>
+
+        </view>
+
+    </view>
+</view>
+

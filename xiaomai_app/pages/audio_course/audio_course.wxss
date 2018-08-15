@@ -1,0 +1,66 @@
+/* pages/audio_course/audio_course.wxss */
+page{
+  display: flex;
+    flex-direction: column;
+}
+.audio-info{
+   flex:1;
+}
+.bottom-editor{
+    height:320rpx;
+
+}
+
+.section slider{
+margin:0;
+}
+.time-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color:#545554;
+    font-size:28rpx;
+    padding:10rpx 30rpx;
+    margin-top:10rpx;
+    margin-bottom:50rpx;
+}
+
+.cover-img{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/audio_course/audio1.jpg");
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
+    height:660rpx;
+    width:80%;
+    margin:0 auto;
+}
+.tool-btns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.round-box .round{
+    border-radius: 50%;
+    width:120rpx;
+    height:120rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4rpx 4rpx 20rpx rgba(0,0,0,.4);
+    background-color:#000;
+}
+.icon{
+    width:50rpx;
+    height:50rpx;
+
+}
+.play-icon{
+    position:relative;
+    left:4rpx;
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/bofang.png");
+}
+.pause-icon{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/zanting.png");
+}
+

@@ -68,41 +68,7 @@ const getUsersTowords=(opt)=>{
 }
 
 
-const httpServer = http.createServer((request, response) => {
-    console.log('[' + new Date + '] Received request for ' + request.url)
-    response.writeHead(404)
-    response.end()
-});
 
-const wsServer = new WebSocketServer({
-    httpServer:httpServer,
-    autoAcceptConnections: true
-});
-
-wsServer.on('connect', connection => {
-    connection.on('message', message => {
-        if (message.type === 'utf8') {
-           /* console.log('>> message content from client: ' + message.utf8Data)*/
-
-            switch (message.utf8Data) {
-                case 'user_words':
-                    getUsersTowords({success:function(users){
-                            connection.sendUTF(JSON.stringify({result:users,code:200}))
-                        },error:function(err){
-                            connection.sendUTF({result:[],code:500})
-                        }});
-                    break;
-            }
-
-        }
-    }).on('close', (reasonCode, description) => {
-        console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
-    })
-});
-
-httpServer.listen(8081, () => {
-    console.log('[' + new Date() + '] Serveris listening on port 8081')
-});
 
 
 
@@ -484,13 +450,13 @@ var begin_bet_work = schedule.scheduleJob(begin_bet, function () {
     work.closeBet();
 
 });
-//周二，周四下午6：00（发送押注提醒）
+//周二，周四下午6：30（发送押注提醒）
 var post_bet_message = new schedule.RecurrenceRule();
 post_bet_message.dayOfWeek = [2, 4];
 post_bet_message.hour = 18;
-post_bet_message.minute = 00;
+post_bet_message.minute = 30;
 
-schedule.scheduleJob(post_bet_message, function () {
+var post_bet_message_work= schedule.scheduleJob(post_bet_message, function () {
     work.postBetNews();
 
 });
@@ -1032,4 +998,46 @@ router.post('/user_injection_info', checkSession, function (req, res, next) {
     })
 
 });
+
+try{
+    const httpServer = http.createServer((request, response) => {
+        console.log('[' + new Date + '] Received request for ' + request.url)
+        response.writeHead(404)
+        response.end()
+    });
+
+    const wsServer = new WebSocketServer({
+        httpServer:httpServer,
+        autoAcceptConnections: true
+    });
+
+    wsServer.on('connect', connection => {
+        connection.on('message', message => {
+            if (message.type === 'utf8') {
+                /* console.log('>> message content from client: ' + message.utf8Data)*/
+
+                switch (message.utf8Data) {
+                    case 'user_words':
+                        getUsersTowords({success:function(users){
+                                connection.sendUTF(JSON.stringify({result:users,code:200}))
+                            },error:function(err){
+                                connection.sendUTF({result:[],code:500})
+                            }});
+                        break;
+                }
+
+            }
+        }).on('close', (reasonCode, description) => {
+            console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
+        })
+    });
+
+    httpServer.listen(8081, () => {
+        console.log('[' + new Date() + '] Serveris listening on port 8081')
+    });
+}catch (e) {
+    console.log(e);
+}
+
+
 module.exports = router;
