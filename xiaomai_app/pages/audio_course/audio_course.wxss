@@ -5,14 +5,16 @@ page{
 }
 .audio-info{
    flex:1;
+    padding-top:100rpx;
 }
 .bottom-editor{
     height:320rpx;
+    padding-bottom:20rpx;
 
 }
 
 .section slider{
-margin:0;
+margin:0 30rpx;
 }
 .time-info{
     display: flex;
@@ -23,6 +25,12 @@ margin:0;
     padding:10rpx 30rpx;
     margin-top:10rpx;
     margin-bottom:50rpx;
+}
+.disc-dsc{
+    text-align: center;
+    padding-top:20rpx;
+    font-size:30rpx;
+    color:#2c2d2c;
 }
 
 .cover-img{

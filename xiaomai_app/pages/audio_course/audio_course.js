@@ -42,24 +42,51 @@ class Disc {
         this.current_deg=0;
         this.opt = Object.assign(def, opt);
         this.ctx = null;
+        this.cover=null;
         this.init();
     }
 
     init() {
+        const self=this;
         this.ctx = wx.createCanvasContext(this.opt.id);
-        this.draw()
+
+        wx.getImageInfo({
+            src: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/disc.jpg',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded', // 默认值
+            },
+            fail:function(){
+                wx.showModal({
+                    title: '',
+                    content:'下载专辑封面失败，请删除小程序重试' ,
+                    success: function(res) {
+                        if (res.confirm) {
+                            console.log('用户点击确定')
+                        } else if (res.cancel) {
+                            console.log('用户点击取消')
+                        }
+                    }
+                })
+            },
+            success: function (res) {
+              self.cover=res.path;
+                self.draw();
+            }
+        })
     }
     draw(){
+        const self=this;
         let ctx=this.ctx;
         let r=this.opt.r;
         let screen_w=this.opt.screen_w;
-     /*   ctx.setFillStyle('red');*/
-      /*  ctx.translate(screen_w/2,r);
-        ctx.rotate(this.current_deg * Math.PI / 180);*/
-
+        ctx.setFillStyle('red');
+        ctx.translate(screen_w/2,r);
+        ctx.rotate(this.current_deg * Math.PI / 180);
+      /*  ctx.arc(0, 0, r, 0, 2 * Math.PI);
+        ctx.fill();*/
       /*  ctx.arc(0, 0, r, 0, 2 * Math.PI);
         ctx.clip();*/
-        ctx.drawImage('https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/disc.png', 0,0,200,200,100,100, 200, 200)
+        ctx.drawImage( self.cover, -r,-r,2*r,2*r);
 
         ctx.draw();
 
@@ -95,6 +122,7 @@ Page({
         total_time: '00:00',
         screen_info: {},
         progress_num:0,
+        today_time:util.customDate(new Date(),'yyyy/MM/dd'),
     },
 
     /**
@@ -129,9 +157,9 @@ Page({
                 }),
                 onTimeUpdate: ((currentTime,duration) => {
                     self.setData({
-                        progress_time: secChange(currentTime)
+                        progress_time: secChange(currentTime),
+                        progress_num:currentTime/duration*100
                     });
-                
 
                 }),
                 onPlay: (() => {
@@ -170,7 +198,7 @@ Page({
 
     },
     stop_progress:function(){
-        player.pause()
+        player.stop()
     },
 
     /**
