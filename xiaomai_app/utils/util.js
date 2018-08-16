@@ -9,7 +9,7 @@ const formatTime = date => {
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
-const version=18080816;
+const version=1;
 const ws_api='ws://localhost:8081';
 //var api='http://localhost:8080/xm';
 var api ='https://xiaomai.towords.com/xm';

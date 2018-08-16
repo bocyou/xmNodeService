@@ -72,3 +72,10 @@ margin:0 30rpx;
     background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/zanting.png");
 }
 
+
+.tip-txt{
+    text-align: center;
+    font-size:30rpx;
+    padding-top:200rpx;
+    color:#000;
+}

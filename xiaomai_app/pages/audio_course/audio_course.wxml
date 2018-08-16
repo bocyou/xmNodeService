@@ -1,5 +1,6 @@
 <!--pages/audio_course/audio_course.wxml-->
 <!--<view class="cover-img"></view>-->
+<block wx:if="{{is_show_audio==1}}">
 <view class="audio-info" >
     <canvas canvas-id="disc" style="width:{{screen_info.screenWidth}}px;height:210px"></canvas>
     <view class="disc-dsc">
@@ -34,4 +35,8 @@
 
     </view>
 </view>
+</block>
+<block wx:else>
+    <view class="tip-txt">今天无课程</view>
+</block>
 

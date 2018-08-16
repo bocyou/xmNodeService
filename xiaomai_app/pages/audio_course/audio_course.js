@@ -51,7 +51,7 @@ class Disc {
         this.ctx = wx.createCanvasContext(this.opt.id);
 
         wx.getImageInfo({
-            src: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/disc.jpg',
+            src: 'https://xiaomai.towords.com/img/disc.jpg',
             header: {
                 'content-type': 'application/x-www-form-urlencoded', // 默认值
             },
@@ -146,10 +146,11 @@ Page({
         console.log(today);
 
         if (today == 0 || today == 6) {
-
+           self.setData({is_show_audio:0});
         } else {
+            let audio_title=util.customDate(new Date(),'yyyyMMdd');
             player = new Player({
-                url: 'https://topschool-xiaomai.oss-cn-beijing.aliyuncs.com/lesson/20180727.mp3',
+                url: 'https://topschool-xiaomai.oss-cn-beijing.aliyuncs.com/lesson/'+audio_title+'.mp3',
                 duration: ((duration) => {
                     self.setData({
                         total_time: secChange(duration)

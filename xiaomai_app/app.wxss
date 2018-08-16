@@ -57,10 +57,7 @@ page{
   display:block;
 }
 .loading-main{
-  text-align:center;
-  margin-top:200rpx;
-  font-size:28rpx;
-  color:#717171;
+
 }
 .bg{
   background-repeat:no-repeat;

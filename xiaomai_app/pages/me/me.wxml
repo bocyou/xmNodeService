@@ -64,6 +64,18 @@
 
             </view>
         </navigator>
+        <navigator class="" url="../pay/pay" hover-class="navigator-hover">
+            <view class="info-block">
+                <view class="icon icon-pay" ></view>
+                <view class="right">
+                    <view class="info">
+                        快捷付款通道
+                    </view>
+                    <view class="go-icon"></view>
+                </view>
+
+            </view>
+        </navigator>
         <navigator class="" url="../xm_rule/xm_rule" hover-class="navigator-hover">
             <view class="info-block">
                 <view class="icon icon-rule" ></view>
@@ -180,8 +192,6 @@
                     </view>
 
                 </block>
-
-
             </block>
         </view>
     </block>
@@ -195,6 +205,6 @@
 </block>
 <block wx:else>
     <view class="loading-main">
-        加载中……
+
     </view>
 </block>

@@ -334,7 +334,11 @@ button{
     width:40rpx;
     height:40rpx;
 }
-
+.shadow-box .info-block .icon-pay{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/pay.png")!important;
+    margin-top:-6rpx;
+    opacity: .8;
+}
 
 
 

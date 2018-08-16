@@ -1,0 +1,7 @@
+<!--pages/pay/pay.wxml-->
+<view class="user-pay">
+    <input  type="digit" placeholder="带小数点的数字键盘" placeholder="在此输入消费金额" focus="true" bindinput="getUserPay" placeholder-style="font-size:36rpx;"/>
+    <view class="border"></view>
+    <view class="err-tip">{{err_tip}}</view>
+</view>
+<view bindtap="pay" class="pay-btn">付款</view>
