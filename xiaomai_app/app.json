@@ -15,6 +15,7 @@
     "pages/get_user_phone/get_user_phone",
     "pages/xm_rule/xm_rule",
     "pages/audio_course/audio_course",
+    "pages/share_course/share_course",
     "pages/pay/pay"
   ],
   "window": {

@@ -1,0 +1,8 @@
+<!--pages/share_course/share_course.wxml-->
+<view class="content-bar" wx:for="{{course_list}}" wx:key="i">
+    <view class="time">{{item.start_time}}</view>
+    <view class="content-txt">
+        <view class="user"><view class="user-face bg" style="background-image: url({{item.user_img}})"></view><view class="name">{{item.user_name}}</view></view>
+        <view class="course-txt">{{item.course_name}}</view>
+    </view>
+</view>

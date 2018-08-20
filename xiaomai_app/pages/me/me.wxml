@@ -76,6 +76,18 @@
 
             </view>
         </navigator>
+        <navigator class="" url="../share_course/share_course" hover-class="navigator-hover">
+            <view class="info-block">
+                <view class="icon icon-share" ></view>
+                <view class="right">
+                    <view class="info">
+                        每周心得分享安排
+                    </view>
+                    <view class="go-icon"></view>
+                </view>
+
+            </view>
+        </navigator>
         <navigator class="" url="../xm_rule/xm_rule" hover-class="navigator-hover">
             <view class="info-block">
                 <view class="icon icon-rule" ></view>

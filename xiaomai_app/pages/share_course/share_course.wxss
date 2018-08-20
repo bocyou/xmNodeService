@@ -1,0 +1,42 @@
+/* pages/share_course/share_course.wxss */
+page{
+    padding:80rpx 30rpx 0;
+
+}
+.content-bar{
+    margin-bottom:40rpx;
+}
+.content-bar .time{
+    font-size:26rpx;
+    color: #919191;
+
+}
+.content-bar  .content-txt{
+    margin-left:60rpx;
+    padding-top:20rpx;
+    padding-bottom:20rpx;
+    border-bottom:1rpx solid #f7f7f7;
+}
+.content-bar:last-child  .content-txt{
+    border-bottom:none;
+}
+.content-txt .name{
+    font-size:30rpx;
+    margin-bottom:10rpx;
+    color: #444444;
+}
+.content-txt .course-txt{
+    font-size:36rpx;
+}
+.content-txt .user{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom:20rpx;
+}
+.content-txt .user .user-face{
+    width:70rpx;
+    height:70rpx;
+    border-radius: 50%;
+    margin-right:16rpx;
+}

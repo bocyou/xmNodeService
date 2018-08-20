@@ -340,7 +340,13 @@ button{
     opacity: .8;
 }
 
-
+.shadow-box .info-block .icon-share{
+    background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/icon/share.png")!important;
+    margin-top:-4rpx;
+    width:38rpx;
+    height:38rpx;
+    opacity: .8;
+}
 
 
 

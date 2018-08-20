@@ -241,6 +241,7 @@ var billWork = {
                                 form_id: form_id
                             };
                             res.push(user_bar);
+
                             request.post({
                                 url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=' + access_token,
                                 form: JSON.stringify({
@@ -250,23 +251,19 @@ var billWork = {
                                     "form_id": user_bar.form_id[0],
                                     "data": {
                                         "keyword1": {
-                                            "value": "小麦未付款账单",
-                                            "color": "#173177"
+                                            "value": "小麦未付款账单"
                                         },
                                         "keyword2": {
-                                            "value": "请于今日订餐前支付",
-                                            "color": "#173177"
+                                            "value": "请于今日订餐前支付"
                                         },
                                         "keyword3": {
-                                            "value": user_bar.money,
-                                            "color": "#940020"
+                                            "value": user_bar.money
                                         },
                                         "keyword4": {
-                                            "value": new Date().Format('yyyy年MM月dd日 HH:mm'),
-                                            "color": "#173177"
+                                            "value": new Date().Format('yyyy年MM月dd日 HH:mm')
                                         }
                                     },
-                                    "emphasis_keyword": "keyword2.value"
+                                    "emphasis_keyword": "keyword3.DATA"
                                 })
                             }, function (error, response, body) {
                                 if (!error && response.statusCode == 200) {
@@ -327,11 +324,11 @@ var sat_bill = schedule.scheduleJob({hour: 00, minute: 00, dayOfWeek: 1}, functi
 var sat_bill = schedule.scheduleJob({hour: 10, minute: 00, dayOfWeek: 1}, function () {
     console.log('自动分发账单消息');
     billWork.postNotPayNews();
-    billWork.clearFormId();
+    //billWork.clearFormId();
 });
 
 router.post('/post_bill', function (req, res, next) {
-    billWork.postBill();
+    billWork.postNotPayNews();
 })
 
 module.exports = router;

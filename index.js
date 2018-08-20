@@ -54,7 +54,7 @@ app.use('/xm/logs',require('./routes/logs'));
 app.use('/xm/timer',require('./routes/timer'));
 app.use('/xm/shop_money',require('./routes/shop_money'));
 app.use('/xm/lottery',require('./routes/lottery'));
-
+app.use('/xm/share_course',require('./routes/share_course'));
 
 
 
