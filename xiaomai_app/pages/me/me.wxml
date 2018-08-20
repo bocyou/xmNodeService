@@ -39,6 +39,74 @@
 
 
 
+
+
+    <block wx:if="{{bill_ary.length>0}}">
+        <view class="bill-content">
+            <view class="title">您有未支付账单
+                <view class="dsc">请通过二维码付款后点击下方确认付钱</view>
+            </view>
+
+
+            <block class="bar" wx:for="{{bill_ary}}" wx:key="i">
+                <block wx:if="{{item.deduction>0}}">
+                    <view class="bar thead">
+                        <view class="th money">本期应付</view>
+                        <view class="th money ">本期账单</view>
+                        <view class="th date">账单日</view>
+                        <view class="th editor"></view>
+                    </view>
+                    <view class="bar">
+                        <view class="money">¥
+
+                            <text>{{item.money-item.deduction}}</text>
+                        </view>
+                        <view class="money bill-no">¥
+
+                            <text>{{item.money}}</text>
+                            <view class="line"></view>
+                        </view>
+                        <view class="date">{{item.create_time}}</view>
+                        <view class="editor">
+                            <block wx:if="{{item.money==item.deduction}}">
+                                <view class="pay-money" bindtap="payBegMoney" data-billid="{{item.bill_id}}">确认</view>
+                            </block>
+                            <block wx:else>
+                                <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
+                            </block>
+
+
+                        </view>
+                    </view>
+
+                </block>
+                <block wx:else>
+                    <view class="bar thead">
+                        <view class="th money">本期应付</view>
+
+                        <view class="th date">账单日</view>
+                        <view class="th editor"></view>
+                    </view>
+                    <view class="bar">
+                        <view class="money">¥
+
+                            <text>{{item.money}}</text>
+                        </view>
+
+                        <view class="date">{{item.create_time}}</view>
+                        <view class="editor">
+                            <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
+
+                        </view>
+                    </view>
+
+                </block>
+            </block>
+        </view>
+    </block>
+
+
+
     <view class="shadow-box">
         <button class="" open-type="contact" session-from="imgcode">
             <view class="info-block">
@@ -69,7 +137,7 @@
                 <view class="icon icon-pay" ></view>
                 <view class="right">
                     <view class="info">
-                        快捷付款通道
+                        小卖部消费付款通道
                     </view>
                     <view class="go-icon"></view>
                 </view>
@@ -144,69 +212,6 @@
     </view>
 
 
-    <block wx:if="{{bill_ary.length>0}}">
-        <view class="bill-content">
-            <view class="title">您有未支付账单
-                <text>（请转账给王老师后点击下方确认付钱）</text>
-            </view>
-
-
-            <block class="bar" wx:for="{{bill_ary}}" wx:key="i">
-                <block wx:if="{{item.deduction>0}}">
-                    <view class="bar thead">
-                        <view class="th money">本期应付</view>
-                        <view class="th money ">本期账单</view>
-                        <view class="th date">账单日</view>
-                        <view class="th editor"></view>
-                    </view>
-                    <view class="bar">
-                        <view class="money">¥
-
-                            <text>{{item.money-item.deduction}}</text>
-                        </view>
-                        <view class="money bill-no">¥
-
-                            <text>{{item.money}}</text>
-                            <view class="line"></view>
-                        </view>
-                        <view class="date">{{item.create_time}}</view>
-                        <view class="editor">
-                            <block wx:if="{{item.money==item.deduction}}">
-                                <view class="pay-money" bindtap="payBegMoney" data-billid="{{item.bill_id}}">确认</view>
-                            </block>
-                            <block wx:else>
-                                <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
-                            </block>
-
-
-                        </view>
-                    </view>
-
-                </block>
-                <block wx:else>
-                    <view class="bar thead">
-                        <view class="th money">本期应付</view>
-
-                        <view class="th date">账单日</view>
-                        <view class="th editor"></view>
-                    </view>
-                    <view class="bar">
-                        <view class="money">¥
-
-                            <text>{{item.money}}</text>
-                        </view>
-
-                        <view class="date">{{item.create_time}}</view>
-                        <view class="editor">
-                            <view class="pay-money" bindtap="payMoney" data-billid="{{item.bill_id}}">确认付钱</view>
-
-                        </view>
-                    </view>
-
-                </block>
-            </block>
-        </view>
-    </block>
 
 
 </block>

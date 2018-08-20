@@ -1,4 +1,7 @@
 <!--pages/pay/pay.wxml-->
+<view class="pay-title">
+    此功能仅用于在小卖部消费使用！
+</view>
 <view class="user-pay">
     <input  type="digit" placeholder="带小数点的数字键盘" placeholder="在此输入消费金额" focus="true" bindinput="getUserPay" placeholder-style="font-size:36rpx;"/>
     <view class="border"></view>
