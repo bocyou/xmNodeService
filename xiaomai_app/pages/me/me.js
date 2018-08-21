@@ -24,7 +24,6 @@ Page({
         var self = this;
 
 
-
     },
 
     /**

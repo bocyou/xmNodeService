@@ -18,6 +18,7 @@
     "pages/share_course/share_course",
     "pages/pay/pay"
   ],
+  "requiredBackgroundModes":["audio"],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

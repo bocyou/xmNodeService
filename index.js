@@ -38,6 +38,7 @@ app.use(session({
 /*静态页面*/
 app.use('/',require('./routes/index'));
 app.use('/invite_code',require('./routes/invite_code'));
+app.use('/table',require('./routes/table'));
 app.use('/paycode',require('./routes/pay_code'));
 app.use('/shpaycode',require('./routes/pages/sh_pay_code'));
 
