@@ -56,8 +56,8 @@ app.use('/xm/timer',require('./routes/timer'));
 app.use('/xm/shop_money',require('./routes/shop_money'));
 app.use('/xm/lottery',require('./routes/lottery'));
 app.use('/xm/share_course',require('./routes/share_course'));
-
-
+app.use('/xm/users',require('./routes/user_manage'));
+app.use('/xm/export',require('./routes/export'));
 
 app.use('/api',require('./routes/api'));
 app.use('/order_food',require('./routes/order_food'));

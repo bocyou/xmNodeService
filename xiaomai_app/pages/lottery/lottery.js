@@ -1,7 +1,7 @@
 // pages/lottery/lottery.js
 //拓词娱乐活动
 const util = require('../../utils/util.js');
-let socket_timer=null;
+let socket_timer = null;
 
 Page({
     data: {
@@ -11,21 +11,22 @@ Page({
         tip_str: '',//错误提示
         is_disabled: true,
         is_show_bet: false,
-        user_bet:[],
-        issue:0,//当前期
-        issue_status:-1,
-        current_lucky_num:'',
-        money_poor:0,//余额
-        lucky_users:[],
-        last_lucky_users:[],
-        current_money:0,//当前池金额
-        num1:0,
-        num2:0,
-        is_show_injection:false,
-        is_inject_disabled:true,
-        inject_tip_str:'',
-        inject_money:0,//注资金额
-        is_yan:0
+        user_bet: [],
+        issue: 0,//当前期
+        issue_status: -1,
+        current_lucky_num: '',
+        money_poor: 0,//余额
+        lucky_users: [],
+        last_lucky_users: [],
+        current_money: 0,//当前池金额
+        num1: 0,
+        num2: 0,
+        is_show_injection: false,
+        is_inject_disabled: true,
+        inject_tip_str: '',
+        inject_money: 0,//注资金额
+
+        free_change: 0
     },
 
     /**
@@ -58,21 +59,21 @@ Page({
         util.request({
             url: util.api + '/api/get_user_info', param: {}, complete: function (res) {
                 let data = res.data;
-               // console.log(data);
+                // console.log(data);
                 if (data.code == 200) {
 
-                    if(data.result.towords_phone==''||data.result.towords_phone==null){
+                    if (data.result.towords_phone == '' || data.result.towords_phone == null) {
                         //没有绑定手机号
                         wx.redirectTo({
                             url: '../get_user_phone/get_user_phone'
                         })
-                    }else{
+                    } else {
                         self.getBetIssue();
                     }
 
-                    if(data.result.user_id==48){
+                    if (data.result.user_id == 48) {
                         self.setData({
-                            is_yan:1
+                            is_yan: 1
                         })
                     }
                 } else {
@@ -121,38 +122,56 @@ Page({
     onShareAppMessage: function () {
 //
     },
-    createSocket:function(){
-        const self=this;
+    //获取该用户免费机会
+    getFreeChance: function () {
+        const self = this;
+        util.request({
+            url: util.api + '/lottery/get_current_free_chance',
+            param: {issue: self.data.issue},
+            complete: function (res) {
+                let data = res.data;
+                console.log(data);
+                if (data.code == 200) {
+                    self.setData({
+                        free_change: parseInt(data.result.bet_free_chance)
+                    });
+                } else {
+                }
+            }
+        });
+    },
+    createSocket: function () {
+        const self = this;
         //创建链接
- /*       wx.connectSocket({
-            url: 'ws://localhost:8081'
-        })*/
+        /*       wx.connectSocket({
+                   url: 'ws://localhost:8081'
+               })*/
         wx.connectSocket({
-            url: 'wss://xiaomai.towords.com/wss',
-            data:{},
-            header:{
+            url: util.ws_api,
+            data: {},
+            header: {
                 'content-type': 'application/json'
             },
             protocols: ['protocol1'],
-            method:"GET",
-            complete:function(res){
-               // console.log(res);
+            method: "GET",
+            complete: function (res) {
+                // console.log(res);
             }
         })
 
         wx.onSocketOpen(function (res) {
             //监听WebSocket连接打开事件
-           // console.log('WebSocket连接已打开！');
-            let num=0;
+            // console.log('WebSocket连接已打开！');
+            let num = 0;
             wx.sendSocketMessage({
-                data:'user_words',
+                data: 'user_words'
             });
             clearInterval(socket_timer);
-            socket_timer=setInterval(function(){
+       /*     socket_timer = setInterval(function () {
                 wx.sendSocketMessage({
-                    data:'user_words',
+                    data: 'user_words',
                 })
-            },2000);
+            }, 3000);*/
 
 
         })
@@ -161,17 +180,24 @@ Page({
             //监听WebSocket接受到服务器的消息事件
             //console.log(res);
 
-            let data=JSON.parse(res.data);
+            let data = JSON.parse(res.data);
 
-            if(data.code==200){
-                self.setData({word_list: data.result.sort(function(a,b){
-                        return b.word-a.word;
-                    }).filter(function(item,idx){
-                        return item.word>0;
-                    })});
+            if (data.code == 200) {
+                console.log(data);
+                self.setData({
+                    word_list: data.result.sort(function (a, b) {
+                        return b.word - a.word;
+                    }).filter(function (item, idx) {
+                        if(item.free_bet_info.kind){
+                            return item.free_bet_info.kind.length>0;
+                        }else{
+                            return (item.word > 0);
+                        }
+                    })
+                });
                 let lucky_num = 0;
                 data.result.forEach(function (item, idx) {
-                    if(item.word){
+                    if (item.word) {
                         lucky_num += parseInt(item.word);
                     }
 
@@ -180,12 +206,12 @@ Page({
                     //如果单词总数小于100
                     lucky_num = Math.round(Math.random() * 1000);
                 }
-                let lucky_str=lucky_num.toString();
+                let lucky_str = lucky_num.toString();
                 let num2 = lucky_str.substr(lucky_str.length - 2, 2);
                 let num1 = lucky_str.substr(0, lucky_str.length - 2);
                 self.setData({
-                    num1:num1,
-                    num2:num2
+                    num1: num1,
+                    num2: num2
                 });
             }
         })
@@ -196,15 +222,15 @@ Page({
             //console.log('WebSocket连接已关闭！')
         })
     },
-    getBetUsers:function(){
-        let self=this;
+    getBetUsers: function () {
+        let self = this;
 
         util.request({
-            url: util.api + '/lottery/get_users_bet', param: {issue:self.data.issue}, complete: function (res) {
+            url: util.api + '/lottery/get_users_bet', param: {issue: self.data.issue}, complete: function (res) {
                 let data = res.data;
                 if (data.code == 200) {
                     self.setData({
-                        money_poor:data.result.length
+                        money_poor: data.result.length
                     });
                 } else {
                 }
@@ -212,30 +238,31 @@ Page({
         });
 
     },
-    getBetIssue:function(is_reload){
-        let self=this;
+    getBetIssue: function (is_reload) {
+        let self = this;
         //获取本期详细信息
         util.request({
             url: util.api + '/lottery/get_current_term_info', param: {}, complete: function (res) {
                 let data = res.data;
 
                 if (data.code == 200) {
-                    if(is_reload){
+                    if (is_reload) {
                         //只更新奖金池
                         self.setData({
-                            current_money:data.result.poor_money
+                            current_money: data.result.poor_money
                         });
                         self.getCurrentBet();//当前用户的本期记录
-                    }else{
+                    } else {
                         self.setData({
-                            issue_status:data.result.term_info.status,
-                            issue:data.result.term_info.issue,
-                            current_money:data.result.poor_money
+                            issue_status: data.result.term_info.status,
+                            issue: data.result.term_info.issue,
+                            current_money: data.result.poor_money
                         });
                         self.getCurrentBet();//当前用户的本期记录
 
                         self.getLastLuckyUser();
                     }
+                    self.getFreeChance();
 
 
                 } else {
@@ -244,45 +271,47 @@ Page({
             }
         });
     },
-    getLastLuckyUser:function(){
-        let self=this;
+    getLastLuckyUser: function () {
+        let self = this;
 
         util.request({
-            url: util.api + '/lottery/get_lucky_users', param: {issue:(self.data.issue-1)}, complete: function (res) {
+            url: util.api + '/lottery/get_lucky_users',
+            param: {issue: (self.data.issue - 1)},
+            complete: function (res) {
                 let data = res.data;
                 if (data.code == 200) {
                     self.setData({
-                        last_lucky_users:data.result
+                        last_lucky_users: data.result
                     });
                 } else {
                 }
             }
         });
     },
-    getCurrentLuckyUser:function(){
-        let self=this;
+    getCurrentLuckyUser: function () {
+        let self = this;
 
         util.request({
-            url: util.api + '/lottery/get_lucky_users', param: {issue:self.data.issue}, complete: function (res) {
+            url: util.api + '/lottery/get_lucky_users', param: {issue: self.data.issue}, complete: function (res) {
                 let data = res.data;
                 if (data.code == 200) {
                     self.setData({
-                        lucky_users:data.result
+                        lucky_users: data.result
                     });
                 } else {
                 }
             }
         });
     },
-    getCurrentBet:function(){
-        let self=this;
+    getCurrentBet: function () {
+        let self = this;
         util.request({
-            url: util.api + '/lottery/get_user_bet', param: {issue:self.data.issue}, complete: function (res) {
+            url: util.api + '/lottery/get_user_bet', param: {issue: self.data.issue}, complete: function (res) {
                 let data = res.data;
                 if (data.code == 200) {
-                   self.setData({
-                       user_bet:data.result
-                   });
+                    self.setData({
+                        user_bet: data.result
+                    });
                 } else {
                 }
             }
@@ -290,93 +319,98 @@ Page({
 
     },
     showBet: function () {
-      let self = this;
-       self.setData({
-            is_show_bet:true,
+        let self = this;
+        self.setData({
+            is_show_bet: true,
             user_num: '',
             tip_str: '',//错误提示
             is_disabled: true,
         });
 
     },
-    showInjection:function(){
-        let self=this;
+    showInjection: function () {
+        let self = this;
         self.setData({
-            is_show_injection:true,
-            is_inject_disabled:true,
-            inject_tip_str:'',
-            inject_money:0
+            is_show_injection: true,
+            is_inject_disabled: true,
+            inject_tip_str: '',
+            inject_money: 0
         });
     },
-    hideBet:function(){
-        let self=this;
+    hideBet: function () {
+        let self = this;
         self.setData({
-            is_show_bet:false
+            is_show_bet: false
         });
     },
-    hideInjection:function(){
-        let self=this;
+    hideInjection: function () {
+        let self = this;
         self.setData({
-            is_show_injection:false
+            is_show_injection: false
         });
     },
     saveBet: function () {
         //保存用户预测信息
         let self = this;
-        util.request({
-            url: util.api + '/lottery/save_user_bet', param: {num: self.data.user_num,issue:self.data.issue}, complete: function (res) {
-                let data = res.data;
-                self.setData({
-                    is_show_bet:false
-                });
-                if (data.code == 200&&data.result==true) {
-
-                    wx.showToast({
-                        title: '预测成功',
-                        icon: 'none',
-                        duration: 2000
+        if(self.data.is_disabled==false){
+            util.request({
+                url: util.api + '/lottery/save_user_bet',
+                param: {num: self.data.user_num, issue: self.data.issue},
+                complete: function (res) {
+                    let data = res.data;
+                    self.setData({
+                        is_show_bet: false
                     });
-                    self.getBetIssue(true);
+                    if (data.code == 200 && data.result == true) {
 
-                } else {
-                    wx.showModal({
-                        title: '提示',
-                        content: data.message,
-                        showCancel:false,
-                        success: function(res) {
-                            if (res.confirm) {
-                            } else if (res.cancel) {
+                        wx.showToast({
+                            title: '预测成功',
+                            icon: 'none',
+                            duration: 2000
+                        });
+                        self.getBetIssue(true);
+
+                    } else {
+                        wx.showModal({
+                            title: '提示',
+                            content: data.message,
+                            showCancel: false,
+                            success: function (res) {
+                                if (res.confirm) {
+                                } else if (res.cancel) {
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
-            }
-        });
+            });
+        }
+
     },
-    saveInjection:function(){
-        let self=this;
+    saveInjection: function () {
+        let self = this;
         //保存用户注资信息
-        util.request({
-            url: util.api + '/lottery/user_injection_money', param: {inject_money: self.data.inject_money,issue:self.data.issue}, complete: function (res) {
+   /*     util.request({
+            url: util.api + '/lottery/user_injection_money',
+            param: {inject_money: self.data.inject_money, issue: self.data.issue},
+            complete: function (res) {
                 let data = res.data;
                 self.setData({
-                    is_show_injection:false
+                    is_show_injection: false
                 });
-                if (data.code == 200&&data.result==true) {
-
+                if (data.code == 200 && data.result == true) {
                     wx.showToast({
                         title: '已成功注资',
                         icon: 'none',
                         duration: 2000
                     });
                     self.getBetIssue(true);
-
                 } else {
                     wx.showModal({
                         title: '提示',
                         content: data.message,
-                        showCancel:false,
-                        success: function(res) {
+                        showCancel: false,
+                        success: function (res) {
                             if (res.confirm) {
                             } else if (res.cancel) {
                             }
@@ -384,36 +418,36 @@ Page({
                     })
                 }
             }
-        });
+        });*/
     },
-    stop:function(){
+    stop: function () {
         return false
     },
-    getInjectionNum:function(val){
+    getInjectionNum: function (val) {
         let self = this;
         let num = val.detail.value;
 
-        if(num==''){
+        if (num == '') {
             self.setData({
                 inject_tip_str: '警告： 请输入金额',
                 is_inject_disabled: true
             })
-        }else{
-            if(num.toString().search(/\D/ig)!=-1){
+        } else {
+            if (num.toString().search(/\D/ig) != -1) {
                 self.setData({
                     inject_tip_str: '警告： 请输入整数',
                     is_inject_disabled: true
                 })
-            }else{
-                if(parseInt(num)<1){
+            } else {
+                if (parseInt(num) < 1) {
                     self.setData({
                         inject_tip_str: '警告： 1麦粒起',
                         is_inject_disabled: true
                     })
-                }else{
+                } else {
                     self.setData({
                         inject_tip_str: '',
-                        inject_money:parseInt(num),
+                        inject_money: parseInt(num),
                         is_inject_disabled: false
                     })
                 }

@@ -7,32 +7,38 @@
         <block wx:if="{{issue_status==1}}">第{{issue}}期单词拉练进行中</block>
         <block wx:else>第{{issue}}期已停止预测</block>
         <view>
-            <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des"><text>查看规则</text>
+            <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">
+                <text>查看规则</text>
             </navigator>
         </view>
 
     </view>
     <view class="poor-title">
-        <view><text>{{current_money}}</text></view>
+        <view>
+            <text>{{current_money}}</text>
+        </view>
         <view class="tip">本期累计麦粒</view>
     </view>
 
- <!--   <div class="font">jQ22<span>.</span>com</div>-->
+    <!--   <div class="font">jQ22<span>.</span>com</div>-->
 
     <view class="week_words">
         <view class="word-info">
-            <view class="txt">{{num1}}<text>{{num2}}</text></view>
+            <view class="txt">{{num1}}
+                <text>{{num2}}</text>
+            </view>
             <view class="tip">本周总拓词数</view>
         </view>
         <!--<canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>-->
     </view>
 
 
-
-
     <block wx:if="{{issue_status==1&&issue>1}}">
         <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
-            <view class="title">第{{issue-1}}期幸运人员<view class="text">（每人分得<text class="particle">{{last_lucky_users[0].get_money}}</text>颗麦粒已发到个人口袋）</view></view>
+            <view class="title">第{{issue-1}}期幸运人员
+                <view class="text">（每人分得<text class="particle">{{last_lucky_users[0].get_money}}</text>颗麦粒已发到个人口袋）
+                </view>
+            </view>
             <view class="lucky-user">
                 <block wx:for="{{last_lucky_users}}" wx:key="i">
                     <view class="user-info">
@@ -47,14 +53,20 @@
         <view wx:else>
             <view class="content-tip">上期无幸运人员！</view>
         </view>
-        <navigator open-type="navigateTo" class="go-term-more" url="../lottery_term_info/lottery_term_info?issue={{issue-1}}"><text>more</text>
+        <navigator open-type="navigateTo" class="go-term-more"
+                   url="../lottery_term_info/lottery_term_info?issue={{issue-1}}">
+            <text>more</text>
         </navigator>
     </block>
 
 
-    <view  class="bottom-btn">
-        <block wx:if="{{is_yan==1}}">
-            <view class="yan-btn"  bindtap="showBet"></view>
+    <view class="bottom-btn">
+        <block wx:if="{{free_change>0}}">
+
+            <view class="yuce-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
+                我要预测
+                <text>({{free_change}}次免费机会)</text>
+            </view>
         </block>
         <block wx:else>
             <view class="yuce-btn" bindtap="showBet" wx:if="{{issue_status==1}}">
@@ -68,106 +80,117 @@
 
 </block>
 <block wx:else>
-    <view class="header-title">第{{issue}}期预测已结束
-        <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
-        </navigator>
-    </view>
-    <view class="result-title">
-        <view class="title-tip">本期总麦粒{{money_poor}}</view>
-        <view class="title-tip">本期幸运数字{{current_lucky_num}}</view>
-    </view>
+<view class="header-title">第{{issue}}期预测已结束
+    <navigator open-type="navigateTo" class="go-des" url="../lottery_des/lottery_des">（<text>查看规则</text>）
+    </navigator>
+</view>
+<view class="result-title">
+    <view class="title-tip">本期总麦粒{{money_poor}}</view>
+    <view class="title-tip">本期幸运数字{{current_lucky_num}}</view>
+</view>
 
-    <!--本期中奖人员-->
+<!--本期中奖人员-->
 
 
-    <view wx:if="{{lucky_users.length>0}}" class="lucky-user-content block-content">
-        <view class="title">第{{issue}}期幸运人员<text>（每人分得{{lucky_users[0].get_money}}颗麦粒已发到个人口袋）</text></view>
-        <view class="lucky-user">
-            <block wx:for="{{lucky_users}}" wx:key="i">
-                <view class="user-info">
-                    <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-                    <view class="user-name">{{item.user_name}}</view>
-                    <!--<view class="word">金额{{item.get_money}}</view>-->
-                </view>
-            </block>
-        </view>
+<view wx:if="{{lucky_users.length>0}}" class="lucky-user-content block-content">
+    <view class="title">第{{issue}}期幸运人员
+        <text>（每人分得{{lucky_users[0].get_money}}颗麦粒已发到个人口袋）</text>
     </view>
-    <view wx:else>
-        <block wx:if="{{issue>1}}">
-        <view class="content-tip">本期无幸运人员，总麦粒将计入下一期！</view>
+    <view class="lucky-user">
+        <block wx:for="{{lucky_users}}" wx:key="i">
+            <view class="user-info">
+                <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+                <view class="user-name">{{item.user_name}}</view>
+                <!--<view class="word">金额{{item.get_money}}</view>-->
+            </view>
         </block>
     </view>
+</view>
+<view wx:else>
+    <block wx:if="{{issue>1}}">
+        <view class="content-tip">本期无幸运人员，总麦粒将计入下一期！</view>
+    </block>
+</view>
 </block>
 
-<!--预测模块-->
+        <!--预测模块-->
 <view wx:if="{{user_bet.length>0}}" class="user-bet-main block-content">
-    <view class="user-bet-title title">您本期已预测：</view>
-    <view class="content">
-        <view wx:for="{{user_bet}}" wx:key="item" class="bar">
-            {{item.num}}
-        </view>
+<view class="user-bet-title title">您本期已预测：</view>
+<view class="content">
+    <view wx:for="{{user_bet}}" wx:key="item" class="bar">
+        {{item.num}}
     </view>
+</view>
 
 </view>
 <view wx:else class="content-tip">
-    您本期尚未预测！
+您本期尚未预测！
 </view>
-<view class="injection-btn"  bindtap="showInjection">为本期注资</view>
 
-<!--<button bindtap="test">结束</button>-->
 
-<!--单词列表区域-->
+        <!--<button bindtap="test">结束</button>-->
+
+        <!--单词列表区域-->
 <view class="block-content">
-    <view class="title">当前拓词列表</view>
-    <view class="word-bar" wx:for="{{word_list}}" wx:key="i">
-        <view class="user">
-            <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-        </view>
-        <view class="right">
+<view class="title">当前拓词列表</view>
+<view class="word-bar" wx:for="{{word_list}}" wx:key="i" wx:for-index="idx">
+    <view class="user">
+        <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+    </view>
+    <view class="right">
+        <view>
             <view class="user-name">{{item.user_name}}</view>
             <view class="word-info">
-                <text class="">已拓词： </text>{{item.word}}
+                <text class="">已拓词：</text>{{item.word}}
             </view>
         </view>
+        <view class="free-kind">
+            <view class="bar" wx:for="{{item.free_bet_info.kind}}" wx:key="j">
+                上期{{item}}
+            </view>
+        </view>
+        <view class="chance" wx:if="{{item.free_bet_info.chance>0}}">+ {{item.free_bet_info.chance}}</view>
     </view>
+
+</view>
 </view>
 
 <view style="height:100rpx;"></view>
 
 
 <block wx:if="{{is_show_bet}}">
-    <view class="form-bet" bindtap="hideBet">
-        <view class="content" catchtap="stop">
-            <view class="title">预测
-                <text style="font-size:24rpx;">{{is_yan==1?'(您有两次免费机会)':'(花费1麦粒)'}}</text>
-            </view>
-            <view class="section">
-                <view class="tip-err">{{tip_str}}</view>
-                <input bindinput="getUserNum" placeholder="请输入（2位数）" type="digit" placeholder-class="placeholder"/>
-            </view>
-            <button disabled="{{is_disabled}}" catchtap="saveBet" type="primary">
-                确定
-            </button>
+<view class="form-bet" bindtap="hideBet">
+    <view class="content" catchtap="stop">
+        <view class="title">预测
+            <text class="txt">{{free_change>0?'(您有'+free_change+'次免费机会)':'(花费1麦粒)'}}</text>
+        </view>
+        <view class="section">
+            <input bindinput="getUserNum" placeholder="请输入（2位数）" type="digit" placeholder-class="placeholder"/>
+        </view>
+        <view class="tip-err">{{tip_str}}</view>
+        <view class="btn btn-black {{is_disabled==true?'disabled':''}}"  catchtap="saveBet">
+            确定
         </view>
     </view>
+</view>
 </block>
 
-<block wx:if="{{is_show_injection}}">
-    <view class="form-bet" bindtap="hideInjection">
-        <view class="content" catchtap="stop">
-            <view class="title">注资
-                <text style="font-size:24rpx;">(1麦粒起)</text>
+        <!--<block wx:if="{{is_show_injection}}">
+            <view class="form-bet" bindtap="hideInjection">
+                <view class="content" catchtap="stop">
+                    <view class="title">注资
+                        <text style="font-size:24rpx;">(1麦粒起)</text>
+                    </view>
+                    <view class="section">
+                        <view class="tip-err">{{inject_tip_str}}</view>
+                        <input bindinput="getInjectionNum" placeholder="请输入金额" type="digit" placeholder-class="placeholder"/>
+                    </view>
+                    <button disabled="{{is_inject_disabled}}" catchtap="saveInjection" type="primary">
+                        确定
+                    </button>
+                </view>
             </view>
-            <view class="section">
-                <view class="tip-err">{{inject_tip_str}}</view>
-                <input bindinput="getInjectionNum" placeholder="请输入金额" type="digit" placeholder-class="placeholder"/>
-            </view>
-            <button disabled="{{is_inject_disabled}}" catchtap="saveInjection" type="primary">
-                确定
-            </button>
-        </view>
-    </view>
-</block>
+        </block>-->
 <navigator open-type="switchTab" class="bottom-menu" url="../index/index">
 
 </navigator>

@@ -215,8 +215,8 @@ var billWork = {
                         // res.status(200).send( {code: 200, result: '获取openid失败'});
                     } else {
 
-                        var access_token = JSON.parse(body).access_token;
-                        var res = [];
+                        let access_token = JSON.parse(body).access_token;
+                        let res = [];
                         ary.sort(function (a, b) {
                             return a.id - b.id
                         });
@@ -257,7 +257,7 @@ var billWork = {
                                             "value": "请于今日订餐前支付"
                                         },
                                         "keyword3": {
-                                            "value": user_bar.money
+                                            "value": user_bar.money.toString()
                                         },
                                         "keyword4": {
                                             "value": new Date().Format('yyyy年MM月dd日 HH:mm')

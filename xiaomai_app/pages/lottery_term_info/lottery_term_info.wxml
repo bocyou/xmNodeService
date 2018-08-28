@@ -1,4 +1,7 @@
 <!--pages/lottery_term_info/lottery_term_info.wxml-->
+
+<view class="block-title">历届幸运数字</view>
+<view><text wx:for="{{term_list}}" wx:key="i" class="lucky-num">{{item.lucky_num}}</text></view>
 <view class="header-title">第{{issue}}期详情</view>
 <view style="padding:0 30rpx;">
     <view>瓜分麦粒{{money}}</view>

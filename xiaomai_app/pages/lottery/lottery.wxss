@@ -32,17 +32,34 @@ page{
     flex:1;
     margin-left:36rpx;
     padding-bottom:46rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 
 }
 .word-bar .right .user-name{
     color:#0d1722;
     font-size:30rpx;
     margin-bottom:6rpx;
+    width:260rpx;
 
 }
 .word-bar .right .word-info{
    color:#9e9fa6;
     font-size:24rpx;
+}
+.word-bar .free-kind{
+    flex:1;
+    padding-left:20rpx;
+}
+.word-bar .free-kind .bar{
+    font-size:26rpx;
+    color:#0d1722;
+}
+.word-bar .right .chance{
+    color:#FF1177;
+    font-size:38rpx;
+    font-weight: bold;
 }
 
 .bottom-btn{
@@ -65,21 +82,45 @@ page{
     width:80%;
     margin:300rpx auto;
     background-color:#fff;
-    border-radius: 8rpx;
+    border-radius: 4rpx;
     padding:30rpx;
 }
-.form-bet .content button{
-    margin-top:60rpx;
-}
+
 .form-bet .title{
     text-align:center;
     line-height:60rpx;
     font-size:50rpx;
-    margin-bottom:30rpx;
+    margin-bottom:60rpx;
+    color:#000;
+}
+.form-bet .title .txt{
+    color:#717171;
+    font-size:24rpx;
 }
 .form-bet .tip-err{
     font-size:24rpx;
     color: #bd3a29;
+    height:40rpx;
+    margin-bottom:30rpx;
+}
+.form-bet .section{
+    margin-bottom:10rpx;
+    border-bottom:2rpx solid #eaeaea;
+    padding-bottom:10rpx;
+}
+.btn{
+    width:100%;
+    line-height:90rpx;
+    text-align: center;
+    font-size:36rpx;
+    color:#fff;
+}
+.btn-black{
+    background-color: #000;
+    box-shadow: 4rpx 6rpx 12rpx rgba(0,0,0,.4);
+}
+.form-bet .disabled{
+    opacity: .4;
 }
 .rule{
     color:#717171;
@@ -104,13 +145,17 @@ page{
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
+    padding-bottom:10rpx;
 }
 .user-bet-main .content .bar{
     width:80rpx;
     line-height:60rpx;
     text-align:center;
     background-color: #dfdfdf;
-    margin:0 10rpx 10rpx;
+    margin:0 10rpx 20rpx;
+    color:#000;
+    font-weight: bold;
+    border-radius:4rpx;
 
 }
 .lucky-user-content{
@@ -264,7 +309,7 @@ page{
 .week_words{
     font-size:30rpx;
     padding:0 30rpx;
-    margin-top:30rpx;
+    margin-top:0rpx;
     margin-bottom:30rpx;
     background-color:#fff;
 

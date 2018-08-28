@@ -347,7 +347,6 @@ Page({
           } else if (list_data.isDraw == 2){
             //该用户不属于北京
             self.setData({
-
               dinner_status: "area_disabled",
 
             });

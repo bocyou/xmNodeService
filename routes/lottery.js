@@ -19,10 +19,10 @@ router.get('/', function (req, res) {
 
 });
 
-const getUsersTowords=(opt)=>{
-    let self=this;
+const getUsersTowords = (opt) => {
+    let self = this;
     //获取所有人本周背单词情况
-    try{
+    try {
         mysql.sql('SELECT area,id,user_name,user_img,towords_phone FROM users  WHERE area="bj" AND towords_phone is not null', function (err, result) {
             if (err) {
                 throw '查询用户失败users'
@@ -38,8 +38,9 @@ const getUsersTowords=(opt)=>{
                     }
                 }, function optionalCallback(err, httpResponse, body) {
 
-                    var towords_data = JSON.parse(body);
+                    let towords_data = JSON.parse(body);
                     if (towords_data.code == 200) {
+                        //获取
                         users = users.map(function (item, idx) {
                             if (towords_data.result[item.towords_phone]) {
                                 item.word = towords_data.result[item.towords_phone];
@@ -50,8 +51,6 @@ const getUsersTowords=(opt)=>{
                             return item;
                         });
                         opt.success(users);
-
-
                     } else {
 
                         throw '从拓词获取数据失败'
@@ -60,7 +59,7 @@ const getUsersTowords=(opt)=>{
                 });
             }
         })
-    }catch (e) {
+    } catch (e) {
         opt.error(e)
 
     }
@@ -68,21 +67,10 @@ const getUsersTowords=(opt)=>{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 //每周三，周五 10点开奖  获取一次数据，计算中奖用户存入表lucky_num
 
-var work = {
+const work = {
+
 
     closeBet: function () {
         var self = this;
@@ -125,8 +113,8 @@ var work = {
                                 if (word_sum < 100) {
                                     word_sum = Math.round(Math.random() * 1000);
                                 }
-                                var lucky_num = word_sum.toString().substr(word_sum.toString().length - 2, 2);
-                                console.log(lucky_num);
+                                let lucky_num = word_sum.toString().substr(word_sum.toString().length - 2, 2);
+
 
                                 //获取当前是第几期
                                 mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
@@ -202,7 +190,7 @@ var work = {
                                                                                     console.log('计入用户钱包失败' + err);
                                                                                 } else {
                                                                                     console.log('已计入用户钱包');
-                                                                                    self.startBet(1, issue, 0);
+                                                                                    self.startBet(1, issue, 0, lucky_num);
 
                                                                                     postUsersNews({
                                                                                         data: {
@@ -260,7 +248,7 @@ var work = {
                                                                 if (err) {
                                                                     console.log('插入小麦收入记录失败' + err);
                                                                 } else {
-                                                                    self.startBet(0, issue, last_all_money - xm_get_money);
+                                                                    self.startBet(0, issue, last_all_money - xm_get_money, lucky_num);
                                                                     console.log('本期无中奖人员');
 
                                                                 }
@@ -294,11 +282,106 @@ var work = {
 
 
     },
-    startBet: function (is_win, issue, begin_money) {
-        var self = this;
+    addFreeBet: function (user_id, issue, kind, dsc, chance) {
+        const self = this;
+        //给当前期用户添加免费机会
+        let list_dsc = '';
+        if (dsc) {
+            list_dsc = dsc;
+        }
+        //1表示第一名，2表示第二名，3表示第三名，4表示狗屎运，5表示最后两位数
+        let free_param = {
+            user_id: user_id,
+            issue: issue,
+            dsc: list_dsc,
+            kind: kind,
+            create_time: new Date(),
+            chance:chance
+        };
+        console.log(free_param);
+        mysql.insert_one('bet_free', free_param, function (result, err) {
+            if (err) {
+                console.log(err);
+                console.log('添加免费机会失败');
+            } else {
+                //更新用户用次数
+                mysql.sql('update user_wallet set bet_free_chance = ' + chance + ' where user_id in (' + user_id + ')', function (err, result) {
+                    if (err) {
+                        console.log('更新用户免费机会失败');
+                    } else {
+                        console.log('添加免费机会成功');
+                    }
+                })
+
+            }
+        });
+    },
+    createSpecialLucky: function (issue, lucky_num) {
+        const self = this;
+        try {
+            //创建之前先把当前用户次数update=0;
+            getUsersTowords({
+                success: function (users) {
+
+                    mysql.sql('update user_wallet set bet_free = 0', function (err, result) {
+                        if (err) {
+                            console.log('更新用户免费机会失败');
+                        } else {
+                            let towords_users = users.filter((item, idx) => {
+                                return parseInt(item.word) > 0;
+                            });
+                            towords_users = towords_users.sort((a, b) => {
+                                return parseInt(b.word) - parseInt(a.word);
+                            });
+                            console.log(towords_users);
+
+
+                            if (towords_users[0] ) {
+                                //拓词数第一名5次机会
+                                self.addFreeBet(towords_users[0].id, issue, 1, '第一名', 5);
+
+                            }
+                            if (towords_users[1] ) {
+                                //拓词数第二名3次机会
+                                self.addFreeBet(towords_users[1].id, issue, 2, '第二名', 3);
+                            }
+                            if (towords_users[2] ) {
+                                //拓词数第三名1次机会
+                                self.addFreeBet(towords_users[2].id, issue, 3, '第三名', 1);
+                            }
+
+
+                            let idx = Math.floor(Math.random() * towords_users.length);//产生狗屎运用户
+                            self.addFreeBet(towords_users[idx].id, issue, 4, '狗屎运', 1);//给狗屎运获得者添加一次免费押注机会
+
+                            //最后两位数相同用户
+                            towords_users.forEach((item, idx) => {
+                                if (parseInt(item.word) > 10) {
+                                    let str = item.word.toString();
+                                    let user_num = parseInt(str.substr(str.length - 2, 2));
+                                    if (user_num == lucky_num) {
+                                        console.log(item.id);//存入一条免费记录
+                                        self.addFreeBet(item.id, issue, 5, '最后两位数和中奖号码相同', 1);
+                                    }
+
+                                }
+                            })
+                        }
+                    })
+                }, error: function (err) {
+                    console.log('获取拓词列表失败' + err);
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+    },
+    startBet: function (is_win, issue, begin_money, lucky_num) {
+        const self = this;
         try {
 
-            var term = {
+            let term = {
                 status: 1,
                 create_time: new Date(),
                 issue: parseInt(issue) + 1,
@@ -322,7 +405,7 @@ var work = {
 
                 } else {
                     console.log('成功开启下一期');
-
+                    self.createSpecialLucky(term.issue, lucky_num);
 
                 }
             });
@@ -390,7 +473,7 @@ var work = {
 
     },
     postBetNews: function () {
-        var self = this;
+        const self = this;
         postUsersNews({
             data: {
                 "keyword1": {
@@ -416,14 +499,30 @@ var work = {
 router.post('/test', function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
-    try{
-        //throw 'yichang'
-    }catch (e) {
-        console.log(e);
-    }
+    work.createSpecialLucky(15, 35);
+  /*  postUsersNews({
+        data: {
+            "keyword1": {
+                "value": "ps矢量图形",
+                "color": "#173177"
+            },
+            "keyword2": {
+                "value": "郭浩",
+                "color": "#173177"
+            },
+            "keyword3": {
+                "value": new Date().Format('yyyy年MM月dd日 HH:mm'),
+                "color": "#173177"
+            },
+            "keyword4": {
+                "value": "大会议室",
+                "color": "#173177"
+            }
+        },
+        template_id: 'S7BNFj8FnnK8vnn5yE9wWIz19HMhAC_PgkqRhW9II',
+        page: 'pages/share_course/share_course'
+    });*/
 });
-
-
 
 
 //周三，周五00:00，结束押注(结束当前期)
@@ -456,7 +555,7 @@ post_bet_message.dayOfWeek = [2, 4];
 post_bet_message.hour = 18;
 post_bet_message.minute = 30;
 
-var post_bet_message_work= schedule.scheduleJob(post_bet_message, function () {
+var post_bet_message_work = schedule.scheduleJob(post_bet_message, function () {
     work.postBetNews();
 
 });
@@ -479,15 +578,31 @@ router.post('/post_news', function (req, res, next) {
 });
 
 
-
 router.post('/get_user_words', checkAppSession, function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
-    getUsersTowords({success:function(users){
+    getUsersTowords({
+        success: function (users) {
             res.status(200).send({code: 200, result: users, message: '获取用户单词数成功'});
-        },error:function(err){
-            res.status(200).send({code: 500, result: [], message:err});
-        }});
+        }, error: function (err) {
+            res.status(200).send({code: 500, result: [], message: err});
+        }
+    });
+
+});
+
+
+router.post('/get_all_lucky_num', checkAppSession, function (req, res, next) {
+    //获取历史中奖号码
+    res.header("Access-Control-Allow-Origin", "*");
+    mysql.sql('SELECT issue,lucky_num FROM  bet_issue WHERE is_new!=1', function (err, result) {
+        if (err) {
+            res.status(200).send({code: 500, result: [], message: '获取历史中奖号码失败'});
+        } else {
+            res.status(200).send({code: 200, result: result, message: '获取历史中奖号码成功'});
+        }
+    })
+
 
 });
 
@@ -498,153 +613,162 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
-            //获取当前期的状态
-            if (userInfo[0].id == 48) {
-                console.log('延姐押注');
+            //获取当前期
+            mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
+                if (err) {
+                    console.log('获取期数失败');
+                } else {
+                    var issue = result[0].issue;
+                    var term_id = result[0].id;
+                    var term_status = result[0].status;
+                    if (term_status == 1) {
+                        //当期正在进行中
+                        //获取用户本期的押注情况
+                        mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
+                            if (err) {
+                                res.status(200).send({code: 500, result: [], message: '查询数据库时失败'});
+                            } else {
+                                var user_num = req.body.num;
 
-
-                mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
-                    if (err) {
-                        console.log('获取期数失败');
-                    } else {
-                        var issue = result[0].issue;
-                        var term_id = result[0].id;
-                        var term_status = result[0].status;
-                        if (term_status == 1) {
-                            mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
-                                if (err) {
-                                    res.status(200).send({code: 500, result: [], message: '查询数据库时失败'});
-                                } else {
-                                    var user_num = req.body.num;
-
-                                    function isRepeat(ary) {
-                                        for (var i = 0; i < ary.length; i++) {
-                                            if (ary[i].num == user_num) {
-                                                //说明存在重复号码
-                                                return true
-                                            }
+                                function isRepeat(ary) {
+                                    for (var i = 0; i < ary.length; i++) {
+                                        if (ary[i].num == user_num) {
+                                            //说明存在重复号码
+                                            return true
                                         }
-                                        return false
                                     }
+                                    return false
+                                }
 
-                                    if (result.length >= 0 && result.length < 10) {
-                                        //保存
+                                if (result.length >= 0 && result.length < 10) {
+                                    //保存
 
-                                        if (isRepeat(result)) {
-                                            //重复
-                                            res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
-                                        } else {
-                                            var param = {
-                                                user_id: userInfo[0].id,
-                                                create_time: new Date(),
-                                                num: req.body.num,
-                                                pay_money: 1,
-                                                issue: req.body.issue
-                                            };
-                                            if (result.length <= 1) {
-                                                param.pay_money = 0;
-                                            }
+                                    if (isRepeat(result)) {
+                                        //重复
+                                        res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
+                                    } else {
 
+                                        //获取该用户的免费机会
+                                        mysql.sql('SELECT * FROM user_wallet  WHERE user_id="' + userInfo[0].id + '"', function (err, free_chance) {
+                                            if (err) {
+                                                res.status(200).send({code: 500, result: 0, message: '获取用户免费次数失败'});
+                                            } else {
+                                                //res.status(200).send({code: 200, result: result.length, message: '获取用户免费次数成功'});
+                                                console.log(free_chance[0]);
+                                                if (free_chance[0].bet_free_chance > 0) {
+                                                    //有免费机会将账目记到小麦
+                                                    let xm_param = {
+                                                        user_id: userInfo[0].id,
+                                                        create_time: new Date(),
+                                                        money: 1,
+                                                        issue: req.body.issue
+                                                    };
+                                                    let user_param = {
+                                                        user_id: userInfo[0].id,
+                                                        create_time: new Date(),
+                                                        num: req.body.num,
+                                                        pay_money: 0,
+                                                        issue: req.body.issue
+                                                    };
 
-                                            mysql.insert_one('user_bet', param, function (result, err) {
-                                                console.log(err);
-                                                if (result && err == null) {
-                                                    res.status(200).send({code: 200, result: true, message: "保存成功"});
+                                                    mysql.insert_one('user_bet', user_param, function (result, err) {
+                                                        console.log(err);
+                                                        if (result && err == null) {
+
+                                                            mysql.insert_one('xm_for_user_bet', xm_param, function (result, err) {
+                                                                if (result && err == null) {
+                                                                    //减去用户机会
+                                                                    mysql.sql('update user_wallet set bet_free_chance = bet_free_chance-1 where user_id="'+userInfo[0].id+'"', function (err, result) {
+                                                                        if (err) {
+                                                                            res.status(200).send({
+                                                                                code: 500,
+                                                                                result: false,
+                                                                                message: '更新剩余机会失败！'
+                                                                            });
+                                                                        } else {
+                                                                            res.status(200).send({
+                                                                                code: 200,
+                                                                                result: true,
+                                                                                message: "保存成功"
+                                                                            });
+
+                                                                        }
+                                                                    });
+
+                                                                } else {
+                                                                    res.status(200).send({
+                                                                        code: 500,
+                                                                        result: false,
+                                                                        message: '计入小麦账单失败'
+                                                                    });
+
+                                                                }
+                                                            });
+
+                                                        } else {
+
+                                                            res.status(200).send({
+                                                                code: 500,
+                                                                result: false,
+                                                                message: '保存失败'
+                                                            });
+
+                                                        }
+                                                    });
 
                                                 } else {
-                                                    res.status(200).send({code: 500, result: false, message: '保存失败'});
+                                                    //没有免费机会
+                                                    let param = {
+                                                        user_id: userInfo[0].id,
+                                                        create_time: new Date(),
+                                                        num: req.body.num,
+                                                        pay_money: 1,
+                                                        issue: req.body.issue
+                                                    };
+
+                                                    mysql.insert_one('user_bet', param, function (result, err) {
+                                                        console.log(err);
+                                                        if (result && err == null) {
+                                                            res.status(200).send({
+                                                                code: 200,
+                                                                result: true,
+                                                                message: "保存成功"
+                                                            });
+
+                                                        } else {
+                                                            res.status(200).send({
+                                                                code: 500,
+                                                                result: false,
+                                                                message: '保存失败'
+                                                            });
+
+                                                        }
+                                                    });
 
                                                 }
-                                            });
-                                        }
 
 
-                                    } else if (result.length >= 10) {
-                                        res.status(200).send({code: 500, result: [], message: '每期押注不能超过10个'});
-                                    } else {
-                                        res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
-                                    }
-                                }
-                            });
-                        } else if (term_status == 2) {
-                            res.status(200).send({code: 500, result: [], message: '本期已停止押注'});
-                        } else {
-                            res.status(200).send({code: 500, result: [], message: '本期已结束'});
-                        }
-
-                    }
-                });
-
-
-            } else {
-                mysql.sql('SELECT * FROM bet_issue  WHERE is_new=1', function (err, result) {
-                    if (err) {
-                        console.log('获取期数失败');
-                    } else {
-                        var issue = result[0].issue;
-                        var term_id = result[0].id;
-                        var term_status = result[0].status;
-                        if (term_status == 1) {
-                            mysql.sql('SELECT * FROM  user_bet WHERE user_id="' + userInfo[0].id + '" AND issue="' + req.body.issue + '"', function (err, result) {
-                                if (err) {
-                                    res.status(200).send({code: 500, result: [], message: '查询数据库时失败'});
-                                } else {
-                                    var user_num = req.body.num;
-
-                                    function isRepeat(ary) {
-                                        for (var i = 0; i < ary.length; i++) {
-                                            if (ary[i].num == user_num) {
-                                                //说明存在重复号码
-                                                return true
                                             }
-                                        }
-                                        return false
+                                        });
+
                                     }
 
-                                    if (result.length >= 0 && result.length < 10) {
-                                        //保存
 
-                                        if (isRepeat(result)) {
-                                            //重复
-                                            res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
-                                        } else {
-                                            var param = {
-                                                user_id: userInfo[0].id,
-                                                create_time: new Date(),
-                                                num: req.body.num,
-                                                pay_money: 1,
-                                                issue: req.body.issue
-                                            };
-
-                                            mysql.insert_one('user_bet', param, function (result, err) {
-                                                console.log(err);
-                                                if (result && err == null) {
-                                                    res.status(200).send({code: 200, result: true, message: "保存成功"});
-
-                                                } else {
-                                                    res.status(200).send({code: 500, result: false, message: '保存失败'});
-
-                                                }
-                                            });
-                                        }
-
-
-                                    } else if (result.length >= 10) {
-                                        res.status(200).send({code: 500, result: [], message: '每期押注不能超过10个'});
-                                    } else {
-                                        res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
-                                    }
+                                } else if (result.length >= 10) {
+                                    res.status(200).send({code: 500, result: [], message: '每期押注不能超过10个'});
+                                } else {
+                                    res.status(200).send({code: 500, result: [], message: '您已押注过此数字！'});
                                 }
-                            });
-                        } else if (term_status == 2) {
-                            res.status(200).send({code: 500, result: [], message: '本期已停止押注'});
-                        } else {
-                            res.status(200).send({code: 500, result: [], message: '本期已结束'});
-                        }
-
+                            }
+                        });
+                    } else if (term_status == 2) {
+                        res.status(200).send({code: 500, result: [], message: '本期已停止押注'});
+                    } else {
+                        res.status(200).send({code: 500, result: [], message: '本期已结束'});
                     }
-                });
-            }
+
+                }
+            });
 
 
         } else {
@@ -800,6 +924,30 @@ router.post('/get_current_term_info', checkAppSession, function (req, res, next)
 
         }
     })
+
+
+});
+
+//获取本期该用户的免费押注机会
+router.post('/get_current_free_chance', checkAppSession, function (req, res, next) {
+
+    res.header("Access-Control-Allow-Origin", "*");
+    getUserInfo(req, res, function (userInfo) {
+        if (userInfo) {
+            mysql.sql('SELECT * FROM user_wallet  WHERE user_id="' + userInfo[0].id + '"', function (err, result) {
+                if (err) {
+                    res.status(200).send({code: 500, result: 0, message: '获取用户免费次数失败'});
+                } else {
+                    res.status(200).send({code: 200, result: result[0], message: '获取用户免费次数成功'});
+
+
+                }
+            });
+
+        } else {
+            res.status(200).send({code: 502, result: false, message: "用户不合法"})
+        }
+    });
 
 
 });
@@ -999,7 +1147,7 @@ router.post('/user_injection_info', checkSession, function (req, res, next) {
 
 });
 
-try{
+try {
     const httpServer = http.createServer((request, response) => {
         console.log('[' + new Date + '] Received request for ' + request.url)
         response.writeHead(404)
@@ -1007,7 +1155,7 @@ try{
     });
 
     const wsServer = new WebSocketServer({
-        httpServer:httpServer,
+        httpServer: httpServer,
         autoAcceptConnections: true
     });
 
@@ -1018,11 +1166,67 @@ try{
 
                 switch (message.utf8Data) {
                     case 'user_words':
-                        getUsersTowords({success:function(users){
-                                connection.sendUTF(JSON.stringify({result:users,code:200}))
-                            },error:function(err){
-                                connection.sendUTF({result:[],code:500})
-                            }});
+                        getUsersTowords({
+                            success: function (users) {
+                                //console.log(users);
+                                //获取本期免费机会的所有用户
+                                mysql.sql('SELECT  * FROM bet_issue  WHERE is_new=1', function (err, result) {
+                                    if (err) {
+                                        console.log(err);
+                                        connection.sendUTF({result: [], code: 500, message: "查询本期信息失败"})
+
+                                    } else {
+                                        let issue = result[0].issue;
+                                        mysql.sql('SELECT  * FROM bet_free  WHERE issue="' + issue + '"', function (err, result) {
+                                            if (err) {
+                                                console.log(err);
+                                                connection.sendUTF({result: [], code: 500, message: "查询本期免费次数信息失败"})
+
+                                            } else {
+                                                let ary = result;
+                                                let free_users = {};
+                                                ary.sort((a,b)=>{
+                                                    return parseInt(a.user_id)-parseInt(b.user_id);
+                                                });
+                                                for (let i = 0; i < ary.length;) {
+                                                    let count = 0;
+                                                    let kind = [];
+                                                    let chance=0;
+                                                    for (let j = i; j < ary.length; j++) {
+                                                        if (ary[i].user_id == ary[j].user_id) {
+                                                            count++;
+                                                            console.log(ary[j]);
+                                                            kind.push(ary[j].dsc);
+                                                            chance+=parseInt(ary[j].chance);
+                                                        }
+                                                    }
+                                                    console.log(ary[i].user_id);
+                                                    free_users[ary[i].user_id] = {kind:kind,chance:chance};
+                                                    i += count;
+                                                }
+
+                                                users=users.map((item, idx) => {
+                                                    item.free_bet_info={};
+                                                    if(free_users[item.id]!=undefined){
+                                                        item.free_bet_info=free_users[item.id]
+                                                    }
+                                                    return item;
+                                                  //  console.log(item.id)
+                                                });
+
+
+                                                connection.sendUTF(JSON.stringify({result: users, code: 200}))
+
+                                            }
+                                        })
+
+                                    }
+                                })
+
+                            }, error: function (err) {
+                                connection.sendUTF({result: [], code: 500})
+                            }
+                        });
                         break;
                 }
 
@@ -1035,7 +1239,7 @@ try{
     httpServer.listen(8081, () => {
         console.log('[' + new Date() + '] Serveris listening on port 8081')
     });
-}catch (e) {
+} catch (e) {
     console.log(e);
 }
 

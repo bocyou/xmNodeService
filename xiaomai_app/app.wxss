@@ -38,7 +38,7 @@ page{
 } 
 .bottom-menu{
   position:fixed;
-  bottom:120rpx;
+  bottom:180rpx;
   right:30rpx;
   width:100rpx;
   height:100rpx;

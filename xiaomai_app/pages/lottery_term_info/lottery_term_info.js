@@ -9,6 +9,7 @@ Page({
         issue: 0,
         user_bet:[],
         last_lucky_users:[],
+        term_list:[],
         lucky_num:'',
         money:''
 
@@ -24,6 +25,7 @@ Page({
         this.getTermInfo();
         this.getCurrentBet();
         this.getLuckyUsers();
+        this.getALlterm();
     },
 
     /**
@@ -73,6 +75,21 @@ Page({
      */
     onShareAppMessage: function () {
 
+    },
+    getALlterm:function(){
+        let self=this;
+        util.request({
+            url: util.api + '/lottery/get_all_lucky_num', param: {}, complete: function (res) {
+                let data = res.data;
+                if (data.code == 200) {
+                    self.setData({
+                        term_list:data.result
+                    })
+                } else {
+                }
+
+            }
+        });
     },
     getTermInfo:function(){
         let self=this;
