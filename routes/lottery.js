@@ -238,7 +238,7 @@ const work = {
                                                             console.log('更新本期状态失败' + err);
                                                         } else {
                                                             //插入一条小麦收入记录,1代表拓词猜猜看
-                                                            var xm_get_money = parseFloat(last_all_money * 0.1);//小麦分成10%；
+                                                            var xm_get_money = parseInt(last_all_money * 0.2);//小麦分成20%；
                                                             mysql.insert_one('xm_get_lottery', {
                                                                 money: xm_get_money,
                                                                 way: 1,
