@@ -305,8 +305,9 @@ const work = {
                 console.log('添加免费机会失败');
             } else {
                 //更新用户用次数
-                mysql.sql('update user_wallet set bet_free_chance = ' + chance + ' where user_id in (' + user_id + ')', function (err, result) {
+                mysql.sql('update user_wallet set bet_free_chance =bet_free_chance + ' + chance + ' WHERE user_id ="' + user_id + '"', function (err, result) {
                     if (err) {
+                        console.log(err);
                         console.log('更新用户免费机会失败');
                     } else {
                         console.log('添加免费机会成功');
@@ -323,8 +324,9 @@ const work = {
             getUsersTowords({
                 success: function (users) {
 
-                    mysql.sql('update user_wallet set bet_free = 0', function (err, result) {
+                    mysql.sql('update user_wallet set bet_free_chance = 0', function (err, result) {
                         if (err) {
+                            console.log(err);
                             console.log('更新用户免费机会失败');
                         } else {
                             let towords_users = users.filter((item, idx) => {
@@ -338,12 +340,12 @@ const work = {
 
                             if (towords_users[0] ) {
                                 //拓词数第一名5次机会
-                                self.addFreeBet(towords_users[0].id, issue, 1, '第一名', 5);
+                                self.addFreeBet(towords_users[0].id, issue, 1, '第一名', 3);
 
                             }
                             if (towords_users[1] ) {
                                 //拓词数第二名3次机会
-                                self.addFreeBet(towords_users[1].id, issue, 2, '第二名', 3);
+                                self.addFreeBet(towords_users[1].id, issue, 2, '第二名', 2);
                             }
                             if (towords_users[2] ) {
                                 //拓词数第三名1次机会
@@ -361,7 +363,7 @@ const work = {
                                     let user_num = parseInt(str.substr(str.length - 2, 2));
                                     if (user_num == lucky_num) {
                                         console.log(item.id);//存入一条免费记录
-                                        self.addFreeBet(item.id, issue, 5, '最后两位数和中奖号码相同', 1);
+                                        self.addFreeBet(item.id, issue, 5, '最后两位数和中奖号码相同', 2);
                                     }
 
                                 }
@@ -499,7 +501,7 @@ const work = {
 router.post('/test', function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
-    work.createSpecialLucky(15, 35);
+    work.createSpecialLucky(16, 99);
   /*  postUsersNews({
         data: {
             "keyword1": {
