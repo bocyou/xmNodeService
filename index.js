@@ -58,6 +58,10 @@ app.use('/xm/lottery',require('./routes/lottery'));
 app.use('/xm/share_course',require('./routes/share_course'));
 app.use('/xm/users',require('./routes/user_manage'));
 app.use('/xm/export',require('./routes/export'));
+app.use('/xm/xm_bill',require('./routes/xm_bill'));
+
+
+
 
 app.use('/api',require('./routes/api'));
 app.use('/order_food',require('./routes/order_food'));
