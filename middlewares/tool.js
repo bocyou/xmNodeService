@@ -3,13 +3,17 @@
  */
 var mysql = require('../lib/mysql');
 let timer=null;
+let last_user_id=null;
 module.exports = {
     getUserInfo: function(req,res,callback){
         var session=req.headers.sessionkey;
         mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
             if(result&&result.length>0){
                 callback(result);
-               clearTimeout(timer);
+                if(last_user_id==result[0].id){
+                    clearTimeout(timer);
+                }
+                last_user_id=result[0].id;
                 timer=setTimeout(()=>{
                     console.log(`${result[0].user_name} 在${new Date().Format('MM月dd日HH:mm')}访问了小麦。有时间添加更新session的操作`);
                 },6000)
