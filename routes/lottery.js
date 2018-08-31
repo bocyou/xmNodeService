@@ -296,7 +296,7 @@ const work = {
             dsc: list_dsc,
             kind: kind,
             create_time: new Date(),
-            chance:chance
+            chance: chance
         };
         console.log(free_param);
         mysql.insert_one('bet_free', free_param, function (result, err) {
@@ -338,16 +338,16 @@ const work = {
                             console.log(towords_users);
 
 
-                            if (towords_users[0] ) {
+                            if (towords_users[0]) {
                                 //拓词数第一名5次机会
                                 self.addFreeBet(towords_users[0].id, issue, 1, '第一名', 3);
 
                             }
-                            if (towords_users[1] ) {
+                            if (towords_users[1]) {
                                 //拓词数第二名3次机会
                                 self.addFreeBet(towords_users[1].id, issue, 2, '第二名', 2);
                             }
-                            if (towords_users[2] ) {
+                            if (towords_users[2]) {
                                 //拓词数第三名1次机会
                                 self.addFreeBet(towords_users[2].id, issue, 3, '第三名', 1);
                             }
@@ -501,29 +501,24 @@ const work = {
 router.post('/test', function (req, res, next) {
     //获取所有用户统计手机号(仅北京地区)
     res.header("Access-Control-Allow-Origin", "*");
-    work.createSpecialLucky(16, 99);
-  /*  postUsersNews({
-        data: {
-            "keyword1": {
-                "value": "ps矢量图形",
-                "color": "#173177"
-            },
-            "keyword2": {
-                "value": "郭浩",
-                "color": "#173177"
-            },
-            "keyword3": {
-                "value": new Date().Format('yyyy年MM月dd日 HH:mm'),
-                "color": "#173177"
-            },
-            "keyword4": {
-                "value": "大会议室",
-                "color": "#173177"
-            }
-        },
-        template_id: 'S7BNFj8FnnK8vnn5yE9wWIz19HMhAC_PgkqRhW9II',
-        page: 'pages/share_course/share_course'
-    });*/
+    mysql.sql('SELECT * FROM order_fooding  where YEARWEEK(create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+            result.forEach((item, idx) => {
+                let list = JSON.parse(item.list);
+                console.log(list);
+                list.forEach((item2, idx2) => {
+                    mysql.insert_one('order_food', {id:item2.id,name:item2.name,price:item2.price,kind:item2.kind,img:decodeURIComponent(item2.img),merchant:item2.merchant,create_time:new Date()}, (err, result) => {
+                        console.log(err);
+                    })
+                })
+
+            });
+
+        }
+    })
+
 });
 
 
@@ -672,7 +667,6 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
                                                         pay_money: 0,
                                                         issue: req.body.issue
                                                     };
-
                                                     mysql.insert_one('user_bet', user_param, function (result, err) {
                                                         console.log(err);
                                                         if (result && err == null) {
@@ -680,7 +674,7 @@ router.post('/save_user_bet', checkAppSession, function (req, res, next) {
                                                             mysql.insert_one('xm_for_user_bet', xm_param, function (result, err) {
                                                                 if (result && err == null) {
                                                                     //减去用户机会
-                                                                    mysql.sql('update user_wallet set bet_free_chance = bet_free_chance-1 where user_id="'+userInfo[0].id+'"', function (err, result) {
+                                                                    mysql.sql('update user_wallet set bet_free_chance = bet_free_chance-1 where user_id="' + userInfo[0].id + '"', function (err, result) {
                                                                         if (err) {
                                                                             res.status(200).send({
                                                                                 code: 500,
@@ -1187,33 +1181,31 @@ try {
                                             } else {
                                                 let ary = result;
                                                 let free_users = {};
-                                                ary.sort((a,b)=>{
-                                                    return parseInt(a.user_id)-parseInt(b.user_id);
+                                                ary.sort((a, b) => {
+                                                    return parseInt(a.user_id) - parseInt(b.user_id);
                                                 });
                                                 for (let i = 0; i < ary.length;) {
                                                     let count = 0;
                                                     let kind = [];
-                                                    let chance=0;
+                                                    let chance = 0;
                                                     for (let j = i; j < ary.length; j++) {
                                                         if (ary[i].user_id == ary[j].user_id) {
                                                             count++;
-                                                            console.log(ary[j]);
                                                             kind.push(ary[j].dsc);
-                                                            chance+=parseInt(ary[j].chance);
+                                                            chance += parseInt(ary[j].chance);
                                                         }
                                                     }
-                                                    console.log(ary[i].user_id);
-                                                    free_users[ary[i].user_id] = {kind:kind,chance:chance};
+                                                    free_users[ary[i].user_id] = {kind: kind, chance: chance};
                                                     i += count;
                                                 }
 
-                                                users=users.map((item, idx) => {
-                                                    item.free_bet_info={};
-                                                    if(free_users[item.id]!=undefined){
-                                                        item.free_bet_info=free_users[item.id]
+                                                users = users.map((item, idx) => {
+                                                    item.free_bet_info = {};
+                                                    if (free_users[item.id] != undefined) {
+                                                        item.free_bet_info = free_users[item.id]
                                                     }
                                                     return item;
-                                                  //  console.log(item.id)
+                                                    //  console.log(item.id)
                                                 });
 
 

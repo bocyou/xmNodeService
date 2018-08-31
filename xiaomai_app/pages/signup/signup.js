@@ -15,7 +15,9 @@ Page({
     ],
     select_area: 'bj',//默认为北京
     user_name: null,
-    invite: null
+    invite: null,
+      index:0,
+      array: ['在线产品部', '人力行政部', '财务部', '电商组','市场部']
   },
 
   /**
@@ -87,14 +89,21 @@ Page({
     var value = e.detail.value;
     self.data.invite = value;
   },
+    bindPickerChange: function(e) {
+        console.log('picker发送选择改变，携带值为', e.detail.value);
+        this.setData({
+            index: e.detail.value
+        })
+    },
   sinup: function () {
     var self = this;
     var param = {};
     param.user_name = self.data.user_name;
     param.invite = self.data.invite;
     param.area = self.data.select_area;
-
+    param.department=self.data.array[self.data.index];
     if (param.user_name != null && param.invite != null && param.area != null) {
+
       wx.login({
         success: function (res) {
           if (res.code) {
@@ -103,10 +112,10 @@ Page({
             //调用注册接口
             //获取用户基本信息
             //先检查用户是否授权
-            var postData = function (param) {
+            let postData = function (param) {
               util.request({
                 url: util.api+'/api/user_sign_up', param: param, complete: function (res) {
-                  var data = res.data;
+                  let data = res.data;
                   if (data.code == 200 && data.result == true) {
                     //返回首页
                     //缓存后台传来的sessionKey
@@ -166,7 +175,7 @@ Page({
           }
         }
       });
-      /* */
+
     } else {
       wx.showToast({
         title: '请填写完整',

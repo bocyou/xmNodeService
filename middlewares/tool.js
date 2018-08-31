@@ -10,6 +10,8 @@ module.exports = {
             if(result&&result.length>0){
                 callback(result);
             }else{
+                console.log('11222');
+                console.log(err);
                 res.status(200).send( {code: 502, result: result,massage:'session失效'})
             }
 

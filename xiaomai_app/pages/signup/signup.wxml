@@ -1,26 +1,39 @@
 <!--pages/signup/signup.wxml-->
 <view class="header">
-  <view class="imgbox"></view>
-  <view class="h3">小麦</view>
-   <view class="description">北京顶上有限公司</view>
+    <view class="imgbox"></view>
+    <view class="h3">小麦</view>
+    <view class="description">北京顶上有限公司</view>
 </view>
 
 <view class="form">
-<text>我们需要您提供以下信息</text>
-<view class="input-group">
-<radio-group class="radio-group" bindchange="areaChange">
-  <label class="radio" wx:for="{{area}}" wx:key="item">
-    <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
-  </label>
-</radio-group>
-<view class="input-group" >
-  <input  bindinput="bindUserName" placeholder="请输入你的真实姓名" />
+
+<view class="input-group border_input">
+    <input bindinput="bindUserName" placeholder="请输入你的真实姓名" placeholder-style="font-size:28rpx;"/>
 </view>
-<view class="input-group">
-  <input  bindinput="bindInvite" placeholder="请输入邀请码" />
-</view>
-</view>
+
+<view class="input-group border_input">
+    <input bindinput="bindInvite" placeholder="请输入邀请码" placeholder-style="font-size:28rpx;"/>
 </view>
 
 
-<button class="signup" bindtap='sinup'>确定</button>
+<view class="input-title">选择校区</view>
+<view class="">
+    <radio-group class="radio-group" bindchange="areaChange">
+        <label class="radio" wx:for="{{area}}" wx:key="item">
+            <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+        </label>
+    </radio-group>
+</view>
+
+<view class="input-title">选择部门</view>
+<picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <view class="picker">
+        <text style="color:#717171">当前选择：</text>{{array[index]}}
+    </view>
+</picker>
+
+</view>
+
+<view class="signup">
+<view class=" btn btn-black" bindtap='sinup'>确定</view>
+</view>

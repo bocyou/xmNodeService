@@ -257,7 +257,8 @@ router.post('/user_sign_up', function (req, res, next) {
                                 user_name: req_data.user_name,
                                 area: req_data.area,
                                 wx_info: JSON.stringify(req_data.userInfo),
-                                user_img: req_data.userInfo.avatarUrl
+                                user_img: req_data.userInfo.avatarUrl,
+                                department:req_data.department||''
                             };
                             //将此邀请码更新为不可用
                             mysql.updateData('invite_code', 'id="' + invite_id + '"', 'status="0"', function (result, err) {
