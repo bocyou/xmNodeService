@@ -8,7 +8,7 @@ module.exports={
 	mysql:{
 		host     : 'rm-2ze4tk0u850c64o60o.mysql.rds.aliyuncs.com',
 		user     : 'dbuser4test_dsxm',
-		password : 'dbuser4test_dsxm_20171014',
+		password : 'dbuser4test_dsxm_20171027',
 		port:'3306',
 		database : 'ts_xiaomai',
         charset:'UTF8MB4_GENERAL_CI'
