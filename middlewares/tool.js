@@ -5,12 +5,11 @@ var mysql = require('../lib/mysql');
 module.exports = {
     getUserInfo: function(req,res,callback){
         var session=req.headers.sessionkey;
-         console.log(session);
         mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
             if(result&&result.length>0){
                 callback(result);
+                console.log(`${result[0].user_name} 在${new Date().Format('MM月dd日HH:mm')}访问了小麦`);
             }else{
-                console.log('11222');
                 console.log(err);
                 res.status(200).send( {code: 502, result: result,massage:'session失效'})
             }
