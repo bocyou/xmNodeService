@@ -9,6 +9,7 @@ var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
 var getCurrentSession = tool.getCurrentSession;
 var schedule = require('node-schedule');
+const postUsersNews = require('../routes/public/post_news').postUsersNews;
 
 router.get('/', function (req, res) {
 
@@ -328,8 +329,46 @@ var sat_bill = schedule.scheduleJob({hour: 10, minute: 00, dayOfWeek: 1}, functi
 });
 
 router.post('/post_bill', function (req, res, next) {
-    billWork.postNotPayNews();
-})
+
+});
+
+
+//每周五6点发送分享提醒
+var sat_bill = schedule.scheduleJob({hour: 18, minute: 00, dayOfWeek: 5}, function () {
+    mysql.sql('SELECT * FROM share_course WHERE to_days(start_time) = to_days(now())',(err,result)=>{
+        if(err){
+            console.log(`获取今天的课程失败${err}`);
+        }else{
+            console.log(result);
+            let data=result[0];
+            postUsersNews({
+                data: {
+                    "keyword1": {
+                        "value":data.course_name,
+                        "color": "#173177"
+                    },
+                    "keyword2": {
+                        "value": data.user_name,
+                        "color": "#173177"
+                    },
+                    "keyword3": {
+                        "value": "今天6点整开始",
+                        "color": "#173177"
+                    },
+                    "keyword4": {
+                        "value": "大会议室",
+                        "color": "#173177"
+                    }
+                },
+                template_id: 't-S7BNFj8FnnK8vnn5yE9wWIz19HMhAC_PgkqRhW9II',
+                page: 'pages/share_course/share_course'
+            })
+        }
+    });
+});
+
+
+
 
 module.exports = router;
 

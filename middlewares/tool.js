@@ -2,13 +2,17 @@
  * Created by haoguo on 17/6/5.
  */
 var mysql = require('../lib/mysql');
+let timer=null;
 module.exports = {
     getUserInfo: function(req,res,callback){
         var session=req.headers.sessionkey;
         mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
             if(result&&result.length>0){
                 callback(result);
-                console.log(`${result[0].user_name} 在${new Date().Format('MM月dd日HH:mm')}访问了小麦`);
+               clearTimeout(timer);
+                timer=setTimeout(()=>{
+                    console.log(`${result[0].user_name} 在${new Date().Format('MM月dd日HH:mm')}访问了小麦。有时间添加更新session的操作`);
+                },6000)
             }else{
                 console.log(err);
                 res.status(200).send( {code: 502, result: result,massage:'session失效'})

@@ -29,7 +29,22 @@ router.get('/', function (req, res) {
 
 });
 
-//管理部分
+const work = {
+    getUsingDinner: (opt) => {
+        try {
+            mysql.sql('select * FROM order_fooding WHERE to_days(create_time) = to_days(now()) AND is_using="1"', (err, result) => {
+                if (err) {
+                    opt.error(err);
+                    console.log(err);
+                } else {
+                    opt.success(result);
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
 
 //添加菜单
 router.post('/add_dinner', checkSession, function (req, res, next) {
@@ -525,7 +540,7 @@ router.post('/start_dinner_new', checkSession, function (req, res, next) {
                         result: true,
                         message: '分发成功'
                     })
-                    //  postNews.getAccessToken();
+                      postNews.getAccessToken();
 
                 } else {
                     res.status(200).send({
@@ -565,22 +580,7 @@ router.post('/finish_dinner', checkSession, function (req, res, next) {
 
 });
 
-const work = {
-    getUsingDinner: (opt) => {
-        try {
-            mysql.sql('select * FROM order_fooding WHERE to_days(create_time) = to_days(now()) AND is_using="1"', (err, result) => {
-                if (err) {
-                    opt.error(err);
-                    console.log(err);
-                } else {
-                    opt.success(result);
-                }
-            });
-        } catch (e) {
-            console.log(e);
-        }
-    }
-}
+
 
 //获取分发的菜单 order_fooding  同时检查用户是否刮卡
 router.post('/get_dinner_list', function (req, res, next) {

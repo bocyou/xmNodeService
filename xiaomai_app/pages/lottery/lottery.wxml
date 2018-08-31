@@ -24,8 +24,7 @@
 
     <view class="week_words">
         <view class="word-info">
-            <view class="txt">{{num1}}
-                <text>{{num2}}</text>
+            <view class="txt">{{num1}}<text>{{num2}}</text>
             </view>
             <view class="tip">本周总拓词数</view>
         </view>
@@ -35,9 +34,9 @@
 
     <block wx:if="{{issue_status==1&&issue>1}}">
         <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
-            <view class="title">第{{issue-1}}期幸运人员
-                <view class="text">（每人分得<text class="particle">{{last_lucky_users[0].get_money}}</text>颗麦粒已发到个人口袋）
-                </view>
+            <view class="title">
+                <view>第{{issue-1}}期幸运人员</view>
+                <view class="text">（<block wx:if="{{last_lucky_users.length==1}}">一人获得</block><block wx:else>每人分得</block><text class="particle">{{last_lucky_users[0].get_money}}</text>颗麦粒已发到个人口袋）</view>
             </view>
             <view class="lucky-user">
                 <block wx:for="{{last_lucky_users}}" wx:key="i">

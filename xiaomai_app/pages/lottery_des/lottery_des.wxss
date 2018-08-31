@@ -7,11 +7,15 @@ page{
     font-size:40rpx;
     font-weight: bold;
     margin-bottom:36rpx;
+    color:#030405;
 }
 .dsc{
     font-size:32rpx;
-
 }
 .p{
     margin:26rpx 0;
+}
+.p text{
+    color:#FF1177;
+
 }
