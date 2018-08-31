@@ -4,11 +4,8 @@ var router = express.Router();
 var mysql = require('../lib/mysql');
 var session = require('express-session');
 var checkSession = require('../middlewares/check_session').checkSession;
-var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
-var getCurrentSession = tool.getCurrentSession;
-var schedule = require('node-schedule');
 var shopInjection=require('../routes/public/lottery').shopInjection;
 router.get('/', function (req, res) {
 
@@ -20,7 +17,7 @@ router.get('/', function (req, res) {
 
 router.post('/save_shop_money', function (req, res, next) {
     getUserInfo(req,res, function (userInfo) {
-        console.log(userInfo);
+        console.log(`${userInfo[0].user_name} 扫码注资 ${new Date()}`);
         if (userInfo&&userInfo.length>0) {
             var money=req.body.money;
             mysql.insert_one('shop_money', {
@@ -29,8 +26,7 @@ router.post('/save_shop_money', function (req, res, next) {
                 create_time: new Date()
             }, function (result, err) {
                 if (result&&err==null) {
-                    if(money>0){
-                        console.log(Math.round(Math.random()));
+                    if(money>1){
                        if(Math.round(Math.random())==1){
                            //在奖池中注入1元
                            shopInjection({

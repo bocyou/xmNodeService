@@ -96,7 +96,7 @@ const work = {
                             //res.status(200).send({code: 500, result: [],message:'与拓词服务器交互失败'});
                             throw {err: err, message: '与拓词服务器交互失败'};
                         } else {
-                            var towords_data = JSON.parse(body);
+                            let towords_data = JSON.parse(body);
                             if (towords_data.code == 200) {
 
 
@@ -335,7 +335,6 @@ const work = {
                             towords_users = towords_users.sort((a, b) => {
                                 return parseInt(b.word) - parseInt(a.word);
                             });
-                            console.log(towords_users);
 
 
                             if (towords_users[0]) {
@@ -353,9 +352,6 @@ const work = {
                             }
 
 
-                            let idx = Math.floor(Math.random() * towords_users.length);//产生狗屎运用户
-                            self.addFreeBet(towords_users[idx].id, issue, 4, '狗屎运', 1);//给狗屎运获得者添加一次免费押注机会
-
                             //最后两位数相同用户
                             towords_users.forEach((item, idx) => {
                                 if (parseInt(item.word) > 10) {
@@ -363,11 +359,23 @@ const work = {
                                     let user_num = parseInt(str.substr(str.length - 2, 2));
                                     if (user_num == lucky_num) {
                                         console.log(item.id);//存入一条免费记录
-                                        self.addFreeBet(item.id, issue, 5, '最后两位数和中奖号码相同', 2);
+                                        self.addFreeBet(item.id, issue, 5, '最后两位数和中奖号码相同', 1);
                                     }
 
                                 }
-                            })
+                            });
+//选出狗屎运（除了前三名）
+                            try {
+                                let new_ary=JSON.parse(JSON.stringify(towords_users));
+                                if(new_ary.length>3){
+                                    new_ary=new_ary.splice(0,3);
+                                    let idx = Math.floor(Math.random() * new_ary.length);//产生狗屎运用户
+                                    self.addFreeBet(new_ary[idx].id, issue, 4, '狗屎运', 1);//给狗屎运获得者添加一次免费押注机会
+                                }
+                            } catch (e) {
+                                console.log(e);
+                            }
+
                         }
                     })
                 }, error: function (err) {
@@ -509,7 +517,15 @@ router.post('/test', function (req, res, next) {
                 let list = JSON.parse(item.list);
                 console.log(list);
                 list.forEach((item2, idx2) => {
-                    mysql.insert_one('order_food', {id:item2.id,name:item2.name,price:item2.price,kind:item2.kind,img:decodeURIComponent(item2.img),merchant:item2.merchant,create_time:new Date()}, (err, result) => {
+                    mysql.insert_one('order_food', {
+                        id: item2.id,
+                        name: item2.name,
+                        price: item2.price,
+                        kind: item2.kind,
+                        img: decodeURIComponent(item2.img),
+                        merchant: item2.merchant,
+                        create_time: new Date()
+                    }, (err, result) => {
                         console.log(err);
                     })
                 })
