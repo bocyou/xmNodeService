@@ -24,8 +24,7 @@
 
     <view class="week_words">
         <view class="word-info">
-            <view class="txt">{{num1}}<text>{{num2}}</text>
-            </view>
+            <view class="txt">{{num1}}<text>{{num2}}</text></view>
             <view class="tip">本周总拓词数</view>
         </view>
         <!--<canvas canvas-id="total-word" style="width:{{screenInfo.windowWidth}}px;height:60px;"></canvas>-->
@@ -33,29 +32,41 @@
 
 
     <block wx:if="{{issue_status==1&&issue>1}}">
-        <view wx:if="{{last_lucky_users.length>0}}" class="lucky-user-content block-content">
-            <view class="title">
-                <view>第{{issue-1}}期幸运人员</view>
-                <view class="text">（<block wx:if="{{last_lucky_users.length==1}}">一人获得</block><block wx:else>每人分得</block><text class="particle">{{last_lucky_users[0].get_money}}</text>颗麦粒已发到个人口袋）</view>
-            </view>
-            <view class="lucky-user">
-                <block wx:for="{{last_lucky_users}}" wx:key="i">
-                    <view class="user-info">
-                        <view class="user-img" style="background-image:url({{item.user_img}})"></view>
-                        <view class="user-name">{{item.user_name}}</view>
-                        <!--<view class="word">{{item.get_money}}</view>-->
+        <block wx:if="{{last_lucky_users.length>0}}">
 
-                    </view>
-                </block>
+            <view class="lucky-user-content block-content">
+                <view class="title">
+                    <view style="text-align:center">第{{issue-1}}期幸运人员</view>
+
+                </view>
+                <view class="lucky-user">
+                    <block wx:for="{{last_lucky_users}}" wx:key="i">
+                        <view class="user-info">
+                            <view class="user-img" style="background-image:url({{item.user_img}})"></view>
+                            <view class="user-name">{{item.user_name}}</view>
+                            <!--<view class="word">{{item.get_money}}</view>-->
+
+                        </view>
+                    </block>
+                </view>
             </view>
-        </view>
-        <view wx:else>
-            <view class="content-tip">上期无幸运人员！</view>
-        </view>
-        <navigator open-type="navigateTo" class="go-term-more"
-                   url="../lottery_term_info/lottery_term_info?issue={{issue-1}}">
-            <text>more</text>
-        </navigator>
+            <navigator open-type="navigateTo" class="go-term-more"
+                       url="../lottery_term_info/lottery_term_info?issue={{issue-1}}">
+                <view class="lucky-tip-message">
+                    <block wx:if="{{last_lucky_users.length==1}}">一人获得</block><block wx:else>每人分得</block><view class="particle"> {{last_lucky_users[0].get_money}} </view>颗麦粒已发到个人口袋
+                </view>
+                <text>more</text>
+            </navigator>
+        </block>
+        <block wx:else>
+            <navigator open-type="navigateTo" class="go-term-more"
+                       url="../lottery_term_info/lottery_term_info?issue={{issue-1}}">
+                <view class="lucky-tip-message">上期无幸运人员！</view>
+                <text>more</text>
+            </navigator>
+        </block>
+
+
     </block>
 
 
@@ -167,7 +178,7 @@
             <input bindinput="getUserNum" placeholder="请输入（2位数）" type="digit" placeholder-class="placeholder"/>
         </view>
         <view class="tip-err">{{tip_str}}</view>
-        <view class="btn btn-black {{is_disabled==true?'disabled':''}}"  catchtap="saveBet">
+        <view class="btn btn-black {{is_disabled==true?'disabled':''}}" catchtap="saveBet">
             确定
         </view>
     </view>

@@ -678,7 +678,6 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
             work.getUsingDinner({
                 success: (data) => {
                     if (data && data.length > 0) {
-                        console.log(data[0]);
                         let order_fooding_id=data[0].id;
                         mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="'+order_fooding_id+'" AND user_id=' + userInfo[0].id, function (err, result) {
                             if (err) {
@@ -759,7 +758,6 @@ router.post('/check_currentuser_dinner', function (req, res, next) {
             work.getUsingDinner({
                 success: (data) => {
                     if (data && data.length > 0) {
-                       console.log(data[0]);
                        let order_fooding_id=data[0].id;
                         mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="'+order_fooding_id+'" AND user_id=' + user_id, function (err, result) {
                             if (err == null) {
