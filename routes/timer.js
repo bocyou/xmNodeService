@@ -316,13 +316,13 @@ var billWork = {
     }
 }
 //每周一自动分发上周账单
-var sat_bill = schedule.scheduleJob({hour: 00, minute: 00, dayOfWeek: 1}, function () {
+const send_bill = schedule.scheduleJob({hour: 00, minute: 00, dayOfWeek: 1}, function () {
     console.log('自动分发账单');
     billWork.postBill();
 });
 //每周一给未付款用户发送账单消息提醒
 //清除失效的formid
-var sat_bill = schedule.scheduleJob({hour: 10, minute: 00, dayOfWeek: 1}, function () {
+const send_news = schedule.scheduleJob({hour: 10, minute: 00, dayOfWeek: 1}, function () {
     console.log('自动分发账单消息');
     billWork.postNotPayNews();
     //billWork.clearFormId();
@@ -334,7 +334,7 @@ router.post('/post_bill', function (req, res, next) {
 
 
 //每周五6点发送分享提醒
-var sat_bill = schedule.scheduleJob({hour: 18, minute: 00, dayOfWeek: 5}, function () {
+const send_course = schedule.scheduleJob({hour: 18, minute: 00, dayOfWeek: 5}, function () {
     mysql.sql('SELECT * FROM share_course WHERE to_days(start_time) = to_days(now())',(err,result)=>{
         if(err){
             console.log(`获取今天的课程失败${err}`);
