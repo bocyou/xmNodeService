@@ -339,24 +339,24 @@ const work = {
 
                             if (towords_users[0]) {
                                 //拓词数第一名5次机会
-                                self.addFreeBet(towords_users[0].id, issue, 1, '第一名', 3);
+                                self.addFreeBet(towords_users[0].id, issue, 1, '第一名', 1);
 
                             }
                             if (towords_users[1]) {
                                 //拓词数第二名3次机会
-                                self.addFreeBet(towords_users[1].id, issue, 2, '第二名', 2);
+                                self.addFreeBet(towords_users[1].id, issue, 2, '第二名', 1);
                             }
-                            if (towords_users[2]) {
+                       /*     if (towords_users[2]) {
                                 //拓词数第三名1次机会
                                 self.addFreeBet(towords_users[2].id, issue, 3, '第三名', 1);
-                            }
+                            }*/
 
 
                             //最后两位数相同用户
                             towords_users.forEach((item, idx) => {
                                 if (parseInt(item.word) > 10) {
                                     let str = item.word.toString();
-                                    let user_num = parseInt(str.substr(str.length - 2, 2));
+                                    let user_num = parseInt(str.substr(str.length - 2, 1));
                                     if (user_num == lucky_num) {
                                         console.log(item.id);//存入一条免费记录
                                         self.addFreeBet(item.id, issue, 5, '最后两位数和中奖号码相同', 1);
@@ -367,8 +367,8 @@ const work = {
 //选出狗屎运（除了前三名）
                             try {
                                 let new_ary=JSON.parse(JSON.stringify(towords_users));
-                                if(new_ary.length>3){
-                                    new_ary=new_ary.splice(0,3);
+                                if(new_ary.length>2){
+                                    new_ary=new_ary.splice(0,2);
                                     let idx = Math.floor(Math.random() * new_ary.length);//产生狗屎运用户
                                     self.addFreeBet(new_ary[idx].id, issue, 4, '狗屎运', 1);//给狗屎运获得者添加一次免费押注机会
                                 }
