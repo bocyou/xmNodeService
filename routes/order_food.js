@@ -37,6 +37,8 @@ const work = {
                     opt.error(err);
                     console.log(err);
                 } else {
+                    console.log(1231);
+                    console.log(result);
                     opt.success(result);
                 }
             });
@@ -233,86 +235,95 @@ router.post('/get_today_dinner', checkSession, function (req, res, next) {
 
     work.getUsingDinner({
         success: (data) => {
+            console.log(data);
             if (data && data.length > 0) {
                 let order_fooding_id=data[0].id;
                 mysql.sql('SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1"  AND order_fooding_id="'+order_fooding_id+'"', function (err, result) {
-
-                    if (result && result.length > 0) {
-                        //统计订餐信息
-                        var dinner_all_list = [];
-                        result.map(function (item, idx) {
-                            var dinner_list = {};
-                            item.dinner_list = JSON.parse(decodeURIComponent(item.dinner_list));
-                            dinner_list.food_list = item.dinner_list;
-                            var sum_price = 0;
-                            dinner_all_list = dinner_all_list.concat(dinner_list.food_list);
-                            dinner_list.food_list.forEach(function (item2, idx2) {
-                                sum_price += (item2.list.price * item2.num);
-                            });
-                            dinner_list.sum_price = sum_price;
-                            item.dinner_list = dinner_list;
-                        });
-
-
-                        var statis_all_list = [];
-                        dinner_all_list.sort(function (a, b) {
-                            return a.list.id - b.list.id;
-                        });
-
-
-                        for (var i = 0; i < dinner_all_list.length;) {
-                            var repeat_num = 0; //此菜重复的次数用于统计
-                            var sum_num = 0; //此菜总数量
-                            for (var j = i; j < dinner_all_list.length; j++) {
-
-                                if (dinner_all_list[i].list.id == dinner_all_list[j].list.id) {
-
-                                    sum_num += dinner_all_list[j].num;
-                                    repeat_num++;
-
-                                }
-                            }
-
-                            statis_all_list.push({
-                                info: dinner_all_list[i].list,
-                                repeat_num: repeat_num,
-                                sum_num: sum_num
-                            });
-                            i += repeat_num; //比较之后从不同的项后再次开始比较
-
-                        }
+                  if(err){
+                      res.status(200).send({
+                          code: 500,
+                          result: {},
+                          message: '获取订餐信息失败'
+                      });
+                  }else{
+                      if (result && result.length > 0) {
+                          //统计订餐信息
+                          var dinner_all_list = [];
+                          result.map(function (item, idx) {
+                              var dinner_list = {};
+                              item.dinner_list = JSON.parse(decodeURIComponent(item.dinner_list));
+                              dinner_list.food_list = item.dinner_list;
+                              var sum_price = 0;
+                              dinner_all_list = dinner_all_list.concat(dinner_list.food_list);
+                              dinner_list.food_list.forEach(function (item2, idx2) {
+                                  sum_price += (item2.list.price * item2.num);
+                              });
+                              dinner_list.sum_price = sum_price;
+                              item.dinner_list = dinner_list;
+                          });
 
 
-                        res.status(200).send({
-                            code: 200,
-                            result: {
-                                list_all: statis_all_list,
-                                list_info: result
-                            },
-                            message: '获取今日所有订餐人员信息成功'
-                        });
-                    } else {
-                        res.status(200).send({
-                            code: 200,
-                            result: {},
-                            message: '尚无订餐信息'
-                        });
-                    }
+                          var statis_all_list = [];
+                          dinner_all_list.sort(function (a, b) {
+                              return a.list.id - b.list.id;
+                          });
+
+
+                          for (var i = 0; i < dinner_all_list.length;) {
+                              var repeat_num = 0; //此菜重复的次数用于统计
+                              var sum_num = 0; //此菜总数量
+                              for (var j = i; j < dinner_all_list.length; j++) {
+
+                                  if (dinner_all_list[i].list.id == dinner_all_list[j].list.id) {
+
+                                      sum_num += dinner_all_list[j].num;
+                                      repeat_num++;
+
+                                  }
+                              }
+
+                              statis_all_list.push({
+                                  info: dinner_all_list[i].list,
+                                  repeat_num: repeat_num,
+                                  sum_num: sum_num
+                              });
+                              i += repeat_num; //比较之后从不同的项后再次开始比较
+
+                          }
+
+
+                          res.status(200).send({
+                              code: 200,
+                              result: {
+                                  list_all: statis_all_list,
+                                  list_info: result
+                              },
+                              message: '获取今日所有订餐人员信息成功'
+                          });
+                      } else {
+                          res.status(200).send({
+                              code: 200,
+                              result: {},
+                              message: '尚无订餐信息'
+                          });
+                      }
+                  }
+
 
                 })
             } else {
                 res.status(200).send({
-                    code: 500,
+                    code: 200,
                     result: {},
-                    isDraw: 1,
-                    message: '获取菜单ing失败'
+
+                    message: '订餐尚未开始'
                 });
             }
         }, error: (data) => {
             res.status(200).send({
                 code: 500,
                 result: {},
-                isDraw: 1,
+
                 message: 'sql错误'
             });
         }
