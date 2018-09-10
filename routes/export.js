@@ -14,31 +14,19 @@ nowYear += (nowYear < 2000) ? 1900 : 0; //
 var lastMonthDate = new Date(); //上月日期
 lastMonthDate.setDate(1);
 lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
-var lastYear = lastMonthDate.getYear();
-var lastMonth = lastMonthDate.getMonth();
+
 
 //格式化日期：yyyy-MM-dd
-function formatDate(date) {
-    var myyear = date.getFullYear();
-    var mymonth = date.getMonth() + 1;
-    var myweekday = date.getDate();
-    if (mymonth < 10) {
-        mymonth = "0" + mymonth;
-    }
-    if (myweekday < 10) {
-        myweekday = "0" + myweekday;
-    }
-    return (myyear + "-" + mymonth + "-" + myweekday);
-}
+
 //获得上周的开始日期
 function getLastWeekStartDate() {
     let weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 7);
-    return formatDate(weekStartDate);
+    return (weekStartDate).Format('yyyy-MM-dd');
 }
 //获得上周的结束日期
 function getLastWeekEndDate() {
     let weekEndDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 1);
-    return formatDate(weekEndDate);
+    return (weekEndDate).Format('yyyy-MM-dd');
 }
 router.get('/',function(req,res){
     //导出上周订餐信息
@@ -47,6 +35,8 @@ router.get('/',function(req,res){
             console.log(err);
            console.log('获取数据失败');
         } else {
+            console.log('attachment; filename='+getLastWeekStartDate()+'_'+getLastWeekEndDate()+'.xlsx');
+
             let data = [['姓名','部门','金额','订餐次数']];
             let ary=result;
             ary.sort((a,b)=>{
@@ -73,5 +63,12 @@ router.get('/',function(req,res){
 
 
 });
+router.post('/test',function(req,res){
+    //导出上周订餐信息
+   console.log('attachment; filename='+getLastWeekStartDate()+'_'+getLastWeekEndDate()+'.xlsx');
+
+
+});
+
 
 module.exports=router;
