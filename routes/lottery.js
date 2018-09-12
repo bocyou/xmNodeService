@@ -368,8 +368,9 @@ const work = {
                             try {
                                 let new_ary=JSON.parse(JSON.stringify(towords_users));
                                 if(new_ary.length>2){
-                                    new_ary=new_ary.splice(0,2);
-                                    let idx = Math.floor(Math.random() * new_ary.length);//产生狗屎运用户
+
+                                    let idx = Math.round(Math.random() * ( new_ary.length) + 2);//产生狗屎运用户
+
                                     self.addFreeBet(new_ary[idx].id, issue, 4, '狗屎运', 1);//给狗屎运获得者添加一次免费押注机会
                                 }
                             } catch (e) {
