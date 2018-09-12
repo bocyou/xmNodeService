@@ -24,13 +24,14 @@ function getLastWeekStartDate() {
     return (weekStartDate).Format('yyyy-MM-dd');
 }
 //获得上周的结束日期
+
 function getLastWeekEndDate() {
     let weekEndDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 1);
     return (weekEndDate).Format('yyyy-MM-dd');
 }
 router.get('/',function(req,res){
     //导出上周订餐信息
-    mysql.findtest('order_food_user', 'users', 'where YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
+    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
         if (err) {
             console.log(err);
            console.log('获取数据失败');
@@ -60,9 +61,9 @@ router.get('/',function(req,res){
             res.end(buffer, 'binary');
         }
     })
-
-
 });
+
+
 router.post('/test',function(req,res){
     //导出上周订餐信息
    console.log('attachment; filename='+getLastWeekStartDate()+'_'+getLastWeekEndDate()+'.xlsx');
