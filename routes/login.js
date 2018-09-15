@@ -27,7 +27,8 @@ router.post('/user_login', function (req, res, next) {
                 role:result[0].role,
                 user_name:result[0].user_name,
                 area:result[0].area,
-                user_img:JSON.parse(result[0].wx_info).avatarUrl
+                user_img:JSON.parse(result[0].wx_info).avatarUrl,
+                user_id:result[0].id
             };
             res.status(200).send( {code: 200, result: result[0],message:'登陆成功'})
         }else{

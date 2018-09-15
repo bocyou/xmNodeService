@@ -37,8 +37,7 @@ const work = {
                     opt.error(err);
                     console.log(err);
                 } else {
-                    console.log(1231);
-                    console.log(result);
+
                     opt.success(result);
                 }
             });
@@ -237,77 +236,77 @@ router.post('/get_today_dinner', checkSession, function (req, res, next) {
         success: (data) => {
             console.log(data);
             if (data && data.length > 0) {
-                let order_fooding_id=data[0].id;
-                mysql.sql('SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1"  AND order_fooding_id="'+order_fooding_id+'"', function (err, result) {
-                  if(err){
-                      res.status(200).send({
-                          code: 500,
-                          result: {},
-                          message: '获取订餐信息失败'
-                      });
-                  }else{
-                      if (result && result.length > 0) {
-                          //统计订餐信息
-                          var dinner_all_list = [];
-                          result.map(function (item, idx) {
-                              var dinner_list = {};
-                              item.dinner_list = JSON.parse(decodeURIComponent(item.dinner_list));
-                              dinner_list.food_list = item.dinner_list;
-                              var sum_price = 0;
-                              dinner_all_list = dinner_all_list.concat(dinner_list.food_list);
-                              dinner_list.food_list.forEach(function (item2, idx2) {
-                                  sum_price += (item2.list.price * item2.num);
-                              });
-                              dinner_list.sum_price = sum_price;
-                              item.dinner_list = dinner_list;
-                          });
+                let order_fooding_id = data[0].id;
+                mysql.sql('SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1"  AND order_fooding_id="' + order_fooding_id + '"', function (err, result) {
+                    if (err) {
+                        res.status(200).send({
+                            code: 500,
+                            result: {},
+                            message: '获取订餐信息失败'
+                        });
+                    } else {
+                        if (result && result.length > 0) {
+                            //统计订餐信息
+                            var dinner_all_list = [];
+                            result.map(function (item, idx) {
+                                var dinner_list = {};
+                                item.dinner_list = JSON.parse(decodeURIComponent(item.dinner_list));
+                                dinner_list.food_list = item.dinner_list;
+                                var sum_price = 0;
+                                dinner_all_list = dinner_all_list.concat(dinner_list.food_list);
+                                dinner_list.food_list.forEach(function (item2, idx2) {
+                                    sum_price += (item2.list.price * item2.num);
+                                });
+                                dinner_list.sum_price = sum_price;
+                                item.dinner_list = dinner_list;
+                            });
 
 
-                          var statis_all_list = [];
-                          dinner_all_list.sort(function (a, b) {
-                              return a.list.id - b.list.id;
-                          });
+                            var statis_all_list = [];
+                            dinner_all_list.sort(function (a, b) {
+                                return a.list.id - b.list.id;
+                            });
 
 
-                          for (var i = 0; i < dinner_all_list.length;) {
-                              var repeat_num = 0; //此菜重复的次数用于统计
-                              var sum_num = 0; //此菜总数量
-                              for (var j = i; j < dinner_all_list.length; j++) {
+                            for (var i = 0; i < dinner_all_list.length;) {
+                                var repeat_num = 0; //此菜重复的次数用于统计
+                                var sum_num = 0; //此菜总数量
+                                for (var j = i; j < dinner_all_list.length; j++) {
 
-                                  if (dinner_all_list[i].list.id == dinner_all_list[j].list.id) {
+                                    if (dinner_all_list[i].list.id == dinner_all_list[j].list.id) {
 
-                                      sum_num += dinner_all_list[j].num;
-                                      repeat_num++;
+                                        sum_num += dinner_all_list[j].num;
+                                        repeat_num++;
 
-                                  }
-                              }
+                                    }
+                                }
 
-                              statis_all_list.push({
-                                  info: dinner_all_list[i].list,
-                                  repeat_num: repeat_num,
-                                  sum_num: sum_num
-                              });
-                              i += repeat_num; //比较之后从不同的项后再次开始比较
+                                statis_all_list.push({
+                                    info: dinner_all_list[i].list,
+                                    repeat_num: repeat_num,
+                                    sum_num: sum_num
+                                });
+                                i += repeat_num; //比较之后从不同的项后再次开始比较
 
-                          }
+                            }
 
 
-                          res.status(200).send({
-                              code: 200,
-                              result: {
-                                  list_all: statis_all_list,
-                                  list_info: result
-                              },
-                              message: '获取今日所有订餐人员信息成功'
-                          });
-                      } else {
-                          res.status(200).send({
-                              code: 200,
-                              result: {},
-                              message: '尚无订餐信息'
-                          });
-                      }
-                  }
+                            res.status(200).send({
+                                code: 200,
+                                result: {
+                                    list_all: statis_all_list,
+                                    list_info: result
+                                },
+                                message: '获取今日所有订餐人员信息成功'
+                            });
+                        } else {
+                            res.status(200).send({
+                                code: 200,
+                                result: {},
+                                message: '尚无订餐信息'
+                            });
+                        }
+                    }
 
 
                 })
@@ -330,9 +329,28 @@ router.post('/get_today_dinner', checkSession, function (req, res, next) {
     });
 
 
-
 });
+//获取今天using=1的菜单信息
+router.post('/get_today_using', checkSession, function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
 
+    work.getUsingDinner({
+        success: (data) => {
+            res.status(200).send({
+                code: 200,
+                result: data,
+                message: '查询成功'
+            });
+        }, error: (data) => {
+            res.status(200).send({
+                code: 500,
+                result: [],
+                message: '查询失败'
+            });
+        }
+
+    });
+});
 //获取所有菜单order_food
 router.post('/all_dinner_list', checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -514,7 +532,29 @@ router.post('/test_message', function (req, res, next) {
 
 });
 
+//重新开启已结束订餐
+router.post('/rest_start_dinner', checkSession, function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
 
+    mysql.sql('update order_fooding set status="start" where is_using=1', (err, result) => {
+        if (err) {
+            res.status(200).send({
+                code: 500,
+                result: false,
+                message: '更新失败'
+            })
+        } else {
+
+            res.status(200).send({
+                code: 200,
+                result: true,
+                message: '已重新开启'
+            })
+        }
+    })
+
+
+});
 //分发菜单,开启订餐
 //同时发送模版消息
 router.post('/start_dinner', checkSession, function (req, res, next) {
@@ -572,7 +612,7 @@ router.post('/start_dinner_new', checkSession, function (req, res, next) {
                         result: true,
                         message: '分发成功'
                     })
-                      postNews.getAccessToken();
+                    postNews.getAccessToken();
 
                 } else {
                     res.status(200).send({
@@ -611,7 +651,6 @@ router.post('/finish_dinner', checkSession, function (req, res, next) {
 
 
 });
-
 
 
 //获取分发的菜单 order_fooding  同时检查用户是否刮卡
@@ -710,8 +749,8 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
             work.getUsingDinner({
                 success: (data) => {
                     if (data && data.length > 0) {
-                        let order_fooding_id=data[0].id;
-                        mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="'+order_fooding_id+'" AND user_id=' + userInfo[0].id, function (err, result) {
+                        let order_fooding_id = data[0].id;
+                        mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="' + order_fooding_id + '" AND user_id=' + userInfo[0].id, function (err, result) {
                             if (err) {
                                 res.status(200).send({
                                     code: 500,
@@ -726,7 +765,7 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
                                         create_time: new Date(),
                                         status: 1,
                                         spread_money: spread_money,
-                                        order_fooding_id:order_fooding_id
+                                        order_fooding_id: order_fooding_id
                                     }, function (result, err) {
                                         if (result) {
                                             res.status(200).send({
@@ -790,8 +829,8 @@ router.post('/check_currentuser_dinner', function (req, res, next) {
             work.getUsingDinner({
                 success: (data) => {
                     if (data && data.length > 0) {
-                       let order_fooding_id=data[0].id;
-                        mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="'+order_fooding_id+'" AND user_id=' + user_id, function (err, result) {
+                        let order_fooding_id = data[0].id;
+                        mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="' + order_fooding_id + '" AND user_id=' + user_id, function (err, result) {
                             if (err == null) {
                                 if (result.length > 0) {
                                     res.status(200).send({
@@ -863,9 +902,9 @@ router.post('/cancel_currentuser_dinner', function (req, res, next) {
             work.getUsingDinner({
                 success: (data) => {
                     if (data && data.length > 0) {
-                        let order_fooding_id=data[0].id;
+                        let order_fooding_id = data[0].id;
                         //更新用户的此条订餐记录status=0；
-                        mysql.sql('update order_food_user set status=0 where order_fooding_id="'+order_fooding_id+'" AND user_id="'+user_id+'"',(err,result)=>{
+                        mysql.sql('update order_food_user set status=0 where order_fooding_id="' + order_fooding_id + '" AND user_id="' + user_id + '"', (err, result) => {
                             if (!err) {
                                 res.status(200).send({
                                     code: 200,
