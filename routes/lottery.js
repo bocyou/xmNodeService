@@ -111,9 +111,10 @@ const work = {
                                     }
                                 }
                                 if (word_sum < 100) {
-                                    word_sum = Math.round(Math.random() * 1000);
+
                                 }
-                                let lucky_num = word_sum.toString().substr(word_sum.toString().length - 2, 2);
+                                word_sum = Math.round(Math.random() * 1000);
+                                let lucky_num = word_sum.toString().substr(word_sum.toString().length - 2, 2);//中奖号码
 
 
                                 //获取当前是第几期
