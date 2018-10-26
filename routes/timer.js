@@ -334,7 +334,7 @@ router.post('/post_bill', function (req, res, next) {
 
 
 //每周五6点发送分享提醒
-const send_course = schedule.scheduleJob({hour: 18, minute: 00, dayOfWeek: 5}, function () {
+const send_course = schedule.scheduleJob({hour: 17, minute: 00, dayOfWeek: 5}, function () {
     mysql.sql('SELECT * FROM share_course WHERE to_days(start_time) = to_days(now())',(err,result)=>{
         if(err){
             console.log(`获取今天的课程失败${err}`);
