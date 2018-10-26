@@ -344,7 +344,7 @@ const send_course = schedule.scheduleJob({hour: 18, minute: 00, dayOfWeek: 5}, f
             postUsersNews({
                 data: {
                     "keyword1": {
-                        "value":"《星露谷物语传销大会》不对，是"+data.course_name,
+                        "value":data.course_name,
                         "color": "#173177"
                     },
                     "keyword2": {

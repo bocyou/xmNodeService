@@ -379,8 +379,8 @@ router.post('/test', function (req, res, next) {
     request.post({
         url: 'https://api.weixin.qq.com/sns/jscode2session', formData: {
             js_code: req_data.code,
-            appid: "wx4c30127279046bea",
-            secret: "61ba88984991a7de0e92bf40378ef98f",
+            appid: "wx7ddf0815e1476037",
+            secret: "f150468ec95e716bcc147625d3a10bd2",
             grant_type: "authorization_code"
         }
     }, function optionalCallback(err, httpResponse, body) {
@@ -391,12 +391,13 @@ router.post('/test', function (req, res, next) {
             var wxSession = JSON.parse(body);
             var randomSession = 'se' + new Date().getTime() + req_data.code;//生成随机session
 
-            var userInfo = Object.assign(wxSession, req_data.userInfo);//session和微信基本信息合并
+            var userInfo = Object.assign(wxSession);//session和微信基本信息合并
 
             var expires = new Date(new Date().getTime() + 20 * 24 * 60 * 60 * 1000);//过期时间
 
+            console.log(wxSession);
 
-            var appId = 'wx4c30127279046bea'
+            var appId = 'wx7ddf0815e1476037'
             var sessionKey = userInfo.session_key
             var encryptedData = req_data.encryptedData;
             var iv = req_data.iv;
