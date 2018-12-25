@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 14,
+			"current": 15,
 			"list": [
 				{
 					"id": -1,
@@ -125,6 +125,12 @@
 					"pathName": "pages/lottery_des/lottery_des",
 					"query": "",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "聚餐",
+					"pathName": "pages/dine_together/dine_together",
+					"query": ""
 				}
 			]
 		}

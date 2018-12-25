@@ -16,7 +16,8 @@
     "pages/xm_rule/xm_rule",
     "pages/audio_course/audio_course",
     "pages/share_course/share_course",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/dine_together/dine_together"
   ],
   "requiredBackgroundModes":["audio"],
   "window": {

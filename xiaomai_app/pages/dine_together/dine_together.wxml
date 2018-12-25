@@ -1,0 +1,47 @@
+<!--pages/pay/pay.wxml-->
+
+
+
+<view class="body-title">{{all_money}}</view>
+<view class="body-title-des">本期累计（¥）</view>
+<view wx:if="{{show_pay}}" class="pay-main" catchtap="hidePay">
+    <view class="pay-content" catchtap="disabled">
+        <view class="user-pay">
+            <input  type="digit"
+                    placeholder="带小数点的数字键盘"
+                    placeholder="在此输入金额"
+                    focus="false"
+                    bindinput="getUserPay"
+                    placeholder-style="font-size:36rpx;"/>
+            <view class="border"></view>
+            <view class="err-tip">{{err_tip}}</view>
+        </view>
+        <view catchtap="pay" class="pay-btn">注金</view>
+    </view>
+
+</view>
+
+
+<view class="page-title">
+   <!-- 本期注资信息-->
+</view>
+
+
+<view class="bill-menu bill-table-bar">
+    <view class="bill-date th">用户</view>
+    <view class="bill-money th">金额</view>
+    <view class="bill-pay-date th">注资日期</view>
+
+</view>
+<view style="padding-bottom:200rpx;">
+<view class="bill-bar bill-table-bar" wx:for="{{user_dinner_list}}" wx:key="i">
+    <view class="bill-user">{{item.user_name}}</view>
+    <view class="bill-money">{{item.money}}</view>
+    <view class="bill-date">{{item.create_time}}</view>
+</view>
+</view>
+<view class="zhuzi">
+    <view class="scale-btn" bindtap="showBet" >
+        我要注资
+    </view>
+</view>

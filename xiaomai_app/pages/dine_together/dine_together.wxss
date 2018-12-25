@@ -1,0 +1,144 @@
+/* pages/pay/pay.wxss */
+
+.pay-btn{
+    width:90%;
+    margin:0 auto;
+    line-height:100rpx;
+    background-color:#000;
+    color:#fff;
+    text-align: center;
+    box-shadow: 4rpx 4rpx 10rpx rgba(0,0,0,.4);
+    font-size:40rpx;
+    margin-top:80rpx;
+}
+.body-title{
+    font-size:180rpx;
+    text-align: center;
+    font-family: Fette-Engschrift;
+    padding:60rpx 0 0;
+}
+.body-title-des{
+    font-size:24rpx;
+    color: #717171;
+    text-align: center;
+    padding-bottom:40rpx;
+}
+.user-pay{
+    width:90%;
+    margin:0 auto;
+    padding-top:160rpx;
+
+}
+.user-pay input{
+    font-size:50rpx;
+    height:80rpx;
+}
+
+.err-tip{
+    height:60rpx;
+    font-size:26rpx;
+    color: #a10017;
+}
+.border{
+    height:2rpx;
+    background-color:#919191;
+    margin-top:10rpx;
+    margin-bottom:10rpx;
+}
+.pay-title{
+    font-size:36rpx;
+    color:#000;
+    font-weight:bold;
+    text-align: center;
+    margin:100rpx 0 0;
+}
+.placeholder-style{
+    font-size:14rpx;
+
+}
+.page-title{
+    margin-top:60rpx;
+}
+
+.bill-table-bar{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding:26rpx 30rpx;
+    font-size:28rpx;
+    color:#717171;
+    background-color:#fff;
+}
+.bill-table-bar .bill-date{
+
+}
+.bill-table-bar .bill-user{
+
+}
+.bill-table-bar .bill-money{
+    width:80rpx;
+}
+.bill-table-bar .bill-status{
+    flex:1;
+}
+.bill-table-bar .bill-pay-date{
+    width:200rpx;
+}
+.bill-table-bar .th{
+    font-size:28rpx;
+    color:#333;
+    font-weight:bold;
+}
+.bill-table-bar:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+.bill-table-bar .green{
+    color:#00a65a;
+}
+.bill-table-bar .red{
+    color:#dd4b39;
+}
+
+.pay-main{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,.5);
+}
+.pay-content{
+    margin:260rpx 30rpx 0;
+    background-color:#fff;
+    padding-bottom:40rpx;
+}
+.zhuzi{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+}
+.scale-btn{
+    width:84%;
+    margin:0 auto 30rpx;
+    text-align:center;
+    font-size:30rpx;
+    line-height:80rpx;
+    background-color:#000;
+    color:#fff;
+    border-radius:8rpx;
+    box-shadow: 0 0 46rpx rgba(0,0,0,.2);
+    -webkit-animation: neon1 .6s ease-in-out infinite alternate;
+    -moz-animation: neon1 .6s ease-in-out infinite alternate;
+    animation: neon1 .6s ease-in-out infinite alternate;
+
+}
+
+@-webkit-keyframes neon1 {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}

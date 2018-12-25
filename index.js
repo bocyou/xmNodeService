@@ -4,7 +4,8 @@ var session = require('express-session');
 var store=require('express-mysql-session')(session);
 var app=express();
 var path=require('path');
-
+var WebSocketServer = require('websocket').server;
+var http = require('http');
 
 
 
@@ -21,8 +22,6 @@ app.engine("html",require("ejs").__express); // or   app.engine("html",require("
 
 //app.set("view engine","ejs");
 app.set('view engine', 'html');
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,6 +33,67 @@ app.use(session({
     cookie: { maxAge: config.session.maxAge},// 过期时间，过期后 cookie 中的 session id 自动删除 //时长
     store: new store(config.mysql)
 }));
+
+
+
+const getUserWords=require('./routes/lottery').userWords;
+const lottery=require('./routes/dinner_together');
+
+//长连接
+
+const httpServer = http.createServer((request, response) => {
+    console.log('[' + new Date + '] Received request for ' + request.url)
+    response.writeHead(404)
+    response.end()
+});
+
+const wsServer = new WebSocketServer({
+    httpServer: httpServer,
+    autoAcceptConnections: true
+});
+
+httpServer.listen(8081, () => {
+    console.log('[' + new Date() + '] Serveris listening on port 8081')
+});
+
+wsServer.on('connect', connection => {
+    connection.on('message', message => {
+        if (message.type === 'utf8') {
+            /!* console.log('>> message content from client: ' + message.utf8Data)*!/
+            console.log(message.utf8Data);
+            let data='';
+            //兼容老数据，发版后删除
+            try{
+                data=JSON.parse(message.utf8Data);
+            }catch (e) {
+                data={
+                    type:message.utf8Data
+                }
+            }
+
+
+            switch (data.type){
+                case 'user_words':
+                    //拓词猜猜看获取单词
+                    getUserWords(connection);
+
+                    break;
+                case 'dinner_together_pay':
+
+                    lottery.pay(connection,data);
+                    break;
+                case 'dinner_together_info':
+                    lottery.getDinnerInfo(connection);
+                    break;
+            }
+
+        }
+    }).on('close', (reasonCode, description) => {
+        console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
+    })
+});
+
+
 
 /*静态页面*/
 app.use('/',require('./routes/index'));
@@ -54,12 +114,12 @@ app.use('/xm/test',require('./routes/test'));
 app.use('/xm/logs',require('./routes/logs'));
 app.use('/xm/timer',require('./routes/timer'));
 app.use('/xm/shop_money',require('./routes/shop_money'));
-app.use('/xm/lottery',require('./routes/lottery'));
+app.use('/xm/lottery',require('./routes/lottery').router);
 app.use('/xm/share_course',require('./routes/share_course'));
 app.use('/xm/users',require('./routes/user_manage'));
 app.use('/xm/export',require('./routes/export'));
 app.use('/xm/xm_bill',require('./routes/xm_bill'));
-
+app.use('/xm/dinner_together',lottery.router);
 
 
 
@@ -73,6 +133,8 @@ app.use('/service',require('./routes/service'));
 app.use('/test',require('./routes/test'));
 app.use('/logs',require('./routes/logs'));
 app.use('/timer',require('./routes/timer'));
+
+
 app.listen(config.part,function(){
 	console.log('已启动'+new Date());
 });

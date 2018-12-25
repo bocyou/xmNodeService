@@ -12,6 +12,7 @@ var schedule = require('node-schedule');
 var postUsersNews = require('../routes/public/post_news').postUsersNews;
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+console.log(express().coustom);
 
 router.get('/', function (req, res) {
 
@@ -1162,7 +1163,7 @@ router.post('/user_injection_info', checkSession, function (req, res, next) {
 });
 
 try {
-    const httpServer = http.createServer((request, response) => {
+   /* const httpServer = http.createServer((request, response) => {
         console.log('[' + new Date + '] Received request for ' + request.url)
         response.writeHead(404)
         response.end()
@@ -1173,13 +1174,18 @@ try {
         autoAcceptConnections: true
     });
 
-    wsServer.on('connect', connection => {
+    httpServer.listen(8081, () => {
+        console.log('[' + new Date() + '] Serveris listening on port 8081')
+    });*/
+
+   /* wsServer.on('connect', connection => {
         connection.on('message', message => {
             if (message.type === 'utf8') {
-                /* console.log('>> message content from client: ' + message.utf8Data)*/
+                /!* console.log('>> message content from client: ' + message.utf8Data)*!/
 
                 switch (message.utf8Data) {
                     case 'user_words':
+
                         getUsersTowords({
                             success: function (users) {
                                 //console.log(users);
@@ -1240,20 +1246,84 @@ try {
                             }
                         });
                         break;
+                    case 'dinner_together':
+                        console.log(123);
+                        break;
                 }
 
             }
         }).on('close', (reasonCode, description) => {
             console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
         })
-    });
+    });*/
 
-    httpServer.listen(8081, () => {
-        console.log('[' + new Date() + '] Serveris listening on port 8081')
-    });
+
 } catch (e) {
     console.log(e);
 }
 
 
-module.exports = router;
+module.exports = {
+    router,
+    userWords:function(connection){
+        getUsersTowords({
+            success: function (users) {
+                //console.log(users);
+                //获取本期免费机会的所有用户
+                mysql.sql('SELECT  * FROM bet_issue  WHERE is_new=1', function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        connection.sendUTF({result: [], code: 500, message: "查询本期信息失败"})
+
+                    } else {
+                        let issue = result[0].issue;
+                        mysql.sql('SELECT  * FROM bet_free  WHERE issue="' + issue + '"', function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                connection.sendUTF({result: [], code: 500, message: "查询本期免费次数信息失败"})
+
+                            } else {
+                                let ary = result;
+                                let free_users = {};
+                                ary.sort((a, b) => {
+                                    return parseInt(a.user_id) - parseInt(b.user_id);
+                                });
+                                for (let i = 0; i < ary.length;) {
+                                    let count = 0;
+                                    let kind = [];
+                                    let chance = 0;
+                                    for (let j = i; j < ary.length; j++) {
+                                        if (ary[i].user_id == ary[j].user_id) {
+                                            count++;
+                                            kind.push(ary[j].dsc);
+                                            chance += parseInt(ary[j].chance);
+                                        }
+                                    }
+                                    free_users[ary[i].user_id] = {kind: kind, chance: chance};
+                                    i += count;
+                                }
+
+                                users = users.map((item, idx) => {
+                                    item.free_bet_info = {};
+                                    if (free_users[item.id] != undefined) {
+                                        item.free_bet_info = free_users[item.id]
+                                    }
+                                    return item;
+                                    //  console.log(item.id)
+                                });
+
+
+                                connection.sendUTF(JSON.stringify({result: users, code: 200}))
+
+                            }
+                        })
+
+                    }
+                })
+
+            }, error: function (err) {
+                connection.sendUTF({result: [], code: 500})
+            }
+        })
+    }
+};

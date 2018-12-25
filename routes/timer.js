@@ -43,114 +43,125 @@ var billWork = {
                                                     if (err == null) {
                                                         mysql.findtest('user_wallet', 'users', '', function (err, result6) {
                                                             if (err == null) {
-                                                                function getWallet(user_id){
-                                                                    for(var i=0 ;i<result6.length;i++){
-                                                                        if(result6[i].id==user_id){
-                                                                            return result6[i].money;
-                                                                        }
+                                                                mysql.findtest('dinner_together_info', 'users', 'where YEARWEEK(create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result7) {
+                                                                    if (err == null) {
+                                                                         function getWallet(user_id){
+                                                                             for(var i=0 ;i<result6.length;i++){
+                                                                                 if(result6[i].id==user_id){
+                                                                                     return result6[i].money;
+                                                                                 }
+                                                                             }
+                                                                             return 0;
+                                                                         }
+
+                                                                         var result_ary = result1.concat(result2, result3,result4,result5,result7);
+
+                                                                         //提取userid相同的用户
+                                                                         var res_ary = [];
+                                                                         result_ary.sort(function (a, b) {
+                                                                             return a.user_id - b.user_id
+                                                                         });
+                                                                         var num = 0;
+                                                                         var usr = [];
+                                                                         var update_wallet='';
+                                                                         for (var i = 0; i < result_ary.length;) {
+                                                                             var count = 0;
+                                                                             var sum_money = 0;
+                                                                             for (var j = i; j < result_ary.length; j++) {
+                                                                                 if (result_ary[i].user_id == result_ary[j].user_id) {
+                                                                                     count++;
+                                                                                     var money_num=0;
+                                                                                     if(result_ary[j].money!=undefined){
+                                                                                         money_num=result_ary[j].money
+                                                                                     }else{
+                                                                                         if(result_ary[j].spread_money!=undefined){
+                                                                                             money_num=result_ary[j].spread_money
+                                                                                         }else{
+                                                                                             if(result_ary[j].pay_money!=undefined){
+                                                                                                 money_num=result_ary[j].pay_money
+                                                                                             }else{
+                                                                                                 console.log('未识别');
+
+
+                                                                                             }
+
+                                                                                         }
+
+                                                                                     }
+
+                                                                                     sum_money += parseFloat(money_num);
+                                                                                 }
+                                                                             }
+                                                                             var deduction=0;
+                                                                             var current_user_id=result_ary[i].user_id;
+                                                                             var wallet_money=getWallet(current_user_id);
+                                                                             if(wallet_money>sum_money){
+                                                                                 //钱包里的钱大于本周账单
+                                                                                 deduction=sum_money;
+                                                                                 //减去钱包里的钱
+                                                                                 downMoney(current_user_id,deduction);
+                                                                             }else{
+
+                                                                                 if(wallet_money>0){
+                                                                                     deduction=wallet_money;
+                                                                                     //减去钱包里的钱
+                                                                                     downMoney(current_user_id,deduction);
+                                                                                 }
+
+
+                                                                             }
+
+                                                                             usr[num] = [];
+                                                                             usr[num][0] = result_ary[i].user_id;
+                                                                             usr[num][1] = sum_money;
+                                                                             usr[num][2] = '1';
+                                                                             usr[num][3] = new Date();
+                                                                             usr[num][4] = '';
+                                                                             usr[num][5] =deduction ;
+                                                                             num++;
+
+                                                                             res_ary.push({
+                                                                                 user_name: result_ary[i].user_name,
+                                                                                 user_face: result_ary[i].user_img,
+                                                                                 user_id: result_ary[i].user_id,
+                                                                                 num: count,
+                                                                                 money: sum_money
+                                                                             });
+                                                                             i += count;
+                                                                         }
+
+
+                                                                         function downMoney(user_id,money){
+                                                                             mysql.sql('update user_wallet set money = money - ' + money + ' where user_id in (' + user_id + ')', function (err, result) {
+                                                                                 if (err) {
+                                                                                     console.log('减去用户账单失败' +user_id);
+                                                                                 } else {
+                                                                                     console.log('账单抵消成功'+user_id);
+                                                                                 }
+                                                                             })
+                                                                         }
+
+
+                                                                               mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`,`deduction`)', [usr], function (result, err) {
+                                                                                   console.log(err);
+                                                                                   if (err == null) {
+                                                                                       console.log("本周账单分发成功" + new Date());
+                                                                                       // res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
+                                                                                   } else {
+                                                                                       console.log("本周账单分发失败" + new Date());
+                                                                                       //res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
+                                                                                   }
+
+                                                                               });
+
+
+                                                                    } else {
+                                                                        console.log("获取用户注资金额失败" + new Date());
+                                                                        // res.status(200).send( {code: 200, result: {}, message: "获取此用户抽奖信息失败"})
                                                                     }
-                                                                    return 0;
-                                                                }
 
-                                                                var result_ary = result1.concat(result2, result3,result4,result5);
+                                                                })
 
-                                                                //提取userid相同的用户
-                                                                var res_ary = [];
-                                                                result_ary.sort(function (a, b) {
-                                                                    return a.user_id - b.user_id
-                                                                });
-                                                                var num = 0;
-                                                                var usr = [];
-                                                                var update_wallet='';
-                                                                for (var i = 0; i < result_ary.length;) {
-                                                                    var count = 0;
-                                                                    var sum_money = 0;
-                                                                    for (var j = i; j < result_ary.length; j++) {
-                                                                        if (result_ary[i].user_id == result_ary[j].user_id) {
-                                                                            count++;
-                                                                            var money_num=0;
-                                                                            if(result_ary[j].money!=undefined){
-                                                                                money_num=result_ary[j].money
-                                                                            }else{
-                                                                                if(result_ary[j].spread_money!=undefined){
-                                                                                    money_num=result_ary[j].spread_money
-                                                                                }else{
-                                                                                    if(result_ary[j].pay_money!=undefined){
-                                                                                        money_num=result_ary[j].pay_money
-                                                                                    }else{
-                                                                                        console.log('未识别');
-
-
-                                                                                    }
-
-                                                                                }
-
-                                                                            }
-
-                                                                            sum_money += parseFloat(money_num);
-                                                                        }
-                                                                    }
-                                                                    var deduction=0;
-                                                                    var current_user_id=result_ary[i].user_id;
-                                                                    var wallet_money=getWallet(current_user_id);
-                                                                    if(wallet_money>sum_money){
-                                                                        //钱包里的钱大于本周账单
-                                                                        deduction=sum_money;
-                                                                        //减去钱包里的钱
-                                                                        downMoney(current_user_id,deduction);
-                                                                    }else{
-
-                                                                        if(wallet_money>0){
-                                                                            deduction=wallet_money;
-                                                                            //减去钱包里的钱
-                                                                            downMoney(current_user_id,deduction);
-                                                                        }
-
-
-                                                                    }
-
-                                                                    usr[num] = [];
-                                                                    usr[num][0] = result_ary[i].user_id;
-                                                                    usr[num][1] = sum_money;
-                                                                    usr[num][2] = '1';
-                                                                    usr[num][3] = new Date();
-                                                                    usr[num][4] = '';
-                                                                    usr[num][5] =deduction ;
-                                                                    num++;
-
-                                                                    res_ary.push({
-                                                                        user_name: result_ary[i].user_name,
-                                                                        user_face: result_ary[i].user_img,
-                                                                        user_id: result_ary[i].user_id,
-                                                                        num: count,
-                                                                        money: sum_money
-                                                                    });
-                                                                    i += count;
-                                                                }
-
-
-                                                                function downMoney(user_id,money){
-                                                                    mysql.sql('update user_wallet set money = money - ' + money + ' where user_id in (' + user_id + ')', function (err, result) {
-                                                                        if (err) {
-                                                                            console.log('减去用户账单失败' +user_id);
-                                                                        } else {
-                                                                            console.log('账单抵消成功'+user_id);
-                                                                        }
-                                                                    })
-                                                                }
-
-
-                                                                      mysql.insert_more('user_bill(`user_id`, `money`,`status`,`create_time`,`update_time`,`deduction`)', [usr], function (result, err) {
-                                                                          console.log(err);
-                                                                          if (err == null) {
-                                                                              console.log("本周账单分发成功" + new Date());
-                                                                              // res.status(200).send( {code: 200, result: res_ary, message: "本周账单分发成功"})
-                                                                          } else {
-                                                                              console.log("本周账单分发失败" + new Date());
-                                                                              //res.status(200).send({code: 501, result: err.sqlMessage, message: '插入失败' + err});
-                                                                          }
-
-                                                                      });
 
 
                                                             } else {

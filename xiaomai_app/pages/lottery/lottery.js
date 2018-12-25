@@ -164,7 +164,7 @@ Page({
             // console.log('WebSocket连接已打开！');
             let num = 0;
             wx.sendSocketMessage({
-                data: 'user_words'
+                data: JSON.stringify({type:'user_words'})
             });
             clearInterval(socket_timer);
        /*     socket_timer = setInterval(function () {
