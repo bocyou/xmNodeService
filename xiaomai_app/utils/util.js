@@ -10,10 +10,10 @@ const formatTime = date => {
 }
 const version = 2;
 
-/*const ws_api ='wss://xiaomai.towords.com/wss';
-const api ='https://xiaomai.towords.com/xm';*/
-const api = 'http://localhost:8080/xm';
-const ws_api = 'ws://localhost:8081';
+const ws_api ='wss://xiaomai.towords.com/wss';
+const api ='https://xiaomai.towords.com/xm';
+/*const api = 'http://localhost:8080/xm';
+const ws_api = 'ws://localhost:8081';*/
 //https://xiaomai.towords.com/xm
 const formatNumber = n => {
     n = n.toString()

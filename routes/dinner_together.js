@@ -82,11 +82,15 @@ const work={
 
         });
     },
-    getDinnerInfo (connection){
+    getDinnerInfo (connection,clients){
         getNewTerm((term_info)=>{
             const term=term_info[0].term;
             getDinnerInfo(term,(dinner_info)=>{
-                connection.sendUTF(JSON.stringify({result:dinner_info ,type:'dinner_info', code: 200, message: `获取${term}期数据成功`}))
+                // 广播消息
+                clients.forEach(function(ws1){
+                    connection.sendUTF(JSON.stringify({result:dinner_info ,type:'dinner_info', code: 200, message: `获取${term}期数据成功`}))
+                })
+
             });
         })
     }

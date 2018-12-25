@@ -25,6 +25,16 @@
         </view>
 
     </navigator>
+    <navigator open-type="navigateTo" class="app-entry no-manage" url="../dine_together/dine_together">
+        <view class="content">
+            <!--      <view class="txt">
+
+                      <view class="title">拓词猜猜看</view>
+
+                  </view>-->
+        </view>
+
+    </navigator>
 
     <navigator open-type="navigateTo" class="app-entry towords-manage" url="../lottery/lottery">
         <view class="content">

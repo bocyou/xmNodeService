@@ -40,7 +40,8 @@ const getUserWords=require('./routes/lottery').userWords;
 const lottery=require('./routes/dinner_together');
 
 //长连接
-
+// 连接池
+let clients = [];
 const httpServer = http.createServer((request, response) => {
     console.log('[' + new Date + '] Received request for ' + request.url)
     response.writeHead(404)
@@ -57,6 +58,7 @@ httpServer.listen(8081, () => {
 });
 
 wsServer.on('connect', connection => {
+    clients.push(connection);
     connection.on('message', message => {
         if (message.type === 'utf8') {
             /!* console.log('>> message content from client: ' + message.utf8Data)*!/
@@ -83,12 +85,16 @@ wsServer.on('connect', connection => {
                     lottery.pay(connection,data);
                     break;
                 case 'dinner_together_info':
-                    lottery.getDinnerInfo(connection);
+                    lottery.getDinnerInfo(connection,clients);
                     break;
             }
 
         }
     }).on('close', (reasonCode, description) => {
+        // 连接关闭时，将其移出连接池
+        clients = clients.filter(function(ws1){
+            return ws1 !== connection
+        })
         console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
     })
 });
