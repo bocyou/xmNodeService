@@ -59,6 +59,7 @@ httpServer.listen(8081, () => {
 
 wsServer.on('connect', connection => {
     clients.push(connection);
+    console.log(clients.length);
     connection.on('message', message => {
         if (message.type === 'utf8') {
             /!* console.log('>> message content from client: ' + message.utf8Data)*!/
@@ -82,7 +83,7 @@ wsServer.on('connect', connection => {
                     break;
                 case 'dinner_together_pay':
 
-                    lottery.pay(connection,data);
+                    lottery.pay(connection,data,clients);
                     break;
                 case 'dinner_together_info':
                     lottery.getDinnerInfo(connection,clients);
