@@ -6,53 +6,32 @@
 
     <navigator open-type="navigateTo" class="app-entry shop-manage" url="../lucky_draw/lucky_draw">
         <view class="content">
-         <!--   <div class="txt">
-                <view class="title">刮刮卡</view>
 
-            </div>-->
         </view>
 
     </navigator>
     <navigator open-type="navigateTo" class="app-entry dinner-manage" url="../dinner/dinner">
         <view class="content">
 
-        <!--    <view class="txt">
-
-                <view class="title">订餐系统</view>
-
-
-            </view>-->
         </view>
 
     </navigator>
-    <navigator open-type="navigateTo" class="app-entry no-manage" url="../dine_together/dine_together">
+    <navigator open-type="navigateTo" class="app-entry juju" url="../dine_together/dine_together">
         <view class="content">
-            <!--      <view class="txt">
 
-                      <view class="title">拓词猜猜看</view>
-
-                  </view>-->
         </view>
 
     </navigator>
 
     <navigator open-type="navigateTo" class="app-entry towords-manage" url="../lottery/lottery">
         <view class="content">
-      <!--      <view class="txt">
 
-                <view class="title">拓词猜猜看</view>
-
-            </view>-->
         </view>
 
     </navigator>
     <navigator open-type="navigateTo" class="app-entry no-manage" url="../audio_course/audio_course">
         <view class="content">
-            <!--      <view class="txt">
 
-                      <view class="title">拓词猜猜看</view>
-
-                  </view>-->
         </view>
 
         </navigator>

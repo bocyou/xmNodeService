@@ -6,17 +6,20 @@ page{
 
 }
 .dinner-manage{
-  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/banner/dinner_banner.jpg");
+  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/2.jpg");
 
 }
 .shop-manage{
-  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/banner/draw_banner.jpg");
+  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/1.jpg");
 }
 .towords-manage{
-  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/banner/towords_banner.jpg");
+  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/3.jpg");
 }
 .no-manage{
-  background-image: url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/banner/bottom_banner.jpg");
+  background-image: url("http://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/4.jpg");
+}
+.juju{
+  background-image: url("http://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/5.jpg");
 }
 
 

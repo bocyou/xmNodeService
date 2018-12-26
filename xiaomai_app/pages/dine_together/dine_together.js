@@ -21,7 +21,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        this.createSocket();
     },
 
     /**
@@ -35,7 +35,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-       this.createSocket();
+
     },
 
     /**
@@ -49,7 +49,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+        wx.closeSocket();
     },
     showBet(){
         const self=this;
@@ -87,7 +87,6 @@ Page({
                 protocols: ['protocol1'],
                 method: "GET",
                 complete: function (res) {
-                    // console.log(res);
                 }
             })
 
@@ -120,7 +119,6 @@ Page({
                         });
                         break;
                     case 'dinner_info':
-                        console.log(data.result);
                         let all_money=0;
                         const info=data.result.map(function (item, idx) {
                             item.create_time = customDate(item.create_time);
@@ -188,7 +186,6 @@ Page({
                                 })
                             });
                         } else if (res.cancel) {
-                            console.log('用户点击取消')
                         }
                         self.setData({
                             show_pay:false

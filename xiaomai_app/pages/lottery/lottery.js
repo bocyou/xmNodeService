@@ -61,7 +61,6 @@ Page({
                 let data = res.data;
                 // console.log(data);
                 if (data.code == 200) {
-
                     if (data.result.towords_phone == '' || data.result.towords_phone == null) {
                         //没有绑定手机号
                         wx.redirectTo({
