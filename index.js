@@ -38,6 +38,7 @@ app.use(session({
 
 const getUserWords=require('./routes/lottery').userWords;
 const lottery=require('./routes/dinner_together');
+const {getHomeWeibo,overWeibo} =require('./routes/weibo');
 
 //长连接
 // 连接池
@@ -63,7 +64,7 @@ wsServer.on('connect', connection => {
     connection.on('message', message => {
         if (message.type === 'utf8') {
             /!* console.log('>> message content from client: ' + message.utf8Data)*!/
-            console.log(message.utf8Data);
+
             let data='';
             //兼容老数据，发版后删除
             try{
@@ -88,6 +89,14 @@ wsServer.on('connect', connection => {
                 case 'dinner_together_info':
                     lottery.getDinnerInfo(connection,clients);
                     break;
+                case 'get_weibo':
+                    //检测某人微博更新内容
+
+                   getHomeWeibo(connection,data);
+                    break;
+                case 'over_weibo':
+                    overWeibo(connection);
+                    break;
             }
 
         }
@@ -95,10 +104,11 @@ wsServer.on('connect', connection => {
         // 连接关闭时，将其移出连接池
         clients = clients.filter(function(ws1){
             return ws1 !== connection
-        })
+        });
         console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
     })
 });
+
 
 
 
@@ -108,6 +118,7 @@ app.use('/invite_code',require('./routes/invite_code'));
 app.use('/table',require('./routes/table'));
 app.use('/paycode',require('./routes/pay_code'));
 app.use('/shpaycode',require('./routes/pages/sh_pay_code'));
+app.use('/weibo',require('./routes/special/weibo'));
 
 /*接口*/
 app.use('/xm/api',require('./routes/api'));

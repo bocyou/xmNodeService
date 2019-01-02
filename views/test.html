@@ -5,16 +5,33 @@
     <title>新增微信临时图片</title>
 </head>
 <body>
-  <input id="file" type="file"/>
-  <button>
-      上传
+
+  <button class="get-info">
+      获取
   </button>
+  <button class="j-comment">
+      评论
+  </button>
+  <div class="j-main"></div>
   <script src="/introduce/jQuery-3.1.1.js"></script>
   <script>
-/*     $('button').click(function(){
-         console.log(1);
+     $('.get-info').click(function(){
+        $.post('/test/test',{},function(data){
+            console.log(data);
 
-         var formData=new FormData();
+        });
+
+
+     });
+     $('.j-comment').click(function(){
+         $.post('/test/comment',{},function(data){
+             console.log(data);
+
+         });
+
+
+     });
+     /*    var formData=new FormData();
          formData.append('img',$('#file')[0].files[0]);
          $.ajax({
              data: formData,
@@ -31,9 +48,8 @@
              error: function(err){
                  console.log('error: ' + err);
              }
-         });
-     });*/
-console.log({fsf:"d"});
+         });*/
+/*console.log({fsf:"d"});*/
   </script>
 </body>
 </html>
