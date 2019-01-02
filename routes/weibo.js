@@ -126,6 +126,7 @@ const work={
                         console.log('成功获取',new Date().Format('yyyy/MM/dd HH:mm:ss'));
                         setTimeout(()=>{
                             console.log('再次获取');
+
                             if(work.status==1){
                                 getWeibo(data)
 
