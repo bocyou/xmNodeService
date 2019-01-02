@@ -36,6 +36,7 @@ app.use(session({
 
 
 
+
 const getUserWords=require('./routes/lottery').userWords;
 const lottery=require('./routes/dinner_together');
 const {getHomeWeibo,overWeibo} =require('./routes/weibo');

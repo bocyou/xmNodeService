@@ -118,9 +118,10 @@ const work={
                                 }else{
                                     console.log('微博删除了');
                                 }
+                                connection.sendUTF(JSON.stringify({result: info_ary,num:connection.count_num++, type:'get_weibo_info',code: 200, message: "解析成功"}));
                                 connection.last_update_time=info_ary[0].update_time;
                             }
-                            connection.sendUTF(JSON.stringify({result: info_ary,num:connection.count_num++, type:'get_weibo_info',code: 200, message: "解析成功"}));
+
                         }
                         console.log('成功获取',new Date().Format('yyyy/MM/dd HH:mm:ss'));
                         setTimeout(()=>{
