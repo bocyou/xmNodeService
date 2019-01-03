@@ -107,6 +107,9 @@ const work={
                         const first_weibo_update_time=info_ary[0]?info_ary[0].update_time:0;//如果没有按第一次计算
                         const last_weibo=info_ary[0]?info_ary[0].mid:0;
                         console.log(first_weibo_update_time,connection.last_update_time);
+                        if(first_weibo_update_time===0){
+                            connection.sendUTF(JSON.stringify({ type:'webo_err',code: 200, message: "解析失败-请查看主页地址是否正确，刷新重试"}));
+                        }
 
                         if(connection.last_update_time===0){
                             //首次进入
