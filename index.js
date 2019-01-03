@@ -106,6 +106,8 @@ wsServer.on('connect', connection => {
         clients = clients.filter(function(ws1){
             return ws1 !== connection
         });
+        connection.user_status=0;
+
         console.log('[' + new Date() + '] Peer ' + connection.remoteAddress + ' disconnected.')
     })
 });
