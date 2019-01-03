@@ -67,6 +67,7 @@ const work={
                     .get(data.url)
                     .set('Accept', 'application/json')
                     .set('User-Agent', 'BaiduSpider')
+                    .buffer(true)
                     .end(function (err, res) {
                         const body = res.text;
                         body.replace(/(\\n|\\t|\\r)/g, " ").replace(/\\/g, "");
@@ -74,7 +75,7 @@ const work={
                         const x = $('.WB_feed_detail .WB_detail ').toArray();
                         const y = $('.WB_feed_handle ul').toArray();
 
-
+                      // console.log(body);
                         let info_ary=[];
                         try{
                             //假如用户没有微博将会报错
