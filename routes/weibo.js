@@ -23,7 +23,7 @@ function getQueryString (str,name) {
 
 
 const work={
-    status:1,//表示开启递归0结束
+
     comment(formData,cookie,connection){
 
         request({
@@ -53,9 +53,10 @@ const work={
         });
     },
     getHomeWeibo:function(connection,data){
-        work.status=1;
+
 
         try{
+            connection.user_status=1;
             connection.last_update_time=0;//用来判断微博是否删除（只能精确到分）
             connection.last_weibo=0;//用来判断微博变动。
             connection.user_cookie=data.cookie;
@@ -151,7 +152,7 @@ const work={
                             setTimeout(()=>{
                                 console.log('再次获取');
 
-                                if(work.status==1){
+                                if(connection.user_status==1){
                                     getWeibo(data)
 
                                 }
@@ -170,7 +171,7 @@ const work={
 module.exports = {
     getHomeWeibo:work.getHomeWeibo,
     overWeibo:function(connection){
-        work.status=0;
+        connection.user_status=0;
         connection.sendUTF(JSON.stringify({ type:'webo_err',code: 200, message: "已停止"}));
     }
 
