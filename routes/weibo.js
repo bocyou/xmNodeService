@@ -104,6 +104,7 @@ const work={
                         }
                         render().then(result=>{
                             const info_ary=result;
+                            console.log(JSON.stringify(result));
 
 
                             const first_weibo_update_time=info_ary[0]?info_ary[0].update_time:0;//如果没有按第一次计算
