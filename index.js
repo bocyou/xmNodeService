@@ -141,7 +141,7 @@ app.use('/xm/users',require('./routes/user_manage'));
 app.use('/xm/export',require('./routes/export'));
 app.use('/xm/xm_bill',require('./routes/xm_bill'));
 app.use('/xm/dinner_together',lottery.router);
-
+app.use('/xm/year',require('./routes/year'));
 
 
 app.use('/api',require('./routes/api'));

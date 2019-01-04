@@ -1,23 +1,15 @@
-const formatTime = date => {
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    const hour = date.getHours()
-    const minute = date.getMinutes()
-    const second = date.getSeconds()
-
-    return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-}
-const version = 1;
-
+const app=getApp();
+import Request from 'request';
+const {v} =require('config');
 const ws_api ='wss://xiaomai.towords.com/wss';
-const api ='https://xiaomai.towords.com/xm';
-/*const api = 'http://localhost:8080/xm';
-const ws_api = 'ws://localhost:8081';*/
+//const api ='https://xiaomai.towords.com/xm';
+const api = 'http://localhost:8080/xm';
+//const ws_api = 'ws://localhost:8081';
 //https://xiaomai.towords.com/xm
-const formatNumber = n => {
-    n = n.toString()
-    return n[1] ? n : '0' + n
+function checkFunction(callback, data) {
+    if (callback && typeof callback === 'function') {
+        callback(data);
+    }
 }
 
 var checkPermission = function (callback) {
@@ -80,6 +72,43 @@ const customDate = function (time, str) {
     }
 }
 
+//需要权限（以后逐步使用此方法）
+const requestAuth = function (opt) {
+    const session = app.userInfo.session;
+    if (session) {
+        Request.post({
+            params: opt.params,
+            url: opt.url,
+            session: session,
+            domain:api,
+            success: (data) => {
+                if (data.code === 200) {
+                    checkFunction(opt.success, data.result)
+                } else if (data.code === 401) {
+                    wx.redirectTo({
+                        url: '/pages/login/login'
+                    });
+                } else {
+                    if (opt.success) {
+                        wx.showToast({
+                            title: opt.tip ? opt.tip : '获取数据失败',
+                            icon:"none"
+                        });
+                    }
+
+                }
+
+            },
+            complete: opt.complete
+
+        });
+
+    } else {
+        wx.redirectTo({
+            url: '/pages/login/login'
+        })
+    }
+};
 const request = function (opt) {
     let userInfo = wx.getStorageSync('userInfo');
     wx.request({
@@ -89,7 +118,7 @@ const request = function (opt) {
         header: {
             'content-type': 'application/json', // 默认值
             'sessionkey': userInfo.session,
-            'v': version
+            'v': v
         },
         success: function (res) {
 
@@ -149,11 +178,11 @@ var checkAuthorize = function () {
 
 module.exports = {
     customDate: customDate,
-    formatTime: formatTime,
     getScreen: getScreen,
     request: request,
     checkRepeat: checkRepeat,
     api: api,
     ws_api: ws_api,
-    checkPermission: checkPermission
+    checkPermission: checkPermission,
+    requestAuth:requestAuth
 }

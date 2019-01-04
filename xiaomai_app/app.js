@@ -1,5 +1,5 @@
 //app.js
-const util = require('utils/util.js');
+
 App({
     onLaunch: function () {
         var self = this;
@@ -18,6 +18,7 @@ App({
                 }
             }
         })*/
+         self.userInfo = wx.getStorageSync('userInfo');
         if(wx.getUpdateManager){
             const updateManager = wx.getUpdateManager();
 

@@ -3,6 +3,7 @@
  */
 const express = require('express');
 const router = express.Router();
+const http=require('http');
 
 const request = require('request');
 const cheerio = require('cheerio');
@@ -53,6 +54,20 @@ const work={
         });
     },
     getHomeWeibo:function(connection,data){
+  /*      request({
+            url: data.url,
+            method: "get",
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+
+            }
+        }, function (error, response, body) {
+
+            const $ = cheerio.load(body);
+            console.log($('body').attr('class'));
+    });*/
 
 
         try{
@@ -60,15 +75,18 @@ const work={
             connection.last_update_time=0;//用来判断微博是否删除（只能精确到分）
             connection.last_weibo=0;//用来判断微博变动。
             connection.user_cookie=data.cookie;
+            connection.common_txt=data.common_txt;
             console.log('开始获取微博信息');
             connection.count_num=0;
             connection.getWeibo=function (data){
                 superagent
                     .get(data.url)
-                    .set('Accept', 'application/json')
+                    .set('Accept', 'application/x-www-form-urlencoded')
                     .set('User-Agent', 'BaiduSpider')
+                    .set('Cookie', data.cookie)
                     .buffer(true)
                     .end(function (err, res) {
+                       // console.log(err,JSON.stringify(res));
 
 
                       // console.log(body);
@@ -122,16 +140,16 @@ const work={
                                 //说明微博变动了
                                 if(first_weibo_update_time>= connection.last_update_time){
                                     console.log('微博更新了');
-                                    if(connection.user_cookie){
+                                    if(connection.common_txt){
                                         const formData=info_ary[0];
-                                        console.log(formData);
+
                                         work.comment( {
                                             "act": "post",
                                             "mid": formData.mid,
                                             "uid": formData.ouid,
                                             "forward": "0",
                                             "isroot": "0",
-                                            "content": data.common_txt?data.common_txt:'ok',
+                                            "content": connection.common_txt,
                                             "location": "page_100505_home",
                                             "module": "scommlist",
                                             "group_source": " ",

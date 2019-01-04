@@ -17,7 +17,8 @@
     "pages/audio_course/audio_course",
     "pages/share_course/share_course",
     "pages/pay/pay",
-    "pages/dine_together/dine_together"
+    "pages/dine_together/dine_together",
+    "pages/year/year"
   ],
   "requiredBackgroundModes":["audio"],
   "window": {

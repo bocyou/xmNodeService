@@ -3,7 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var https = require('https');
+
 var request = require('request');
 var cheerio = require('cheerio');
 const superagent = require('superagent');
