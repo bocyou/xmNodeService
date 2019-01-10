@@ -1,81 +1,79 @@
+//封装音频播放功能
 'use strict';
 
-class Player {
+class AudioPlayer {
     constructor(opt) {
         let def = {
-            autoplay: false
+            loop:false,
+            volume:1,
+            turn_on:true
         };
-        this.player = wx.createInnerAudioContext();
-
-        this.opt = Object.assign(def, opt);//assign传入配置参数
-        this.timer = null;
-
+        this.opt = Object.assign(def, opt);
         this.init();
-        this.watch();
-
     }
+
 
     init() {
-        const self = this;
-        this.player.startTime=0;
-        this.player.autoplay = this.opt.autoplay;
-        this.player.src = this.opt.url;
-
-        this.timer = setInterval(() => {
-            if (this.player.duration > 0) {
-                clearInterval(this.timer);
-                this.opt.duration(this.player.duration);
-            }
-        }, 200)
-
-
+        this.audio_content = wx.createInnerAudioContext();
+        const opt=this.opt;
+        this.audio_content.loop=opt.loop;
+        this.audio_content.volume=opt.volume;
+        this.monitor();
     }
-    setStartTime(time){
+    changeSetting(opt){
         const self=this;
-        let duration=this.player.duration;
-        self.player.seek(Math.floor(time*duration ));
+        self.opt=Object.assign(self.opt,opt)
+    }
+    play(src){
+        const self=this;
+        if(self.opt.turn_on){
+            const player = self.audio_content;
+            player.stop();
+            if(src){
+                self.opt.src=src;
+            }
+            player.src=self.opt.src;
+
+            player.play();
+        }
 
     }
- 
-    play() {
-
-        this.player.play()
-        console.log(  this.player.startTime);
+    pause(){
+        const player = this.audio_content;
+        player.pause();
+    }
+    stop(){
+        const player = this.audio_content;
+        player.stop();
     }
 
-    pause() {
-        this.player.pause();
+    monitor() {
+        const self=this;
+        const player = this.audio_content;
+        player.onPlay(function () {
+          self.checkFunction(self.opt.play);
+        });
+        player.onPause(function () {
+
+        });
+        player.onStop(function () {
+
+        });
+        player.onEnded(function () {
+            self.checkFunction(self.opt.end);
+        });
+        player.onTimeUpdate(function () {
+        });
+        player.onError(function () {
+            self.checkFunction(self.opt.onerror);
+        })
     }
-
-    stop() {
-        this.player.stop();
+    checkFunction(callback){
+        const self=this;
+        if(callback&&typeof callback==='function'){
+            callback(self);
+        }
     }
-
-    watch() {
-        this.player.onPlay(() => {
-            this.opt.onPlay();
-        });
-        this.player.onTimeUpdate(() => {
-
-            this.opt.onTimeUpdate(this.player.currentTime,this.player.duration);
-        });
-        this.player.onPause(() => {
-            this.opt.onPause();
-        });
-        this.player.onStop(() => {
-            this.opt.onStop();
-
-        });
-        this.player.onEnded(() => {
-            this.opt.onEnded();
-        });
-        this.player.onError((res) => {
-            console.log(res.errMsg);
-            console.log(res.errCode);
-        });
-    }
-
-
 }
 
-export default Player
+export default AudioPlayer;

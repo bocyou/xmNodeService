@@ -1,11 +1,11 @@
-var express=require('express');
-var session = require('express-session');
+const express=require('express');
+const session = require('express-session');
 /*var MongoStore = require('connect-mongo')(session);*/
-var store=require('express-mysql-session')(session);
-var app=express();
-var path=require('path');
-var WebSocketServer = require('websocket').server;
-var http = require('http');
+const store=require('express-mysql-session')(session);
+const app=express();
+const path=require('path');
+const WebSocketServer = require('websocket').server;
+const http = require('http');
 
 
 
@@ -40,7 +40,7 @@ app.use(session({
 const getUserWords=require('./routes/lottery').userWords;
 const lottery=require('./routes/dinner_together');
 const {getHomeWeibo,overWeibo} =require('./routes/weibo');
-
+const {shakeInfo,updateShakeNum} =require('./routes/shake');
 //长连接
 // 连接池
 let clients = [];
@@ -61,7 +61,7 @@ httpServer.listen(8081, () => {
 
 wsServer.on('connect', connection => {
     clients.push(connection);
-    console.log(clients.length);
+
     connection.on('message', message => {
         if (message.type === 'utf8') {
             /!* console.log('>> message content from client: ' + message.utf8Data)*!/
@@ -97,6 +97,12 @@ wsServer.on('connect', connection => {
                     break;
                 case 'over_weibo':
                     overWeibo(connection);
+                    break;
+                case 'get_shake_info':
+                    shakeInfo(connection);
+                    break;
+                case 'update_shake_num':
+                    updateShakeNum(connection,clients);
                     break;
             }
 

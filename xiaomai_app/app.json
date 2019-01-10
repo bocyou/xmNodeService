@@ -18,7 +18,8 @@
     "pages/share_course/share_course",
     "pages/pay/pay",
     "pages/dine_together/dine_together",
-    "pages/year/year"
+    "pages/year/year",
+    "pages/shake/shake"
   ],
   "requiredBackgroundModes":["audio"],
   "window": {

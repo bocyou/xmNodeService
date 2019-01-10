@@ -3,10 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('../lib/mysql');
 
-router.get('/', function (req, res) {
-    res.render('index', {title: 'logs'});
 
-});
 
 //websoket获取用户信息
 function getUserInfo(session,callback){
@@ -22,13 +19,13 @@ function getUserInfo(session,callback){
     })
 }
 //获取最新一期信息
-function getNewTerm(callback){
-    mysql.sql( 'SELECT * FROM dinner_together  WHERE is_new = 1', function (err, result) {
+function shakeInfo(connection,callback){
+    mysql.sql( 'SELECT * FROM shake  WHERE is_use = 1', function (err, result) {
         if(result&&result.length>0){
             callback(result);
 
         }else{
-            console.log(err);
+            connection.sendUTF(JSON.stringify({ type:'error', message: "获取本期信息失败"}))
 
         }
 
@@ -40,7 +37,7 @@ function getNewTerm(callback){
 function getDinnerInfo(term,callback){
     mysql.sql( 'SELECT money,tab1.create_time,user_name,user_img  FROM dinner_together_info tab1 JOIN users tab2 ON tab1.user_id=tab2.id  WHERE term = '+term, function (err, result) {
         if(result&&result.length>0){
-          callback(result);
+            callback(result);
 
         }else{
             console.log(err);
@@ -77,17 +74,37 @@ const work={
 
         });
     },
-    getDinnerInfo (connection,clients){
-        getNewTerm((term_info)=>{
-            const term=term_info[0].term;
-            getDinnerInfo(term,(dinner_info)=>{
+    shakeInfo (connection){
+        shakeInfo(connection,(term_info)=>{
+            const data=term_info[0];
+            console.log(data);
+
+            connection.sendUTF(JSON.stringify({result:data ,type:'current_term_info', code: 200, message: `获取${data.term}期数据成功`}))
+          /*  shakeInfo(term,(dinner_info)=>{
                 // 广播消息
                 console.log(clients.length);
-                clients.forEach(function(ws1){
+             /!*   clients.forEach(function(ws1){
                     ws1.sendUTF(JSON.stringify({result:dinner_info ,type:'dinner_info', code: 200, message: `获取${term}期数据成功`}))
+                })*!/
+
+            });*/
+        })
+    },
+    updateShakeNum(connection,clients){
+        mysql.sql('update shake set user_shake_num=user_shake_num+1 WHERE is_use=1 AND status=1', function (err, result) {
+            if (err) {
+                connection.sendUTF(JSON.stringify({ type:'error', message: "更新失败"}))
+            } else {
+                shakeInfo(connection,(term_info)=>{
+                    const data=term_info[0];
+                    clients.forEach(function(ws1){
+                        ws1.sendUTF(JSON.stringify({result:data ,type:'current_term_info', code: 200, message: `更新数据`}))
+                    })
+
                 })
 
-            });
+
+            }
         })
     }
 };
@@ -112,43 +129,43 @@ router.post('/manage/over', function (req, res, next) {
 
     mysql.sql( 'SELECT * FROM dinner_together  WHERE is_new = 1', function (err, result) {
         if(result&&result.length>0){
-           const term=result[0].term;
-           console.log(term);
-           if(parseInt(result[0].status)===1){
-               //结束本期
-               mysql.updateData('dinner_together', 'term="' + term + '"', 'status="0",over_time="' + new Date().Format('yy-MM-dd HH:mm:ss') + '"', function (result, err) {
-                   if (err) {
-                       res.status(200).send({code: 500, result: [], message: '结束失败'});
-                   } else {
-                       res.status(200).send({code: 200, result: [], message: '已结束'});
-                   }
-               })
+            const term=result[0].term;
+            console.log(term);
+            if(parseInt(result[0].status)===1){
+                //结束本期
+                mysql.updateData('dinner_together', 'term="' + term + '"', 'status="0",over_time="' + new Date().Format('yy-MM-dd HH:mm:ss') + '"', function (result, err) {
+                    if (err) {
+                        res.status(200).send({code: 500, result: [], message: '结束失败'});
+                    } else {
+                        res.status(200).send({code: 200, result: [], message: '已结束'});
+                    }
+                })
 
-           }else{
-               //开启新一期
-               mysql.sql('update dinner_together set is_new =0 WHERE term ="' + term + '"', function (err, result) {
-                   if (err) {
-                       console.log(err);
-                   } else {
-                       mysql.insert_one('dinner_together', {
-                           term: parseInt(term)+1,
-                           create_time: new Date(),
-                           status:1,
-                           over_time:'',
-                           is_new:1
-                       }, function (result, err) {
-                           console.log(err);
-                           if(err){
-                               res.status(200).send({code: 500, result: [], message: '开启失败'});
-                           }else{
-                               res.status(200).send({code: 200, result: [], message: '已开启'});
-                           }
+            }else{
+                //开启新一期
+                mysql.sql('update dinner_together set is_new =0 WHERE term ="' + term + '"', function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        mysql.insert_one('dinner_together', {
+                            term: parseInt(term)+1,
+                            create_time: new Date(),
+                            status:1,
+                            over_time:'',
+                            is_new:1
+                        }, function (result, err) {
+                            console.log(err);
+                            if(err){
+                                res.status(200).send({code: 500, result: [], message: '开启失败'});
+                            }else{
+                                res.status(200).send({code: 200, result: [], message: '已开启'});
+                            }
 
-                       });
-                   }
-               })
+                        });
+                    }
+                })
 
-           }
+            }
 
 
         }else{
@@ -161,5 +178,6 @@ router.post('/manage/over', function (req, res, next) {
 module.exports = {
     router:router,
     pay:work.pay,
-    getDinnerInfo: work.getDinnerInfo
+    shakeInfo: work.shakeInfo,
+    updateShakeNum:work.updateShakeNum
 };

@@ -1,10 +1,10 @@
 const app=getApp();
 import Request from 'request';
 const {v} =require('config');
-const ws_api ='wss://xiaomai.towords.com/wss';
+//const ws_api ='wss://xiaomai.towords.com/wss';
 //const api ='https://xiaomai.towords.com/xm';
 const api = 'http://localhost:8080/xm';
-//const ws_api = 'ws://localhost:8081';
+const ws_api = 'ws://localhost:8081';
 //https://xiaomai.towords.com/xm
 function checkFunction(callback, data) {
     if (callback && typeof callback === 'function') {
@@ -84,7 +84,7 @@ const requestAuth = function (opt) {
             success: (data) => {
                 if (data.code === 200) {
                     checkFunction(opt.success, data.result)
-                } else if (data.code === 401) {
+                } else if (data.code === 502) {
                     wx.redirectTo({
                         url: '/pages/login/login'
                     });

@@ -1,2 +1,59 @@
-<!--pages/year/year.wxml-->
-<text>pages/year/year.wxml</text>
+<!-- pages/year/year.wxml -->
+<swiper 
+indicator-dots="{{true}}" 
+autoplay="{{false}}" 
+duration="{{360}}"
+vertical="{{false}}"
+class="box"
+>
+    <swiper-item>
+        <view class="block user">
+           <view>
+             <view class="user_face bg" style="background-image:url({{user_info.wx_img}});"></view>
+             <view>2018年4月18日起小麦正式投入使用</view>
+             <view> 左滑查看详细内容</view>
+           </view>
+            
+        </view>
+    </swiper-item>
+    <swiper-item>
+        <view class="block">
+            <view>在小麦订餐{{dinner_sum}}次,共补差价{{dinner_all_money}}元。</view>
+            <view>其中</view>
+            <view wx:for="{{dinner_list}}" wx:key="{{item}}">{{item.list.name}}-{{item.num}}</view>
+        </view>
+    </swiper-item>
+    <swiper-item>
+        <view class="block">
+            <view>
+            在小麦刮卡{{draw_count}}次
+            <block wx:if="{{draw_count>190}}">
+             
+            </block>
+            <block wx:elif="{{130<draw_count<190}}">
+               正常
+            </block>
+            <block wx:elif="{{draw_count}}"></block>
+            </view>
+            <view>白吃白喝：{{draw_list[0].num}}</view>
+            <view>8元：{{draw_list[7].num}}</view>
+        </view>
+    </swiper-item>
+    <swiper-item>
+        <view class="block">
+            押注{{bet_list.length}}次 
+            <block wx:if="{{bet_win.length>0}}">
+                中奖记录
+                <view wx:for="{{bet_win}}" wx:key="{{index}}"></view>
+            </block>
+            <block wx:else>没有中过奖</block>
+        </view>
+    </swiper-item>
+    <swiper-item>
+        <view class="block">消费{{shop_data.length}}次，
+  共计{{shop_money}}元</view>
+    </swiper-item>
+     <swiper-item>
+        <view class="block">END</view>
+    </swiper-item>
+</swiper>

@@ -1,0 +1,3 @@
+<!--pages/shake/shake.wxml-->
+<view>{{shake_num}}</view>
+<button bindtap="update">更新</button>
