@@ -1,1 +1,42 @@
 /* pages/shake/shake.wxss */
+.body-title{
+    font-size:180rpx;
+    text-align: center;
+    font-family: Fette-Engschrift;
+    padding:60rpx 0 0;
+}
+.body-title-des{
+    font-size:24rpx;
+    color: #717171;
+    text-align: center;
+    padding-bottom:40rpx;
+}
+.small{
+    font-size:100rpx;
+}
+.user-block{
+    width:140rpx;
+    margin-bottom:40rpx;
+
+}
+.user-name{
+    font-size:34rpx;
+    color: #717171;
+    text-align: center;
+
+}
+.user-face{
+    width:100rpx;
+    height:100rpx;
+    border-radius: 50%;
+    margin:0 auto 20rpx;
+}
+.win-block{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.title-txt{
+    text-align: center;
+    margin:60rpx auto;
+}

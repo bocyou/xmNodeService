@@ -1,3 +1,19 @@
 <!--pages/shake/shake.wxml-->
-<view>{{shake_num}}</view>
-<button bindtap="update">更新</button>
+<block wx:if="{{shake_status==1}}">
+    <view class="title-txt">摇一摇手机即可加入</view>
+  <view class="body-title">{{shake_num}}</view>
+  <view class="body-title-des">距天降馅饼差（次）</view>
+<!--   <button bindtap="update">更新</button> -->
+</block>
+<block wx:else>
+   <view class="body-title small">馅饼已降落</view>
+   <view class="body-title-des" style="margin-top:100rpx">砸中了</view>
+   <view class="win-block">
+  <view  class="user-block" wx:for="{{win_user}}" wx:key="{{item}}">
+   <view class="bg user-face" style="background-image:url({{item.user_img}})"></view>
+     <view class="user-name">{{item.user_name}}</view>
+   </view>
+   </view>
+ 
+   
+</block>

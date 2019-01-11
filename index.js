@@ -40,7 +40,7 @@ app.use(session({
 const getUserWords=require('./routes/lottery').userWords;
 const lottery=require('./routes/dinner_together');
 const {getHomeWeibo,overWeibo} =require('./routes/weibo');
-const {shakeInfo,updateShakeNum} =require('./routes/shake');
+const {shakeInfo,updateShakeNum,getCurrentWinUser,shakeRouter} =require('./routes/shake');
 //长连接
 // 连接池
 let clients = [];
@@ -102,7 +102,10 @@ wsServer.on('connect', connection => {
                     shakeInfo(connection);
                     break;
                 case 'update_shake_num':
-                    updateShakeNum(connection,clients);
+                    updateShakeNum(connection,clients,data);
+                    break;
+                case 'get_win_user':
+                    getCurrentWinUser(connection);
                     break;
             }
 
@@ -148,6 +151,7 @@ app.use('/xm/export',require('./routes/export'));
 app.use('/xm/xm_bill',require('./routes/xm_bill'));
 app.use('/xm/dinner_together',lottery.router);
 app.use('/xm/year',require('./routes/year'));
+app.use('/xm/shake',shakeRouter);
 
 
 app.use('/api',require('./routes/api'));

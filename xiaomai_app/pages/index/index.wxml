@@ -23,6 +23,12 @@
 
     </navigator>
 
+    <navigator open-type="navigateTo" class="app-entry juju" url="../shake/shake">
+        <view class="content">
+
+        </view>
+
+    </navigator>
     <navigator open-type="navigateTo" class="app-entry towords-manage" url="../lottery/lottery">
         <view class="content">
 
@@ -76,13 +82,8 @@
                                     </view>
                                 </view>
                             </block>
-
                         </view>
-
                     </view>
-
-
-
                 </view>
             </block>
             <view class="source-tip">数据来源:《柯林斯高阶英汉双解词典》</view>
@@ -93,7 +94,6 @@
             </block>
         </view>
         <view class="he-bottom dic-bottom"></view>
-
     </view>
 </block>
 <block wx:else>
