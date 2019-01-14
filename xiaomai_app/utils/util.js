@@ -1,10 +1,10 @@
 const app=getApp();
 import Request from 'request';
 const {v} =require('config');
-/* const ws_api ='wss://xiaomai.towords.com/wss';
-const api ='https://xiaomai.towords.com/xm'; */
-const api = 'http://192.168.2.128:8080/xm';
-const ws_api = 'ws://192.168.2.128:8081';
+const ws_api ='wss://xiaomai.towords.com/wss';
+const api ='https://xiaomai.towords.com/xm';
+/* const api = 'http://192.168.2.128:8080/xm';
+const ws_api = 'ws://192.168.2.128:8081'; */
 function checkFunction(callback, data) {
     if (callback && typeof callback === 'function') {
         callback(data);
@@ -159,7 +159,6 @@ var checkRepeat = function (obj, ary, objName, aryName) {
 }
 
 var checkAuthorize = function () {
-
     wx.showModal({
         title: '提示',
         content: '由于您拒绝微信授权，所以无法使用该程序，请后台退出程序重新授权',
@@ -174,6 +173,28 @@ var checkAuthorize = function () {
     })
 }
 
+const sec_to_time = function(s) {
+    var t;
+    if(s > -1){
+        var hour = Math.floor(s/3600);
+        var min = Math.floor(s/60) % 60;
+        var sec = s % 60;
+        if(hour < 10&&hour>0) {
+            t = '0'+ hour + "小时";
+        }else if(hour==0){
+            t='';
+        } else {
+            t = hour + "小时";
+        }
+
+        if(min < 10){t += "0";}
+        t += min + "分";
+        if(sec < 10){t += "0";}
+        t += sec.toFixed(0)+'秒';
+    }
+    return t;
+};
+
 
 module.exports = {
     customDate: customDate,
@@ -183,5 +204,6 @@ module.exports = {
     api: api,
     ws_api: ws_api,
     checkPermission: checkPermission,
-    requestAuth:requestAuth
+    requestAuth:requestAuth,
+    sec_to_time:sec_to_time
 }

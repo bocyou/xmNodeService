@@ -12,11 +12,28 @@
 .user{
     display:flex;
     align-items: center;
+    height:90vh;
     justify-content: center;
+    position:relative;
+
 }
 .user_face{
     width:100rpx;
     height:100rpx;
-    margin:0 auto;
+    margin:0 auto 60rpx;
    
+}
+.user .tip{
+    font-size:26rpx;
+    text-align: center;
+    position: absolute;
+    bottom:0;
+    left:0;
+    color:#717171;
+    width:100%;
+}
+.user .txt{
+    font-size:34rpx;
+    color:#111;
+
 }

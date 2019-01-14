@@ -73,6 +73,7 @@
 
 }
 .bill-table-bar .bill-user{
+    width:120rpx;
 
 }
 .bill-table-bar .bill-money{

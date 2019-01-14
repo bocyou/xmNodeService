@@ -9,12 +9,13 @@ var checkSession = require('../middlewares/check_session').checkSession;
 var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
-var version = '1';
+var version = '2';
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});
 
 });
+
 
 //解密获取用户信息
 function WXBizDataCrypt(appId, sessionKey) {

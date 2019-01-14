@@ -3,11 +3,11 @@
  */
 const express = require('express');
 const router = express.Router();
-
-
+const superagent = require('superagent');
 const request = require('request');
 const cheerio = require('cheerio');
-const superagent = require('superagent');
+
+
 router.get('/', function (req, res) {
     res.render('test', {title: ''});
 

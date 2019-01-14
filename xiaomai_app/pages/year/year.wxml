@@ -10,8 +10,8 @@ class="box"
         <view class="block user">
            <view>
              <view class="user_face bg" style="background-image:url({{user_info.wx_img}});"></view>
-             <view>2018年4月18日起小麦正式投入使用</view>
-             <view> 左滑查看详细内容</view>
+             <view class="txt">2018年4月18日起小麦正式投入使用</view>
+             <view class="tip"> 左滑查看详细内容</view>
            </view>
             
         </view>

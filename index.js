@@ -8,11 +8,9 @@ const WebSocketServer = require('websocket').server;
 const http = require('http');
 
 
+const bodyParser = require('body-parser');//bodyParser用于解析客户端请求的body中的内容,内部使用JSON编码处理,url编码处理以及对于文件的上传处理.
 
-var bodyParser = require('body-parser');//bodyParser用于解析客户端请求的body中的内容,内部使用JSON编码处理,url编码处理以及对于文件的上传处理.
-
-var config = require('config-lite');
-
+const config = require('config-lite');
 
 
 
@@ -37,6 +35,7 @@ app.use(session({
 
 
 
+
 const getUserWords=require('./routes/lottery').userWords;
 const lottery=require('./routes/dinner_together');
 const {getHomeWeibo,overWeibo} =require('./routes/weibo');
@@ -49,6 +48,7 @@ const httpServer = http.createServer((request, response) => {
     response.writeHead(404)
     response.end()
 });
+
 
 const wsServer = new WebSocketServer({
     httpServer: httpServer,
@@ -90,7 +90,7 @@ wsServer.on('connect', connection => {
                 case 'dinner_together_info':
                     lottery.getDinnerInfo(connection,clients);
                     break;
-                case 'get_weibo':
+                 case 'get_weibo':
                     //检测某人微博更新内容
 
                    getHomeWeibo(connection,data);
@@ -140,7 +140,6 @@ app.use('/xm/invite',require('./routes/invite'));
 app.use('/xm/angular/login',require('./routes/login'));
 app.use('/xm/me',require('./routes/me'));
 app.use('/xm/service',require('./routes/service'));
-app.use('/xm/test',require('./routes/test'));
 app.use('/xm/logs',require('./routes/logs'));
 app.use('/xm/timer',require('./routes/timer'));
 app.use('/xm/shop_money',require('./routes/shop_money'));
@@ -161,7 +160,7 @@ app.use('/invite',require('./routes/invite'));
 app.use('/angular/login',require('./routes/login'));
 app.use('/me',require('./routes/me'));
 app.use('/service',require('./routes/service'));
-app.use('/test',require('./routes/test'));
+/*app.use('/test',require('./routes/test'));*/
 app.use('/logs',require('./routes/logs'));
 app.use('/timer',require('./routes/timer'));
 

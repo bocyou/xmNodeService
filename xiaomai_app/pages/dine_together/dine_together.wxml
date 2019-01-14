@@ -28,7 +28,7 @@
 
 
 <view class="bill-menu bill-table-bar">
-    <view class="bill-date th">用户</view>
+    <view class="bill-user th">用户</view>
     <view class="bill-money th">金额</view>
     <view class="bill-pay-date th">注资日期</view>
 

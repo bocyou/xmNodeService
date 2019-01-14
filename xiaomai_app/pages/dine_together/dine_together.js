@@ -1,7 +1,7 @@
 // pages/pay/pay.js
 import NumberAnimate from "../../utils/number_animate";
 
-const {customDate,ws_api} = require('../../utils/util.js');
+const {customDate,ws_api,requestAuth} = require('../../utils/util.js');
 
 Page({
 
@@ -35,6 +35,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+        this.error=0;
 
     },
 
@@ -89,29 +90,23 @@ Page({
                 complete: function (res) {
                 }
             })
-            self.socket.onOpen(res=>{
-                console.log('onopen',res);
+            self.socket.onError(res=>{
+                self.error=1;
+                self.postGetInfo();
+             
             })
             wx.onSocketOpen(function (res) {
                 //监听WebSocket连接打开事件
-                // console.log('WebSocket连接已打开！');
-                let num = 0;
-                console.log('content',res);
                 wx.sendSocketMessage({
                     data: JSON.stringify({type:'dinner_together_info'})
                 });
-                /*     socket_timer = setInterval(function () {
-                         wx.sendSocketMessage({
-                             data: 'user_words',
-                         })
-                     }, 3000);*/
+           
 
 
             })
 
             wx.onSocketMessage(function (res) {
                 //监听WebSocket接受到服务器的消息事件
-                //console.log(res);
 
                 let data = JSON.parse(res.data);
                 switch (data.type) {
@@ -122,34 +117,8 @@ Page({
                         });
                         break;
                     case 'dinner_info':
-                        let all_money=0;
-                        const info=data.result.map(function (item, idx) {
-                            item.create_time = customDate(item.create_time);
-                            all_money+=item.money;
-                            return item
-                        })
-                        self.setData({
-                            user_dinner_list:info.sort((a,b)=>{
-                                return new Date(b.create_time).getTime()-new Date(a.create_time).getTime()
-                            })
-
-                        });
-                       let n =new NumberAnimate({
-                            from: all_money,
-                            speed: 1200,
-                            decimals: 0,
-                            refreshTime: 200,
-                            onUpdate: () => {
-                              self.setData({
-                                  all_money:n.tempValue
-                              });
-                            },
-                            onComplete: () => {
-
-                            }
-                        });
+                     self.render_info(data.result);
                         break;
-
                 }
 
             })
@@ -157,10 +126,48 @@ Page({
             wx.onSocketClose(function (res) {
                 //监听关闭事件
 
-                console.log('WebSocket连接已关闭！')
             })
         }
 
+    },
+    postGetInfo(){
+        const self=this;
+        requestAuth({
+            url: '/dinner_together/get_term_info',
+            tip: '获取用户信息失败',
+            success: (res) => {
+               self.render_info(res);
+            }
+          });
+    },
+    render_info(data){
+        const self=this;
+        let all_money=0;
+        const info=data.map(function (item, idx) {
+            item.create_time = customDate(item.create_time);
+            all_money+=item.money;
+            return item
+        })
+        self.setData({
+            user_dinner_list:info.sort((a,b)=>{
+                return new Date(b.create_time).getTime()-new Date(a.create_time).getTime()
+            })
+
+        });
+       let n =new NumberAnimate({
+            from: all_money,
+            speed: 1000,
+            decimals: 0,
+            refreshTime: 100,
+            onUpdate: () => {
+              self.setData({
+                  all_money:n.tempValue
+              });
+            },
+            onComplete: () => {
+
+            }
+        });
     },
 
     getUserPay(e) {
@@ -170,6 +177,7 @@ Page({
     },
     pay() {
         const self = this;
+
         if(self.data.user_pay==''||self.data.user_pay<=0){
             self.setData({err_tip:'请输入大于0的数字'});
         }else{
@@ -181,13 +189,25 @@ Page({
                     content: '您将支付'+money+'元',
                     success: function(res) {
                         if (res.confirm) {
-                            wx.sendSocketMessage({
-                                data: JSON.stringify({
-                                    type:'dinner_together_pay',
-                                    session:self.session,
-                                    money:money
-                                })
-                            });
+                            if(self.error===0){
+                                wx.sendSocketMessage({
+                                    data: JSON.stringify({
+                                        type:'dinner_together_pay',
+                                        session:self.session,
+                                        money:money
+                                    })
+                                });
+                            }else{
+                                requestAuth({
+                                    url: '/dinner_together/save_user_pay',
+                                    tip: '付款失败',
+                                    params:{money:money},
+                                    success: (res) => {
+                                       self.postGetInfo();
+                                    }
+                                  });
+                            }
+                         
                         } else if (res.cancel) {
                         }
                         self.setData({

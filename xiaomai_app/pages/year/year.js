@@ -1,6 +1,6 @@
 // pages/year/year.js
 const app = getApp();
-const { requestAuth } = require('../../utils/util.js');
+const { requestAuth,sec_to_time} = require('../../utils/util.js');
 Page({
   /**
    * 页面的初始数据
@@ -37,6 +37,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    const start_time='2018/04/18 10:00';
+    const long_time=new Date().getTime()-new Date(start_time).getTime();
+    console.log(new Date().getTime(),new Date(start_time).getTime());
+    console.log(long_time/1000);
+    console.log(sec_to_time(parseInt(long_time/1000)));
 
   },
 

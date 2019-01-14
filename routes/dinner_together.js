@@ -2,14 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 const mysql = require('../lib/mysql');
-
+const tool = require('../middlewares/tool');
+const getUserInfo = tool.getUserInfo;
 router.get('/', function (req, res) {
     res.render('index', {title: 'logs'});
 
 });
 
 //websoket获取用户信息
-function getUserInfo(session,callback){
+function getSocketUserInfo(session,callback){
     mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
         if(result&&result.length>0){
             callback(result);
@@ -49,11 +50,53 @@ function getDinnerInfo(term,callback){
 
     })
 }
+router.post('/get_term_info', function (req, res, next) {
 
+    getNewTerm((term_info)=>{
+        const term=term_info[0].term;
+        getDinnerInfo(term,(dinner_info)=>{
+            // 广播消息
+        /*    console.log(clients.length);
+            clients.forEach(function(ws1){
+                ws1.sendUTF(JSON.stringify({result:dinner_info ,type:'dinner_info', code: 200, message: `获取${term}期数据成功`}))
+            })*/
+            res.status(200).send({code: 200, result: dinner_info, message: "获取本期数据成功"})
+        });
+    })
+
+
+});
+router.post('/save_user_pay', function (req, res, next) {
+    const data=req.body;
+    getUserInfo(req,res, function (userInfo) {
+        if (userInfo.length > 0) {
+            getNewTerm((term_info)=>{
+                console.log(term_info);
+                mysql.insert_one('dinner_together_info', {
+                    user_id: userInfo[0].id,
+                    money: data.money,
+                    create_time: new Date(),
+                    term:term_info[0].term
+                }, function (result, err) {
+                    if(err){
+                        res.status(200).send({code: 500, result: false, message: "付款失败"})
+                    }else{
+                        res.status(200).send({code: 200, result: true, message: "付款成功"})
+                    }
+
+                });
+            })
+        } else {
+            res.status(200).send({code: 200, result: false, message: "用户不合法"})
+        }
+    });
+
+
+});
 const work={
     pay(connection,data,clients){
         const self=this;
-        getUserInfo(data.session, function (userInfo) {
+        getSocketUserInfo(data.session, function (userInfo) {
             console.log(userInfo[0].id);
             getNewTerm((term_info)=>{
                 console.log(term_info);
