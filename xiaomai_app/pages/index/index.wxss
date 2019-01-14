@@ -21,6 +21,9 @@ page{
 .juju{
   background-image: url("http://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/5.jpg");
 }
+.shake {
+  background-image: url("http://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/home/6.jpg");
+}
 
 
 .userinfo-avatar {

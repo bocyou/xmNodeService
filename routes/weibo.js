@@ -3,7 +3,7 @@
  */
 const express = require('express');
 const router = express.Router();
-const http=require('http');
+
 
 const request = require('request');
 const cheerio = require('cheerio');
@@ -13,7 +13,6 @@ router.get('/', function (req, res) {
 
 });
 function getQueryString (str,name) {
-
     const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     let r = str.toString().match(reg);
     if (r != null) return decodeURIComponent(r[2].toLowerCase());

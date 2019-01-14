@@ -5,14 +5,11 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 var mysql = require('../lib/mysql');
-var session = require('express-session');
 var checkSession = require('../middlewares/check_session').checkSession;
 var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
-var saveLogs = tool.saveLogs;
-var getCurrentSession = tool.getCurrentSession;
-var version = '2';
+var version = '1';
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});

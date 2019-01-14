@@ -49,7 +49,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-        wx.closeSocket();
+       // wx.closeSocket();
     },
     showBet(){
         const self=this;
@@ -77,7 +77,7 @@ Page({
         let userInfo = wx.getStorageSync('userInfo');
         self.session=userInfo.session;
         if(userInfo){
-            wx.connectSocket({
+            self.socket=wx.connectSocket({
                 url: ws_api,
                 data: {},
                 header: {
@@ -89,11 +89,14 @@ Page({
                 complete: function (res) {
                 }
             })
-
+            self.socket.onOpen(res=>{
+                console.log('onopen',res);
+            })
             wx.onSocketOpen(function (res) {
                 //监听WebSocket连接打开事件
                 // console.log('WebSocket连接已打开！');
                 let num = 0;
+                console.log('content',res);
                 wx.sendSocketMessage({
                     data: JSON.stringify({type:'dinner_together_info'})
                 });
@@ -154,7 +157,7 @@ Page({
             wx.onSocketClose(function (res) {
                 //监听关闭事件
 
-                //console.log('WebSocket连接已关闭！')
+                console.log('WebSocket连接已关闭！')
             })
         }
 
