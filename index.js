@@ -36,7 +36,7 @@ app.use(session({
 
 
 
-const getUserWords=require('./routes/lottery').userWords;
+/*const getUserWords=require('./routes/lottery').userWords;*/
 const lottery=require('./routes/dinner_together');
 const {getHomeWeibo,overWeibo} =require('./routes/weibo');
 const {shakeInfo,updateShakeNum,getCurrentWinUser,shakeRouter} =require('./routes/shake');
@@ -66,23 +66,16 @@ wsServer.on('connect', connection => {
         if (message.type === 'utf8') {
             /!* console.log('>> message content from client: ' + message.utf8Data)*!/
 
-            let data='';
-            //兼容老数据，发版后删除
-            try{
-                data=JSON.parse(message.utf8Data);
-            }catch (e) {
-                data={
-                    type:message.utf8Data
-                }
-            }
+
+            const data=JSON.parse(message.utf8Data);
 
 
             switch (data.type){
-                case 'user_words':
+           /*     case 'user_words':
                     //拓词猜猜看获取单词
                     getUserWords(connection);
 
-                    break;
+                    break;*/
                 case 'dinner_together_pay':
 
                     lottery.pay(connection,data,clients);
@@ -143,7 +136,7 @@ app.use('/xm/service',require('./routes/service'));
 app.use('/xm/logs',require('./routes/logs'));
 app.use('/xm/timer',require('./routes/timer'));
 app.use('/xm/shop_money',require('./routes/shop_money'));
-app.use('/xm/lottery',require('./routes/lottery').router);
+/*app.use('/xm/lottery',require('./routes/lottery').router);*/
 app.use('/xm/share_course',require('./routes/share_course'));
 app.use('/xm/users',require('./routes/user_manage'));
 app.use('/xm/export',require('./routes/export'));

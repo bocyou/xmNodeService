@@ -1,61 +1,61 @@
 /**
  * Created by haoguo on 17/6/5.
  */
-var mysql = require('../lib/mysql');
-let timer=null;
-let last_user_id=null;
+const mysql = require('../lib/mysql');
+let timer = null;
+let last_user_id = null;
 module.exports = {
-    getUserInfo: function(req,res,callback){
-        var session=req.headers.sessionkey;
-        mysql.sql( 'SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "'+session+'"', function (err, result) {
-            if(result&&result.length>0){
+    getUserInfo: function (req, res, callback) {
+        const session = req.headers.sessionkey;
+        mysql.sql('SELECT * FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE session_key = "' + session + '"', function (err, result) {
+            if (result && result.length > 0) {
                 callback(result);
-                if(last_user_id==result[0].id){
+                if (last_user_id == result[0].id) {
                     clearTimeout(timer);
                 }
-                last_user_id=result[0].id;
-                timer=setTimeout(()=>{
+                last_user_id = result[0].id;
+                timer = setTimeout(() => {
                     console.log(`${result[0].user_name} 在${new Date().Format('MM月dd日HH:mm')}访问了小麦。有时间添加更新session的操作`);
-                },6000)
-            }else{
+                }, 6000)
+            } else {
                 console.log(err);
-                res.status(200).send( {code: 502, result: result,massage:'session失效'})
+                res.status(200).send({code: 502, result: result, massage: 'session失效'})
             }
 
         })
 
-},
-getCurrentSession:function(req,res,callback){
-    var session=req.headers.sessionkey;
-        mysql.find_one('custom_session','session_key',[session], function (result) {
+    },
+    getCurrentSession: function (req, res, callback) {
+        var session = req.headers.sessionkey;
+        mysql.find_one('custom_session', 'session_key', [session], function (result) {
 
-        if (result) {
-           callback(result);
+            if (result) {
+                callback(result);
 
-        }else{
-            res.status(200).send( {code: 502, result: result,massage:'session失效'})
-        }
+            } else {
+                res.status(200).send({code: 502, result: result, massage: 'session失效'})
+            }
 
-    });
-},
-    saveLogs:function(user_id,err_info){
+        });
+    },
+    saveLogs: function (user_id, err_info) {
 
         mysql.insert_one('xiaomai_logs', {
             user_id: user_id,
             err_info: JSON.stringify(err_info),
             create_time: new Date()
         }, function (result, err) {
-            if (result&&err==null) {
+            if (result && err == null) {
 
                 console.log('保存日志成功');
 
             } else {
-                console.log('保存日志-失败：'+err);
+                console.log('保存日志-失败：' + err);
             }
         });
 
     }
- 
+
 };
 Date.prototype.Format = function (fmt) { //
     var o = {

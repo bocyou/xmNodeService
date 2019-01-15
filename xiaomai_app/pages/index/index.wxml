@@ -29,12 +29,12 @@
         </view>
 
     </navigator>
-    <navigator open-type="navigateTo" class="app-entry towords-manage" url="../lottery/lottery">
+  <!--   <navigator open-type="navigateTo" class="app-entry towords-manage" url="../lottery/lottery">
         <view class="content">
 
         </view>
 
-    </navigator>
+    </navigator> -->
     <navigator open-type="navigateTo" class="app-entry no-manage" url="../audio_course/audio_course">
         <view class="content">
 

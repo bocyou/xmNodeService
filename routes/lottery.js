@@ -10,7 +10,8 @@ var xmManageInjection = require('../routes/public/lottery').xmManageInjection;
 var usersInjection = require('../routes/public/lottery').usersInjection;
 var schedule = require('node-schedule');
 var postUsersNews = require('../routes/public/post_news').postUsersNews;
-console.log(express().coustom);
+
+
 
 router.get('/', function (req, res) {
 

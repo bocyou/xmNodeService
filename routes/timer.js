@@ -2,12 +2,6 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 var mysql = require('../lib/mysql');
-var session = require('express-session');
-var checkSession = require('../middlewares/check_session').checkSession;
-var crypto = require('crypto');
-var tool = require('../middlewares/tool');
-var getUserInfo = tool.getUserInfo;
-var getCurrentSession = tool.getCurrentSession;
 var schedule = require('node-schedule');
 const postUsersNews = require('../routes/public/post_news').postUsersNews;
 
@@ -339,9 +333,6 @@ const send_news = schedule.scheduleJob({hour: 10, minute: 00, dayOfWeek: 1}, fun
     //billWork.clearFormId();
 });
 
-router.post('/post_bill', function (req, res, next) {
-
-});
 
 
 //每周五6点发送分享提醒

@@ -3,7 +3,7 @@ module.exports={
 	session:{
 		secret:'xiaomai',
 		key:'xiaomai',
-		maxAge:1000*60*60*20
+		maxAge:1000*60*60*24*30
 	},
 	mysql:{
 		host     : 'rm-2ze4tk0u850c64o60o.mysql.rds.aliyuncs.com',

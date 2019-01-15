@@ -1,5 +1,5 @@
 // pages/shake/shake.js
-const { customDate, ws_api,requestAuth} = require('../../utils/util.js');
+const { customDate, ws_api, requestAuth } = require('../../utils/util.js');
 import player from '../../utils/player';
 Page({
 
@@ -8,15 +8,15 @@ Page({
    */
   data: {
     shake_num: 0,
-    shake_status:-1,
-    win_user:[]
+    shake_status: -1,
+    win_user: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.error=0;
+    this.error = 0;
     this.player = new player();
     this.createSocket();
     this.shake();
@@ -33,7 +33,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-   
+
 
   },
 
@@ -73,7 +73,6 @@ Page({
   },
   createSocket: function () {
     const self = this;
-
     let userInfo = wx.getStorageSync('userInfo');
     self.session = userInfo.session;
     if (userInfo) {
@@ -91,20 +90,24 @@ Page({
       })
 
       wx.onSocketOpen(function (res) {
-        this.error=1;
+
+
+        wx.sendSocketMessage({
+          data: JSON.stringify({ type: 'get_shake_info' })
+        });
+
+
+      })
+      wx.onSocketError(function (res) {
+        self.error = 1;
         requestAuth({
           url: '/shake/get_shake_info',
           tip: '获取当期信息失败',
           success: (res) => {
             self.render_term_info(res);
+            self.getWinUsers();
           }
         });
-
-      /*   wx.sendSocketMessage({
-          data: JSON.stringify({ type: 'get_shake_info' })
-        }); */
-       
-
       })
 
 
@@ -123,11 +126,11 @@ Page({
           case 'current_term_info':
             self.render_term_info(data.result);
             break;
-            case 'get_win_user':
-            console.log(data);
-            self.setData({
-               win_user:data.result
-            });
+          case 'get_win_user':
+
+              self.setData({
+                win_user: data.result
+              });
             break;
 
         }
@@ -141,15 +144,15 @@ Page({
     }
 
   },
-  render_term_info(data){
-    const self=this;
+  render_term_info(data) {
+    const self = this;
     self.setData({
-      shake_status:data.status,
-      shake_num: (data.shake_num-data.user_shake_num<0?0:data.shake_num-data.user_shake_num)
+      shake_status: data.status,
+      shake_num: (data.shake_num - data.user_shake_num < 0 ? 0 : data.shake_num - data.user_shake_num)
     });
-    if(data.status==0){
+    if (data.status == 0) {
       wx.sendSocketMessage({
-        data: JSON.stringify({ type: 'get_win_user',session:self.session})
+        data: JSON.stringify({ type: 'get_win_user', session: self.session })
       });
     }
   },
@@ -157,11 +160,38 @@ Page({
     const self = this;
     if (self.data.shake_status == 1) {
       self.player.play('https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/audio/shake.mp3');
-      wx.sendSocketMessage({
-        data: JSON.stringify({ type: 'update_shake_num',session:self.session})
-      });
-    } else { }
+      if (self.error === 0) {
+        wx.sendSocketMessage({
+          data: JSON.stringify({ type: 'update_shake_num', session: self.session })
+        });
+      } else {
+        requestAuth({
+          url: '/shake/update_shake_num',
+          tip: '更新数据失败',
+          success: (res) => {
+            self.render_term_info(res);
+            if (res.status === 0) {
+              //要到数值，自动结束
+              self.getWinUsers();
+            }
+          }
+        });
+      }
 
+    }
+
+  },
+  getWinUsers() {
+    const self = this;
+    requestAuth({
+      url: '/shake/get_win_users',
+      tip: '获取中奖人员信息失败',
+      success: (res) => {
+        self.setData({
+          win_user: res
+        });
+      }
+    });
   },
   shake() {
     const self = this;
