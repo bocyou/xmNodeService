@@ -218,13 +218,40 @@ const work={
     }
 };
 
+//连接不上websocket
+router.post('/get_shake_info', function (req, res, next) {
+    mysql.sql( 'SELECT * FROM shake  WHERE is_use = 1', function (err, result) {
+        if (err) {
+            res.status(200).send( {code: 500, result: [],message:'获取当前期失败'})
+
+        }else{
+            res.status(200).send( {code: 200, result: result[0],message:"获取当前期成功"})
+
+        }
+
+
+    })
+});
+router.post('/update_shake_num', function (req, res, next) {
+    mysql.sql( 'SELECT * FROM shake  WHERE is_use = 1', function (err, result) {
+        if (err) {
+            res.status(200).send( {code: 500, result: [],message:'获取当前期失败'})
+
+        }else{
+            res.status(200).send( {code: 200, result: result[0],message:"获取当前期成功"})
+
+        }
+
+
+    })
+});
 
 
 //管理部分
 router.post('/manage/get_current_term', function (req, res, next) {
     mysql.sql( 'SELECT * FROM shake  WHERE is_use = 1', function (err, result) {
         if (err) {
-            res.status(200).send( {code: 200, result: result[0],message:'获取当前期失败'})
+            res.status(200).send( {code: 500, result: [],message:'获取当前期失败'})
 
         }else{
             res.status(200).send( {code: 200, result: result[0],message:"获取当前期成功"})

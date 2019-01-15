@@ -1,10 +1,10 @@
 const app=getApp();
 import Request from 'request';
 const {v} =require('config');
-const ws_api ='wss://xiaomai.towords.com/wss';
-const api ='https://xiaomai.towords.com/xm';
-/* const api = 'http://192.168.2.128:8080/xm';
-const ws_api = 'ws://192.168.2.128:8081'; */
+/* const ws_api ='wss://xiaomai.towords.com/wss';
+const api ='https://xiaomai.towords.com/xm'; */
+const api = 'http://192.168.2.128:8080/xm';
+const ws_api = 'ws://192.168.2.128:8081';
 function checkFunction(callback, data) {
     if (callback && typeof callback === 'function') {
         callback(data);

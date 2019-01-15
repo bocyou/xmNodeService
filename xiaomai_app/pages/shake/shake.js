@@ -1,5 +1,5 @@
 // pages/shake/shake.js
-const { customDate, ws_api } = require('../../utils/util.js');
+const { customDate, ws_api,requestAuth} = require('../../utils/util.js');
 import player from '../../utils/player';
 Page({
 
@@ -8,7 +8,7 @@ Page({
    */
   data: {
     shake_num: 0,
-    shake_status:0,
+    shake_status:-1,
     win_user:[]
   },
 
@@ -16,7 +16,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.error=0;
     this.player = new player();
     this.createSocket();
     this.shake();
@@ -33,6 +33,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+   
 
   },
 
@@ -90,13 +91,23 @@ Page({
       })
 
       wx.onSocketOpen(function (res) {
-
-        wx.sendSocketMessage({
-          data: JSON.stringify({ type: 'get_shake_info' })
+        this.error=1;
+        requestAuth({
+          url: '/shake/get_shake_info',
+          tip: '获取当期信息失败',
+          success: (res) => {
+            self.render_term_info(res);
+          }
         });
+
+      /*   wx.sendSocketMessage({
+          data: JSON.stringify({ type: 'get_shake_info' })
+        }); */
        
 
       })
+
+
       wx.onSocketMessage(function (res) {
         //监听WebSocket接受到服务器的消息事件
         //console.log(res);
@@ -110,15 +121,7 @@ Page({
             });
             break;
           case 'current_term_info':
-            self.setData({
-              shake_status:data.result.status,
-              shake_num: (data.result.shake_num-data.result.user_shake_num<0?0:data.result.shake_num-data.result.user_shake_num)
-            });
-            if(data.result.status==0){
-              wx.sendSocketMessage({
-                data: JSON.stringify({ type: 'get_win_user',session:self.session})
-              });
-            }
+            self.render_term_info(data.result);
             break;
             case 'get_win_user':
             console.log(data);
@@ -137,6 +140,18 @@ Page({
       })
     }
 
+  },
+  render_term_info(data){
+    const self=this;
+    self.setData({
+      shake_status:data.status,
+      shake_num: (data.shake_num-data.user_shake_num<0?0:data.shake_num-data.user_shake_num)
+    });
+    if(data.status==0){
+      wx.sendSocketMessage({
+        data: JSON.stringify({ type: 'get_win_user',session:self.session})
+      });
+    }
   },
   update() {
     const self = this;

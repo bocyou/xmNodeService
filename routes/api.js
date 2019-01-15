@@ -9,7 +9,7 @@ var checkSession = require('../middlewares/check_session').checkSession;
 var crypto = require('crypto');
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
-var version = '0';
+var version = '1';
 
 router.get('/', function (req, res) {
     res.render('api', {title: ''});
