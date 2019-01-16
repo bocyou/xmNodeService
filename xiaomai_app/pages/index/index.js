@@ -1,8 +1,8 @@
 //index.js
 //获取应用实例
 const app = getApp();
-const util = require('../../utils/util.js');
-var session='';
+const {getScreen} = require('../../utils/util.js');
+
 
 Page({
   data: {
@@ -18,51 +18,26 @@ Page({
     onShareAppMessage: function () {
 //
     },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
+
   onLoad: function () {
-    var self=this;
-    util.getScreen(function(screenInfo){
+    const self=this;
+    getScreen(function(screenInfo){
       self.setData({
         screenInfo: screenInfo
       })
     });
-      util.request({
-          url: util.api+'/api/get_version_status', complete: function (res) {
-              var data = res.data;
+    if(app.version_status){
+        self.setData({
+            version:app.version_status
+        });
+    }else{
+       app.versionStatus=res=>{
+        self.setData({
+            version:res
+        });
+       }
+    }
 
-              if(data.code==200&&data.result==1){
-                  //正常状态
-                 self.setData({
-                     version:data.result
-                 });
-                  util.checkPermission(function(userInfo){
-
-
-                  });
-
-              } else{
-
-                  self.setData({
-                      version:data.result
-                  });
-              }
-          }
-      });
-
-
-
-
-
-    
-/*      util.checkPermission(function(userInfo){
-    
-
-      });*/
 
   },
     searchWord:function(e){

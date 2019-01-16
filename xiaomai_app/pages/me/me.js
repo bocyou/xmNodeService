@@ -1,5 +1,5 @@
 // pages/me/me.js
-const util = require('../../utils/util.js');
+const {requestAuth} = require('../../utils/util.js');
 const app = getApp();
 Page({
 
@@ -38,141 +38,107 @@ Page({
      */
     onShow: function () {
         var self = this;
-        util.request({
-            url: util.api+'/api/get_version_status', complete: function (res) {
-                var data = res.data;
+        if(app.version_status){
+            self.setData({
+                version:app.version_status
+            });
+               self.showXiaomai(app.version_status);
+        }else{
+           app.versionStatus=res=>{
+            self.setData({
+                version:res
+            });
+                self.showXiaomai(res);
+           }
+        }
+    },
+    showXiaomai(status){
+        const self=this;
+        if(status===2){
 
-                if(data.code==200&&data.result==1){
-                    //正常状态
-                    self.setData({
-                        version:1
-                    });
-
-                    util.checkPermission(function (userInfo) {
-
-                        self.getUserInfo();
-                        util.request({
-                            url: util.api + '/me/get_user_not_pay', param: '', complete: function (res) {
-                                //获取当前用户账单
-                                var data = res.data;
-                                if (data.code == 200 && JSON.stringify(data.result) != '{}') {
-                                    var result_data=data.result;
-                                    var sun_money = 0;
-                                    result_data.dinner.forEach(function (item, idx) {
-                                        sun_money += parseFloat(item.spread_money);
-                                    });
-                                    result_data.lucky.forEach(function (item, idx) {
-                                        sun_money += parseFloat(item.money);
-                                    });
-                                    result_data.shop_money.forEach(function(item,idx){
-                                        sun_money+=parseFloat(item.money);
-                                    })
-                                    self.setData({
-                                        bill_money: sun_money
-                                    });
-                                } else {
-                                    wx.showToast({
-                                        title: '获取未付款账单失败',
-                                        icon: 'none',
-                                        duration: 2000
-                                    })
-                                }
-                            }
+                self.getUserInfo();
+                requestAuth({
+                    url: '/me/get_user_not_pay',
+                    tip: '获取未付款账单失败',
+                    success: (res) => {
+                        var result_data=res;
+                        var sun_money = 0;
+                        result_data.dinner.forEach(function (item, idx) {
+                            sun_money += parseFloat(item.spread_money);
                         });
-                        self.getBill();
-                        self.getUserWallet();
-
-                    });
-                } else{
-                    self.setData({
-                        version:0
-                    });
-                    var search_word = wx.getStorageSync('word');
-                    if(search_word){
-                        self.setData({
-                            search_word:search_word
+                        result_data.lucky.forEach(function (item, idx) {
+                            sun_money += parseFloat(item.money);
+                        });
+                        result_data.shop_money.forEach(function(item,idx){
+                            sun_money+=parseFloat(item.money);
                         })
+                        self.setData({
+                            bill_money: sun_money
+                        });
                     }
-
-
-                }
+                  });
+      
+                self.getBill();
+                //self.getUserWallet();
+    
+        }else{
+            var search_word = wx.getStorageSync('word');
+            if(search_word){
+                self.setData({
+                    search_word:search_word
+                })
             }
-        });
-
-
+        }
+       
     },
     getUserInfo:function(){
         var self=this;
-        util.request({
-            url: util.api + '/api/get_current_user', param: '', complete: function (res) {
-                //获取当前用户信息
-                var data = res.data;
-                if (data.code == 200 && JSON.stringify(data.result) != '{}') {
-                    self.setData({
-                        user_info: data.result
-                    });
-                } else {
-                    wx.showToast({
-                        title: '获取用户数据失败',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                }
+        requestAuth({
+            url: '/api/get_current_user',
+            tip: '获取用户数据失败',
+            success: (res) => {
+                self.setData({
+                    user_info:res
+                });
             }
-        });
+          });
     },
     getUserWallet:function(){
         let self=this;
-        util.request({
-            url: util.api + '/me/get_user_wallet', param: '', complete: function (res) {
-                //获取当前用户信息
-                var data = res.data;
-                if (data.code == 200 ) {
-                    self.setData({
-                        user_wallet: data.result.money
-                    });
-                } else {
-                    wx.showToast({
-                        title: '获取钱包余额失败',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                }
+        requestAuth({
+            url: '/me/get_user_wallet',
+            tip: '获取钱包余额失败',
+            success: (res) => {
+                self.setData({
+                    user_wallet: res.money
+                });
             }
-        });
+          });
     },
 
     getBill: function () {
         var self = this;
-
-        util.request({
-            url: util.api + '/me/get_user_bill', param: '', complete: function (res) {
-                //获取当前用户账单信息
-                var data = res.data;
-                console.log(data);
-                if (data.code == 200) {
-                    if (data.result.length > 0) {
-                        self.setData({
-                            bill_ary: data.result.map(function (item, idx) {
-                                item.create_time = new Date(item.create_time).Format('MM月dd日');
-                                item.deduction=(item.deduction==null?0:item.deduction);
-                                return item
-                            })
+        requestAuth({
+            url: '/me/get_user_bill',
+            tip: '获取账单数据失败',
+            success: (res) => {
+                if (res.length > 0) {
+                    self.setData({
+                        bill_ary: data.result.map(function (item, idx) {
+                            item.create_time = new Date(item.create_time).Format('MM月dd日');
+                            item.deduction=(item.deduction==null?0:item.deduction);
+                            return item
                         })
-                    } else {
-                        self.setData({
-                            bill_ary: []
-                        })
-                    }
+                    })
                 } else {
-                    wx.showToast({
-                        title: '获取数据失败',
-                        icon: 'none',
-                        duration: 2000
+                    self.setData({
+                        bill_ary: []
                     })
                 }
             }
-        });
+          });
+
+    
     },
     payMoney: function (e) {
         var self = this;
@@ -277,28 +243,6 @@ Page({
                 }
             }
         })
-
-     /*   util.request({
-            url: util.api + '/me/user_pay_bill', param: {bill_id: bill_id}, complete: function (res) {
-                //获取当前用户账单信息
-                var data = res.data;
-                if (data.code == 200) {
-                    wx.showToast({
-                        title: '确认成功',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                    self.getBill();
-
-                } else {
-                    wx.showToast({
-                        title: '确认失败',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                }
-            }
-        });*/
     },
 
     /**

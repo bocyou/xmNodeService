@@ -4,6 +4,7 @@ const router = express.Router();
 const mysql = require('../lib/mysql');
 const tool = require('../middlewares/tool');
 const getUserInfo = tool.getUserInfo;
+const {updateUserSpend}=require('../middlewares/update_user_spend');
 router.get('/', function (req, res) {
     res.render('index', {title: 'logs'});
 
@@ -81,7 +82,18 @@ router.post('/save_user_pay', function (req, res, next) {
                     if(err){
                         res.status(200).send({code: 500, result: false, message: "付款失败"})
                     }else{
-                        res.status(200).send({code: 200, result: true, message: "付款成功"})
+                        updateUserSpend({
+                            user_id:userInfo[0].id,
+                            money:data.money,
+                            error:(err,message)=>{
+                                res.status(200).send( {code: 500, result: false, message: message});
+                            },
+                            success:result=>{
+                                res.status(200).send({code: 200, result: true, message: "付款成功"})
+                            }
+
+                        });
+
                     }
 
                 });
@@ -109,8 +121,20 @@ const work={
                     if(err){
                         connection.sendUTF(JSON.stringify({result: [], type:'pay',code: 500, message: "注资失败"}))
                     }else{
-                        connection.sendUTF(JSON.stringify({result: [],type:'pay', code: 200, message: "注资成功"}))
-                        self.getDinnerInfo(connection,clients)
+
+                        updateUserSpend({
+                            user_id:userInfo[0].id,
+                            money:data.money,
+                            error:(err,message)=>{
+                                connection.sendUTF(JSON.stringify({result: [], type:'pay',code: 500, message: "注资失败"}))
+                            },
+                            success:result=>{
+                                connection.sendUTF(JSON.stringify({result: [],type:'pay', code: 200, message: "注资成功"}))
+                                self.getDinnerInfo(connection,clients)
+                            }
+
+                        });
+
                     }
 
                     console.log(err);

@@ -30,11 +30,10 @@ function getUserInfo(session, callback) {
 //获取最新一期信息
 function shakeInfo(connection, callback) {
     mysql.sql('SELECT * FROM shake  WHERE is_use = 1', function (err, result) {
-        if (result && result.length > 0) {
-            callback(result);
-
-        } else {
+        if (err) {
             connection.sendUTF(JSON.stringify({type: 'error', message: "获取本期信息失败"}))
+        } else {
+            callback(result);
 
         }
 
@@ -60,9 +59,7 @@ const work = {
     pay(connection, data, clients) {
         const self = this;
         getUserInfo(data.session, function (userInfo) {
-            console.log(userInfo[0].id);
             getNewTerm((term_info) => {
-                console.log(term_info);
                 mysql.insert_one('dinner_together_info', {
                     user_id: userInfo[0].id,
                     money: data.money,
@@ -86,7 +83,6 @@ const work = {
     shakeInfo(connection) {
         shakeInfo(connection, (term_info) => {
             const data = term_info[0];
-            console.log(data);
 
             connection.sendUTF(JSON.stringify({
                 result: data,
@@ -94,14 +90,6 @@ const work = {
                 code: 200,
                 message: `获取${data.term}期数据成功`
             }))
-            /*  shakeInfo(term,(dinner_info)=>{
-                  // 广播消息
-                  console.log(clients.length);
-               /!*   clients.forEach(function(ws1){
-                      ws1.sendUTF(JSON.stringify({result:dinner_info ,type:'dinner_info', code: 200, message: `获取${term}期数据成功`}))
-                  })*!/
-
-              });*/
         })
     },
     updateShakeNum(connection, clients, data) {
@@ -343,6 +331,7 @@ router.post('/manage/shake_start', function (req, res, next) {
                         if (err) {
                             res.status(200).send({code: 500, result: false, message: '开始失败'})
                         } else {
+                            shake_users=[];
                             res.status(200).send({code: 200, result: true, message: '成功开启'})
                         }
                     });

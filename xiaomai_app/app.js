@@ -1,5 +1,5 @@
 //app.js
-
+import Request from '/utils/request';
 App({
     onLaunch: function () {
         var self = this;
@@ -18,6 +18,20 @@ App({
                 }
             }
         })*/
+        Request.post({
+            url: '/api/get_version_status',
+            success: (data) => {
+                if (data.code === 200) {
+                   console.log(data);
+                   self.version_status=data.result;
+                   if(self.versionStatus){
+                       self.versionStatus(data.result);
+                   }
+                } 
+
+            }
+
+        });
          self.userInfo = wx.getStorageSync('userInfo');
         if(wx.getUpdateManager){
             const updateManager = wx.getUpdateManager();

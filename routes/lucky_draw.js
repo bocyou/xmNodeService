@@ -1,26 +1,24 @@
 /**
  * Created by haoguo on 17/10/16.
  */
-var express = require('express');
+const express = require('express');
 
-var router = express.Router();
-var mysql = require('../lib/mysql');
-var session = require('express-session');
-var checkAppSession = require('../middlewares/check_session').checkAppSession;
-var checkSession = require('../middlewares/check_session').checkSession;
-var tool = require('../middlewares/tool');
-var saveLogs = tool.saveLogs;
-var getUserInfo = tool.getUserInfo;
-var getCurrentSession = tool.getCurrentSession;
-var schedule = require('node-schedule');
+const router = express.Router();
+const mysql = require('../lib/mysql');
+const checkAppSession = require('../middlewares/check_session').checkAppSession;
+const checkSession = require('../middlewares/check_session').checkSession;
+const tool = require('../middlewares/tool');
+const saveLogs = tool.saveLogs;
+const getUserInfo = tool.getUserInfo;
+const schedule = require('node-schedule');
+const {updateUserSpend}=require('../middlewares/update_user_spend');
+let lucky_base = [0, 0, 1, 2, 2, 8, 6];
+let lucky_ary = [];
 
-var lucky_base = [0, 0, 1, 2, 2, 8, 6];
-var lucky_ary = [];
-
-var lucky = {
+const lucky = {
 
     rest: function () {
-        var self = this;
+        const self = this;
         //重置刮奖数组
         lucky_ary = [];
         for (var i = 0; i < 20; i++) {
@@ -118,8 +116,8 @@ router.post('/check_current_user', function (req, res, next) {
 //获取本月，用户地区所有人员的刮卡记录前三名并根据id计算所有人员的总钱数 和当前用户
 //返回姓名，钱数，用户头像
 function checkRepeat(obj, ary) {
-    var i = ary.length;
-    var name = 'user_id';
+    let i = ary.length;
+    let name = 'user_id';
     while (i--) {
         if (obj[name] == ary[i][name]) {
             return i
@@ -248,12 +246,12 @@ router.post('/save_user_draw', function (req, res, next) {
     getUserInfo(req,res,function (userInfo) {
         if (userInfo.length > 0) {
 
-            var bar = {
+            let bar = {
                 user_id: userInfo[0].id,
                 money: 4,
                 create_time: new Date()
             };
-            var user_area=userInfo[0].area;
+            const user_area=userInfo[0].area;
             //先检查该用户今天是否刮卡
               mysql.sql('SELECT * FROM lucky_user_list WHERE to_days(create_time) = to_days(now()) AND user_id=' + bar.user_id, function (err, result) {
                   if (result&&err==null) {
@@ -282,7 +280,17 @@ router.post('/save_user_draw', function (req, res, next) {
                                               create_time: new Date()
                                           }, function (result, err) {
                                               if (result&&err==null) {
-                                                  res.status(200).send({code: 200, result: bar.money, message: "保存成功"});
+                                                  updateUserSpend({
+                                                      user_id:userInfo[0].id,
+                                                      money:bar.money,
+                                                      error:(err,message)=>{
+                                                          res.status(200).send( {code: 500, result: false, message: message});
+                                                      },
+                                                      success:result=>{
+                                                          res.status(200).send({code: 200, result: bar.money, message: "保存成功"});
+                                                      }
+
+                                                  });
 
                                               } else {
                                                   res.status(200).send({code: 500, result: '', message: '保存刮奖数据失败'});

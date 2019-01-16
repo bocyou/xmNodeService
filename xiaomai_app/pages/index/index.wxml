@@ -1,6 +1,6 @@
 <!--index.wxml-->
 
-<block wx:if="{{version==1}}">
+<block wx:if="{{version==2}}">
 
 <scroll-view scroll-y="true" style="height:{{screenInfo.screenHeight}}">
 
@@ -43,7 +43,7 @@
         </navigator>
 </scroll-view>
 </block>
-<block wx:elif="{{version==0}}">
+<block wx:elif="{{version==1}}">
     <view class="container">
         <view class="dic-head">
             <view class="ipt-box he-flex">

@@ -90,8 +90,6 @@ Page({
       })
 
       wx.onSocketOpen(function (res) {
-
-
         wx.sendSocketMessage({
           data: JSON.stringify({ type: 'get_shake_info' })
         });
@@ -127,7 +125,6 @@ Page({
             self.render_term_info(data.result);
             break;
           case 'get_win_user':
-
               self.setData({
                 win_user: data.result
               });

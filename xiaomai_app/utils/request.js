@@ -1,28 +1,29 @@
 'use strict';
-const config = require('config');
+const {version,domain} = require('config');
 class Request {
     constructor() {
     }
     static post(custom) {
         const self = this;
         const def = {
-            domain: 'https://xiaomai.towords.com/xm',
+            domain: domain,
             url: '',
             tip: '获取数据失败',
             success: null,
             complete: null,
-            version: config.v,
+            version: version,
             session: '',
             params: {}
         };
         const opt = Object.assign(def, custom);
         wx.request({
-            url: opt.domain + opt.url + '?v=' + opt.version,
+            url: opt.domain + opt.url,
             method: 'POST',
             data: opt.params,
             header: {
                 'content-type': 'application/x-www-form-urlencoded', // 默认值
-                'sessionkey': opt.session
+                'sessionkey': opt.session,
+                'version':opt.version
             },
             complete: function (res) {
                 const data = res.data;

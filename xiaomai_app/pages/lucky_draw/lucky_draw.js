@@ -1,6 +1,6 @@
 // pages/lucky_draw/lucky_draw.js
 const app = getApp();
-const util = require('../../utils/util.js');
+const {requestAuth} = require('../../utils/util.js');
 var is_draw=true;//默认可刮奖
 Page({
 
@@ -39,12 +39,8 @@ Page({
              }
          })
      }else{
-         util.checkPermission(function(userInfo){
-             self.checkCurrentUserDraw();
-
-         
-
-         });
+         self.checkCurrentUserDraw();
+     
      }
 
 
@@ -102,101 +98,54 @@ Page({
   },
     checkCurrentUserDraw:function(){
         var self=this;
-        util.request({
-            url: util.api+'/lucky_draw/check_current_user_draw', complete: function (res) {
-                var data = res.data;
+        requestAuth({
+            url: '/lucky_draw/check_current_user_draw',
+            tip: '',
+            complete: (data) => {
+              
+               if(data.code==200&&data.result){
+                //已经刮卡
+                self.getTopList();
+                self.getAllList();
+                self.setData({
+                    status:1,
+                    is_loading:0
+                });
 
-                if(data.code==200&&data.result){
-                    //已经刮卡
-                    self.getTopList();
-                    self.getAllList();
-                    self.setData({
-                        status:1,
-                        is_loading:0
-                    });
-
-                }else{
-                    //没有刮卡
-                    self.setData({
-                        status: 0,
-                        is_loading:0
-                    });
-                }
-
-
+            }else{
+                //没有刮卡
+                self.setData({
+                    status: 0,
+                    is_loading:0
+                });
             }
-        });
+            }
+          });
+    
     },
   getTopList:function(){
     var self = this;
-    util.request({
-      url: util.api+'/lucky_draw/month_top_list', complete: function (res) {
-        var data = res.data;
-        if (data.code == 200 && data.result) {
-          self.setData({
-            month_list:data.result
-          })
-         
-        } else {
-         
+    requestAuth({
+        url: '/lucky_draw/month_top_list',
+        tip: '获取月数据失败',
+        success: (res) => {
+            self.setData({
+                month_list:res
+              })
         }
+      });
 
-
-      }
-    });
   },
-  getSpecialList:function(){
-    var self=this;
-/*    util.request({
-      url: util.api+'/lucky_draw/get_user_special_list', complete: function (res) {
-        var data = res.data;
-        if (data.code == 200 && data.result) {
-          var ary=data.result;
-          var resul_ary=self.data.special_list;
-          var is_repeat_one=false;
 
-          ary.forEach(function(item,idx){
-            switch(item.money){
-                case 8:
-                resul_ary[0].name=item.user_name;
-                resul_ary[0].img = '8-2';
-                break;
-                case 6:
-                  resul_ary[1].name = item.user_name;
-                  resul_ary[1].img = '6-2';
-                  break;
-                  case 0:
-                if (is_repeat_one){
-                  resul_ary[3].name = item.user_name;
-                  resul_ary[3].img = '0-2';
-                  }else{
-                  resul_ary[2].name = item.user_name;
-                  resul_ary[2].img = '0-2';
-                  is_repeat_one=true;
-                  }
-                  break;
-            }
-          });
-          self.setData({
-            special_list:resul_ary
-          });
-        } else {
-
-        }
-
-
-      }
-    });*/
-  },
   getAllList:function(){
     var self=this;
-    util.request({
-      url: util.api+'/lucky_draw/get_user_draw_list', complete: function (res) {
-        var data = res.data;
-        if (data.code == 200 && data.result) {
+    requestAuth({
+        url: '/lucky_draw/get_user_draw_list',
+        tip: '获取今日刮卡信息失败',
+        success: (res) => {
             var resul_ary=self.data.special_list;
             var is_repeat_one=false;
-            var special_ary = data.result.filter(function (item, idx) {
+            var special_ary = res.filter(function (item, idx) {
                 return item.money == 0 || item.money == 8 || item.money == 6
             });
             special_ary=special_ary.forEach(function(item,idx){
@@ -222,44 +171,26 @@ Page({
                 }
             });
           self.setData({
-            all_list:data.result,
+            all_list:res,
               special_list:resul_ary
           });
-        } else {
-          self.setData({
-          });
         }
-
-
-      }
-    });
+      });
   },
 
   getDrawList:function(){
     var self=this;
-    util.request({
-      url: util.api+'/lucky_draw/get_user_draw_list', complete: function (res) {
-        var data = res.data;
-        if (data.code == 200) {
-
+    requestAuth({
+        url: '/lucky_draw/get_user_draw_list',
+        tip: '获取刮奖列表失败，请检查您的网络状态并退出重试',
+        success: (res) => {
+           
           self.setData({
-            all_list:data.result
+            all_list:res
           });
-        } else {
-          wx.showModal({
-            title: '',
-            content: '获取刮奖列表失败，请检查您的网络状态并退出重试',
-            success: function (res) {
-              if (res.confirm) {
-              } else if (res.cancel) {
-              }
-            }
-          })
         }
+      });
 
-
-      }
-    });
   },
     showList:function(e){
       var self=this;
@@ -268,19 +199,16 @@ Page({
         self.setData({
             status:1
         });
-        util.request({
-            url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId},complete: function (res) {
-                var data = res.data;
-                if (data.code == 200) {
-
-
-                } else {
-
-                }
-
-
+       self.saveFormid(e);
+    
+    },
+    saveFormid(e){
+        requestAuth({
+            url: '/api/save_user_fromid',
+            params:{formid:e.detail.formId},
+            success: (res) => {
             }
-        })
+          });
     },
   startDraw:function(e){
     var self=this;
@@ -292,51 +220,25 @@ Page({
 
     if(is_draw){
         is_draw=false;
-        util.request({
-            url: util.api+'/lucky_draw/save_user_draw', complete: function (res) {
-                var data = res.data;
-                    is_draw=true;
-                if(data.code==200){
-
-
+           
+        requestAuth({
+            url: '/lucky_draw/save_user_draw',
+            success: (res) => {
+                is_draw=true;
+                self.setData({
+                    is_loading:0,
+                    current_user_money:res
+                });
+                setInterval(function(){
                     self.setData({
-                        is_loading:0,
-                        current_user_money:data.result
+                        hide_draw:1
                     });
-                    setInterval(function(){
-                        self.setData({
-                            hide_draw:1
-                        });
-                    },1000)
-
-                } else{
-                  wx.showModal({
-                      title: '',
-                      content: data.message,
-                      success: function (res) {
-                          if (res.confirm) {
-                          } else if (res.cancel) {
-                          }
-                      }
-                  });
-
-                }
+                },1000)
             }
-        });
+          });
+     
     }
-      util.request({
-          url: util.api+'/api/save_user_fromid', param:{formid:e.detail.formId},complete: function (res) {
-              var data = res.data;
-              if (data.code == 200) {
-
-
-              } else {
-
-              }
-
-
-          }
-      })
+    self.saveFormid(e);
 
   }
 });

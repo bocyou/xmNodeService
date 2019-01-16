@@ -13,19 +13,23 @@ router.get('/', function (req, res) {
 
 
 
-
 router.post('/get_year_dinner', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
-            mysql.sql('SELECT  dinner_list FROM order_food_user tab1  WHERE tab1.status=1 AND tab1.user_id='+userInfo[0].id, function (err, result) {
+            mysql.sql('SELECT  dinner_list,create_time FROM order_food_user tab1  WHERE tab1.status=1 AND tab1.user_id='+userInfo[0].id, function (err, result) {
                 if (err) {
                     console.log(err);
                     res.status(200).send({code: 500, result: [], message: '获取订餐信息失败'});
                 } else {
                     let ary=[];
+                    let day0=[];
                     result.forEach((item,idx)=>{
                         const dinner_list=JSON.parse(item.dinner_list)?JSON.parse(item.dinner_list):[];
+
+                        if(new Date(item.create_time).getDay()==1){
+                            day0.push(item);
+                        }
                         ary=ary.concat(dinner_list);
                     });
 
@@ -44,16 +48,12 @@ router.post('/get_year_dinner', function (req, res, next) {
                                 all_num+=ary[j].num;
                                 let money=ary[j].list.price>20?ary[j].list.price-20:0;
                                 all_money+=money*ary[j].num;
-
                             }
                         }
                         result_ary.push({list:ary[i].list,num:count});
                         i += count;
                     }
-
-
-
-                    res.status(200).send({code: 200, result: {list:result_ary,all_num:all_num,all_money:all_money}, message: '获取订餐信息成功'});
+                    res.status(200).send({code: 200, result: {list:result_ary,all_num:all_num,all_money:all_money,day0:day0}, message: '获取订餐信息成功'});
                 }
             })
         }else{

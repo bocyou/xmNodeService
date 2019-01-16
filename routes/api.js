@@ -98,10 +98,10 @@ router.post('/check_current_user', function (req, res, next) {
 
 router.post('/get_version_status', function (req, res, next) {
 
-    if (req.headers.v == version) {
-        res.status(200).send({code: 200, result: 0, message: "搜索单词"})
+    if (req.headers.version == version) {
+        res.status(200).send({code: 200, result: 1, message: "搜索单词"})
     } else {
-        res.status(200).send({code: 200, result: 1, message: "正常状态"})
+        res.status(200).send({code: 200, result: 2, message: "正常状态"})
     }
 
 

@@ -1,14 +1,17 @@
 // pages/year/year.js
 const app = getApp();
-const { requestAuth,sec_to_time} = require('../../utils/util.js');
+const { requestAuth,customDate} = require('../../utils/util.js');
+import NumberAnimate from "../../utils/number_animate";
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    long_time:'',
     dinner_list: [],
     dinner_sum: 0,
     dinner_all_money: 0,
+    dinner_day0:[],
     draw_count: 0,
     draw_list: [],
     bet_list: 0,
@@ -37,11 +40,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    const start_time='2018/04/18 10:00';
-    const long_time=new Date().getTime()-new Date(start_time).getTime();
-    console.log(new Date().getTime(),new Date(start_time).getTime());
-    console.log(long_time/1000);
-    console.log(sec_to_time(parseInt(long_time/1000)));
+  
+
+
 
   },
 
@@ -56,7 +57,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+   clearInterval(this.up_timer);
   },
 
   /**
@@ -78,13 +79,39 @@ Page({
    */
   onShareAppMessage: function () {
   },
+  upTime(){
+    const self=this;
+    self.up_timer=setInterval(()=>{
+      const start_time='2018/04/18 10:00';
+      const long_time=new Date().getTime()-new Date(start_time).getTime();
+      self.setData({
+        long_time:parseInt(long_time/1000)
+      });
+    },1000)
+  },
   getUserInfo() {
     const self = this;
     requestAuth({
       url: '/api/get_current_user',
       tip: '获取用户信息失败',
       success: (res) => {
-      console.log(res);
+        const start_time='2018/04/18 10:00';
+        const long_time=new Date().getTime()-new Date(start_time).getTime();
+        let n =new NumberAnimate({
+          from: parseInt(long_time/1000),
+          speed: 1200,
+          decimals: 0,
+          refreshTime: 50,
+          onUpdate: () => {
+            self.setData({
+              long_time:n.tempValue
+            });
+          },
+          onComplete: () => {
+             self.upTime();
+          }
+      });
+    
       self.setData({
         user_info:res
       });
@@ -107,7 +134,12 @@ Page({
             return b.num - a.num;
           }).slice(0, 3),
           dinner_sum: res.all_num,
-          dinner_all_money: res.all_money
+          dinner_all_money: res.all_money,
+          dinner_day0:res.day0.map((item,idx)=>{
+            item.dinner_list=JSON.parse(item.dinner_list);
+            item.create_time=customDate(item.create_time)
+            return item;
+          })
         });
       }
     });

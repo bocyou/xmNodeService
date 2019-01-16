@@ -5,7 +5,7 @@ var express = require('express');
 var request = require('request');
 var router = express.Router();
 var mysql = require('../lib/mysql');
-var session = require('express-session');
+
 var checkSession = require('../middlewares/check_session').checkSession;
 var tool = require('../middlewares/tool');
 var getUserInfo = tool.getUserInfo;
@@ -21,7 +21,7 @@ var client = new OSS({
     accessKeySecret: 'cAwPb0ZxOBNFrqOF55m7nN5UCHvaK2',
     bucket: 'official-web'
 });
-
+const {updateUserSpend}=require('../middlewares/update_user_spend');
 router.get('/', function (req, res) {
     res.render('api', {
         title: ''
@@ -660,7 +660,7 @@ router.post('/get_dinner_list', function (req, res, next) {
 
     getCurrentSession(req, res, function (user_info) {
         if (user_info && user_info.length > 0) {
-            var user_id = user_info[0].user_id;
+            const user_id = user_info[0].user_id;
             if (user_info[0].area == 'bj') {
                 //检查用户是否刮卡(除周末)
                 if (day == 0 || day == 6) {
@@ -768,11 +768,31 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
                                         order_fooding_id: order_fooding_id
                                     }, function (result, err) {
                                         if (result) {
-                                            res.status(200).send({
-                                                code: 200,
-                                                result: true,
-                                                message: '订餐成功'
-                                            })
+
+                                            if(spread_money>0){
+                                                updateUserSpend({
+                                                    user_id:userInfo[0].id,
+                                                    money:spread_money,
+                                                    error:(err,message)=>{
+                                                        res.status(200).send( {code: 500, result: false, message: message});
+                                                    },
+                                                    success:result=>{
+                                                        res.status(200).send({
+                                                            code: 200,
+                                                            result: true,
+                                                            message: '订餐成功'
+                                                        });
+                                                    }
+
+                                                });
+                                            }else{
+                                                res.status(200).send({
+                                                    code: 200,
+                                                    result: true,
+                                                    message: '订餐成功'
+                                                });
+                                            }
+
                                         } else {
                                             res.status(200).send({
                                                 code: 500,
@@ -821,64 +841,35 @@ router.post('/save_user_dinnerlist', function (req, res, next) {
 
 //检查用户是否订餐根据ID查找(查找当日该用户当天最新的记录)
 router.post('/check_currentuser_dinner', function (req, res, next) {
+    const dinner_list_id=req.body.dinner_list_id;
     getUserInfo(req, res, function (userInfo) {
-
         if (userInfo) {
             let user_id = userInfo[0].id;
             //先获取当前using=1的order_fooding的id
-            work.getUsingDinner({
-                success: (data) => {
-                    if (data && data.length > 0) {
-                        let order_fooding_id = data[0].id;
-                        mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="' + order_fooding_id + '" AND user_id=' + user_id, function (err, result) {
-                            if (err == null) {
-                                if (result.length > 0) {
-                                    res.status(200).send({
-                                        code: 200,
-                                        result: result[0],
-                                        message: '获取订餐列表成功！'
-                                    });
-                                } else {
-                                    res.status(200).send({
-                                        code: 200,
-                                        result: {},
-                                        message: '订餐尚未开始'
-                                    });
-                                }
-                            } else {
-                                res.status(200).send({
-                                    code: 200,
-                                    result: [],
-                                    message: '获取该用户信息失败'
-                                });
-                            }
-                        })
+            mysql.sql('SELECT * FROM order_food_user WHERE status=1 AND order_fooding_id="' + dinner_list_id + '" AND user_id=' + user_id, function (err, result) {
+                if (err == null) {
+                    if (result.length > 0) {
+                        res.status(200).send({
+                            code: 200,
+                            result: result[0],
+                            message: '获取订餐列表成功！'
+                        });
                     } else {
                         res.status(200).send({
-                            code: 500,
+                            code: 200,
                             result: {},
-                            isDraw: 1,
-                            message: '获取菜单ing失败'
+                            message: '订餐尚未开始'
                         });
                     }
-                }, error: (data) => {
+                } else {
                     res.status(200).send({
-                        code: 500,
-                        result: {},
-                        isDraw: 1,
-                        message: 'sql错误'
+                        code: 200,
+                        result: [],
+                        message: '获取该用户信息失败'
                     });
                 }
-            });
+            })
 
-            /*   mysql.findMaxTimeCondition('order_food_user', 'create_time', 'status=1 AND to_days(create_time) = to_days(now()) AND user_id=' + user_id, function (result, err) {
-                   console.log(result);
-                   if (result.length > 0) {
-                       res.status(200).send( {code: 200, result: result[0], message: '获取订餐列表成功！'});
-                   } else {
-                       res.status(200).send( {code: 200, result: {}, message: '订餐尚未开始'});
-                   }
-               });*/
 
         } else {
             res.status(200).send({
@@ -894,48 +885,56 @@ router.post('/check_currentuser_dinner', function (req, res, next) {
 //取消该用户订餐
 router.post('/cancel_currentuser_dinner', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    const menu_id=req.body.menu_id;
     getUserInfo(req, res, function (userInfo) {
         if (userInfo) {
-            var user_id = userInfo[0].id;
-            var menu_id = req.body.menu_id;
-            //获取order_fooding is_using=1的id
-            work.getUsingDinner({
-                success: (data) => {
-                    if (data && data.length > 0) {
-                        let order_fooding_id = data[0].id;
-                        //更新用户的此条订餐记录status=0；
-                        mysql.sql('update order_food_user set status=0 where order_fooding_id="' + order_fooding_id + '" AND user_id="' + user_id + '"', (err, result) => {
-                            if (!err) {
-                                res.status(200).send({
-                                    code: 200,
-                                    result: true,
-                                    message: '取消订餐成功'
-                                });
-                            } else {
-                                res.status(200).send({
-                                    code: 200,
-                                    result: false,
-                                    message: '取消订餐失败'
-                                });
-                            }
-                        })
-                    } else {
-                        res.status(200).send({
-                            code: 500,
-                            result: {},
-                            isDraw: 1,
-                            message: '获取菜单ing失败'
-                        });
-                    }
-                }, error: (data) => {
+            const user_id = userInfo[0].id;
+            mysql.sql('update order_food_user set status=0 where id="' + menu_id+ '" AND user_id="' + user_id + '"', (err, result) => {
+                if (!err) {
+
+                    console.log(result);
+                    mysql.sql('select spread_money from order_food_user where id="' + menu_id+ '" AND user_id="' + user_id + '"', (err, result) => {
+                       if(err){
+                           console.log(err);
+
+                       }else{
+                           const spread_money=result[0].spread_money;
+                         if(spread_money>0){
+                             updateUserSpend({
+                                 user_id:userInfo[0].id,
+                                 money:-spread_money,
+                                 error:(err,message)=>{
+                                     res.status(200).send( {code: 500, result: false, message: message});
+                                 },
+                                 success:result=>{
+                                     res.status(200).send({
+                                         code: 200,
+                                         result: true,
+                                         message: '取消订餐成功'
+                                     });
+                                 }
+
+                             })
+                         }else{
+                             res.status(200).send({
+                                 code: 200,
+                                 result: true,
+                                 message: '取消订餐成功'
+                             });
+                         }
+
+
+                       }
+                    })
+
+                } else {
                     res.status(200).send({
-                        code: 500,
-                        result: {},
-                        isDraw: 1,
-                        message: 'sql错误'
+                        code: 200,
+                        result: false,
+                        message: '取消订餐失败'
                     });
                 }
-            });
+            })
         } else {
             res.status(200).send({
                 code: 200,

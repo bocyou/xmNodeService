@@ -1,12 +1,12 @@
-var express = require('express');
-var request = require('request');
-var router = express.Router();
-var mysql = require('../lib/mysql');
-var session = require('express-session');
-var checkSession = require('../middlewares/check_session').checkSession;
-var tool = require('../middlewares/tool');
-var getUserInfo = tool.getUserInfo;
-var shopInjection=require('../routes/public/lottery').shopInjection;
+const express = require('express');
+
+const router = express.Router();
+const mysql = require('../lib/mysql');
+
+const tool = require('../middlewares/tool');
+const getUserInfo = tool.getUserInfo;
+//const shopInjection=require('../routes/public/lottery').shopInjection;
+const {updateUserSpend}=require('../middlewares/update_user_spend');
 router.get('/', function (req, res) {
 
     res.status(200).send('小麦扫码入账')
@@ -19,14 +19,14 @@ router.post('/save_shop_money', function (req, res, next) {
     getUserInfo(req,res, function (userInfo) {
         console.log(`${userInfo[0].user_name} 扫码注资 ${new Date()}`);
         if (userInfo&&userInfo.length>0) {
-            var money=req.body.money;
+            const money=req.body.money;
             mysql.insert_one('shop_money', {
                 user_id: userInfo[0].id,
                 money: money,
                 create_time: new Date()
             }, function (result, err) {
                 if (result&&err==null) {
-                    if(money>1){
+                /*    if(money>1){
                        if(Math.round(Math.random())==1){
                            //在奖池中注入1元
                            shopInjection({
@@ -50,7 +50,21 @@ router.post('/save_shop_money', function (req, res, next) {
                     }else{
                         res.status(200).send( {code: 200, result: true, message: '扫码入账成功'})
 
-                    }
+                    }*/
+
+                    //更新用户消费
+                    updateUserSpend({
+                        user_id:userInfo[0].id,
+                        money:money,
+                        error:(err,message)=>{
+                            res.status(200).send( {code: 500, result: true, message: message});
+                        },
+                        success:result=>{
+                            res.status(200).send( {code: 200, result: true, message: '扫码入账成功'});
+                        }
+
+                    });
+
                 } else {
                     res.status(200).send( {code:500, result: false, message: '扫码入账失败'})
                 }

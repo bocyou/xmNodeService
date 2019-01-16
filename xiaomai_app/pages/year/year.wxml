@@ -10,17 +10,40 @@ class="box"
         <view class="block user">
            <view>
              <view class="user_face bg" style="background-image:url({{user_info.wx_img}});"></view>
-             <view class="txt">2018年4月18日起小麦正式投入使用</view>
+             <view class="txt">从2018年4月18日起小麦与您共同走过</view>
+             <view class="txt"><text class="numbers">{{long_time}}</text>秒</view>
              <view class="tip"> 左滑查看详细内容</view>
            </view>
             
         </view>
     </swiper-item>
     <swiper-item>
-        <view class="block">
+        <view class="block dinner">
             <view>在小麦订餐{{dinner_sum}}次,共补差价{{dinner_all_money}}元。</view>
-            <view>其中</view>
-            <view wx:for="{{dinner_list}}" wx:key="{{item}}">{{item.list.name}}-{{item.num}}</view>
+            <view>最长点</view>
+            <view wx:for="{{dinner_list}}" wx:key="{{item}}">{{item.list.name}}-点了{{item.num}}次</view>
+            <block wx:if="{{dinner_day0.length>0}}">
+             <view >
+               <block wx:if="{{dinner_day0.length>=10}}">
+               哪有什么加班费，从来只有加班到废！
+               </block>
+               <block wx:elif="{{dinner_day0.length>1&&dinner_day0.length<5}}">
+                 加班等于还未失业，除此之外，我再也找不到其它理由安慰你。
+               </block>
+                <block wx:elif="{{dinner_day0.length<101&&dinner_day0.length>=5}}">
+                 加班等于还未失业，除此之外，我再也找不到其它理由安慰你。
+               </block>
+             </view>
+
+             <view>在周日点了</view>
+            <view wx:for="{{dinner_day0}}" wx:key="{{item}}">
+               <view>{{item.create_time}}</view>
+               <view wx:for="{{item.dinner_list}}" wx:key="{{item}}">
+                 {{item.num}}份{{item.list.name}}
+                 
+               </view>
+            </view>
+            </block>
         </view>
     </swiper-item>
     <swiper-item>

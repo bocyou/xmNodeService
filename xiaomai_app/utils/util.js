@@ -1,6 +1,6 @@
 const app=getApp();
 import Request from 'request';
-const {v} =require('config');
+const {version} =require('config');
 const ws_api ='wss://xiaomai.towords.com/wss';
 const api ='https://xiaomai.towords.com/xm';
 /* const api = 'http://192.168.2.128:8080/xm';
@@ -11,26 +11,16 @@ function checkFunction(callback, data) {
     }
 }
 
-var checkPermission = function (callback) {
-    var userInfo = wx.getStorageSync('userInfo');
-
-    if (userInfo) {
-        callback(userInfo);
-        //获取当前用户数据
-        /*      util.request({
-                  url: util.api + '/api/check_current_user', complete: function (res) {
-                      var data = res.data;
-                      if (data.code == 200 && data.result == true) {
-
-                      } else {
-                          // 不存在
-                          wx.redirectTo({url: '/pages/login/login'})
-                      }
-                  }
-              })*/
+const checkPermission = function (callback) {
+    if (app.userInfo) {
+        callback(app.userInfo);
     } else {
-        console.log('跳到登录页面');
-        wx.redirectTo({url: '/pages/login/login'})
+        const userInfo = wx.getStorageSync('userInfo');
+        if(userInfo){
+            callback(userInfo);
+        }else{
+            wx.redirectTo({url: '/pages/login/login'})
+        }
     }
 };
 
@@ -79,7 +69,7 @@ const requestAuth = function (opt) {
             params: opt.params,
             url: opt.url,
             session: session,
-            domain:api,
+      
             success: (data) => {
                 if (data.code === 200) {
                     checkFunction(opt.success, data.result)
@@ -117,7 +107,7 @@ const request = function (opt) {
         header: {
             'content-type': 'application/json', // 默认值
             'sessionkey': userInfo.session,
-            'v': v
+            'version': version
         },
         success: function (res) {
 
