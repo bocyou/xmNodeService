@@ -3,6 +3,15 @@
   <view class="title-txt">摇一摇手机即可加入</view>
   <view class="body-title">{{shake_num}}</view>
   <view class="body-title-des">距天降馅饼差（次）</view>
+  <block wx:if="{{join_users.length>0}}">
+  <view class="title-txt" style="margin-top:80rpx;">当前加入人员</view>
+    <view class="win-block">
+      <view class="user-block" wx:for="{{join_users}}" wx:key="{{item}}">
+        <view class="bg user-face" style="background-image:url({{item.user_img}})"></view>
+        <view class="user-name">{{item.user_name}}</view>
+      </view>
+    </view>
+  </block>
 <!--   <button bindtap="update">更新</button> -->
 </block>
 <block wx:elif="{{shake_status==0}}">

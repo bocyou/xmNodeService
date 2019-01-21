@@ -13,7 +13,7 @@
 .user{
     display:flex;
     align-items: center;
-    height:90vh;
+    height:86vh;
     justify-content: center;
     position:relative;
 
@@ -22,7 +22,6 @@
     width:100rpx;
     height:100rpx;
     margin:0 auto 60rpx;
-   
 }
 .user .tip{
     font-size:26rpx;
@@ -33,13 +32,71 @@
     color:#717171;
     width:100%;
 }
-.user .txt{
-    font-size:34rpx;
-    color:#111;
 
-}
 .numbers{
     font-family: Fette-Engschrift;
     font-weight: bold;
     font-size:100rpx;
+    display:inline-block;
+    margin-top:30rpx;
+}
+.txt{
+    font-size:32rpx;
+    color:#333;
+    text-align: center;
+    line-height:1.6;
+}
+.black-txt{
+  color:#111;
+  text-align: center;
+  font-weight:bold;
+  font-size:38rpx;
+  line-height:1.6;
+}
+.black-txt .txt-num{
+    font-size:46rpx;
+}
+.txt-num{
+    font-family: Fette-Engschrift;
+    font-weight: bold;
+    font-size:44rpx;
+}
+.date{
+    font-size:28rpx;
+    color:#717171;
+}
+.dinner{ 
+    padding-bottom:100rpx;
+}
+
+
+.dinner,.towords-block,.shop-block,.draw-block{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height:90vh;
+}
+.end-block{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height:90vh;
+}
+.mr-wang{
+    width:150rpx;
+    height:150rpx;
+    background-image:url("https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/dinner.jpg");
+    transform: scale(20) rotate(30deg);
+    margin:0 auto;
+
+    
+}
+
+.end-txt{
+  text-align:center;
+  font-size:30rpx;
+  color:#717171;
+  margin-top:15px;
+  opacity: 0;
 }

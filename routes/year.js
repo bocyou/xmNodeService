@@ -27,7 +27,7 @@ router.post('/get_year_dinner', function (req, res, next) {
                     result.forEach((item,idx)=>{
                         const dinner_list=JSON.parse(item.dinner_list)?JSON.parse(item.dinner_list):[];
 
-                        if(new Date(item.create_time).getDay()==1){
+                        if(new Date(item.create_time).getDay()==0){
                             day0.push(item);
                         }
                         ary=ary.concat(dinner_list);
@@ -73,6 +73,7 @@ router.post('/get_year_draw', function (req, res, next) {
                 } else {
                     const ary=result;
                     let draw_count=0;
+                    let all_money=0;
                     ary.sort((a,b)=>{
                         return a.money-b.money;
                     });
@@ -82,6 +83,7 @@ router.post('/get_year_draw', function (req, res, next) {
                         for (let j = i; j < ary.length; j++) {
                             if (ary[i].money == ary[j].money) {
                                 count++;
+                                all_money+=ary[j].money;
                             }
                         }
                         draw_count+=count;
@@ -89,7 +91,7 @@ router.post('/get_year_draw', function (req, res, next) {
                         i += count;
                     }
 
-                    res.status(200).send({code: 200, result: {list:result_ary,draw_count:draw_count}, message: '获取刮卡数据成功'});
+                    res.status(200).send({code: 200, result: {list:result_ary,draw_count:draw_count,all_money:all_money}, message: '获取刮卡数据成功'});
                 }
             })
         }else{

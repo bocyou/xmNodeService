@@ -91,9 +91,25 @@ const work = {
                 message: `获取${data.term}期数据成功`
             }))
         })
+        if(shake_users.length>0){
+            work.getJoinUsers((result)=>{
+                connection.sendUTF(JSON.stringify({type: 'up_join_users',result:result, message: "更新本期参与人数成功"}))
+            },()=>{
+
+            });
+        }
     },
     updateShakeNum(connection, clients, data) {
-        work.getCurrentUserShake(data.session);
+        //更新时发现新用户广播
+        if(work.getCurrentUserShake(data.session)){
+            work.getJoinUsers((result)=>{
+                clients.forEach(function (ws1) {
+                    ws1.sendUTF(JSON.stringify({type: 'up_join_users',result:result, message: "更新本期参与人数成功"}))
+                })
+            },()=>{
+
+            });
+        }
         //更新摇一摇数量
         shakeInfo(connection, (term_info) => {
             const current_term_info = term_info[0];
@@ -106,7 +122,6 @@ const work = {
                         current_term_info.user_shake_num++;
                         if (current_term_info.shake_num == current_term_info.user_shake_num) {
                             console.log('公布中奖结果');
-
                             work.overShake(connection, clients, current_term_info);
                         } else {
                             clients.forEach(function (ws1) {
@@ -123,21 +138,37 @@ const work = {
                 })
             }
 
-
         })
-
     },
     getCurrentUserShake(session) {
         //统计参与过本期摇奖的人数
         if (session) {
             if (checkRepeatSession(session) === -1) {
                 shake_users.push(session);
+                //有新人加入，通知客户端
+                return true
             }
         }
+        return false;
 
     },
-    getCurrentWinUser(connection) {
+    getJoinUsers(success,error){
+        const self=this;
+        let shake_user_ary=[];
+        shake_users.forEach((item,idx)=>{
+            shake_user_ary.push('session_key = ' + '"' + item + '"');
+        });
+        const user_session_str = shake_user_ary.join(' or ');
+        mysql.sql('SELECT user_name,user_img FROM custom_session tab1 JOIN users tab2 ON tab1.open_id = tab2.open_id WHERE ' + user_session_str, function (err, result) {
+            if (err) {
+                console.log(err);
+            } else {
+                success(result);
+            }
 
+        })
+    },
+    getCurrentWinUser(connection) {
         shakeInfo(connection, (term_info) => {
             const current_term_info = term_info[0];
             mysql.sql('SELECT user_img,user_name FROM  shake_win_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE tab1.term =' + current_term_info.term, function (err, result) {
@@ -238,12 +269,29 @@ router.post('/get_shake_info', function (req, res, next) {
         }
     })
 });
+
+router.post('/get_join_users', function (req, res, next) {
+    if(shake_users.length>0){
+        work.getJoinUsers((result)=>{
+            res.status(200).send({code: 200, result: result, message: '获取参加人员信息成功'})
+        },()=>{
+            res.status(200).send({code: 500, result: [], message: '获取参加人员信息失败'})
+        });
+    }else{
+        res.status(200).send({code: 200, result:[], message: '尚无参加人员'})
+    }
+
+});
 router.post('/update_shake_num', function (req, res, next) {
     const session = req.headers.sessionkey;
-    work.getCurrentUserShake(session);
+    let is_have_new=0;
+    if(work.getCurrentUserShake(session)){
+        is_have_new=1;
+    }
     mysql.sql('SELECT * FROM shake  WHERE is_use = 1', function (err, result) {
         if (result && result.length > 0) {
             const current_term_info = result[0];
+            current_term_info.is_have_new=is_have_new;
             if (current_term_info.shake_num > current_term_info.user_shake_num) {
                 mysql.sql('update shake set user_shake_num=user_shake_num+1 WHERE is_use=1 AND status=1', function (err, result) {
                     if (err) {

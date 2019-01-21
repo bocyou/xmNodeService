@@ -9,7 +9,8 @@ Page({
   data: {
     shake_num: 0,
     shake_status: -1,
-    win_user: []
+    win_user: [],
+    join_users:[]
   },
 
   /**
@@ -90,6 +91,7 @@ Page({
       })
 
       wx.onSocketOpen(function (res) {
+      
         wx.sendSocketMessage({
           data: JSON.stringify({ type: 'get_shake_info' })
         });
@@ -97,6 +99,7 @@ Page({
 
       })
       wx.onSocketError(function (res) {
+     
         self.error = 1;
         requestAuth({
           url: '/shake/get_shake_info',
@@ -104,6 +107,7 @@ Page({
           success: (res) => {
             self.render_term_info(res);
             self.getWinUsers();
+            self.getJoinUsers();
           }
         });
       })
@@ -125,9 +129,15 @@ Page({
             self.render_term_info(data.result);
             break;
           case 'get_win_user':
-              self.setData({
-                win_user: data.result
-              });
+            self.setData({
+              win_user: data.result
+            });
+            break;
+          case 'up_join_users':
+             console.log(data.result);
+             self.setData({
+              join_users:data.result
+             });
             break;
 
         }
@@ -171,6 +181,9 @@ Page({
               //要到数值，自动结束
               self.getWinUsers();
             }
+            if(res.is_have_new==1){
+              self.getJoinUsers();
+            }
           }
         });
       }
@@ -190,6 +203,18 @@ Page({
       }
     });
   },
+  getJoinUsers(){
+    const self=this;
+    requestAuth({
+      url: '/shake/get_join_users',
+      tip: '获取加入用户失败',
+      success: (res) => {
+        self.setData({
+          join_users:res
+        });
+      }
+    });
+  },
   shake() {
     const self = this;
     let numX = 1 //x轴
@@ -197,9 +222,8 @@ Page({
     let numZ = 0 // z轴
     let num = 0;
     wx.onAccelerometerChange(function (res) {
-      if ((numX < res.x && numY < res.y) || (numZ < res.z && numY < res.y)) {
+      if ((numZ < res.z && numY < res.y)) {
         self.update();
-
       }
 
     })

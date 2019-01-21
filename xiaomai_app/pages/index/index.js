@@ -26,6 +26,7 @@ Page({
         screenInfo: screenInfo
       })
     });
+    console.log(app.version_status);
     if(app.version_status){
         self.setData({
             version:app.version_status

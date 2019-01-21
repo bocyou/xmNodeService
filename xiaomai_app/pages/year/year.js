@@ -1,32 +1,44 @@
 // pages/year/year.js
 const app = getApp();
-const { requestAuth,customDate} = require('../../utils/util.js');
+const { requestAuth, customDate } = require('../../utils/util.js');
 import NumberAnimate from "../../utils/number_animate";
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    long_time:'',
+    long_time: '',
     dinner_list: [],
     dinner_sum: 0,
     dinner_all_money: 0,
-    dinner_day0:[],
+    dinner_day0: [],
     draw_count: 0,
     draw_list: [],
     bet_list: 0,
     bet_win: [],
     shop_data: [],
     shop_money: 0,
-    user_info:{}
+    user_info: {},
+    wang_animate:{},
+    end_txt:{},
+    draw_all_money:0
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const self=this;
     this.getUserInfo();
-  
+    this.wang=wx.createAnimation({
+      duration:360,
+      timingFunction:'ease-out',
+    })
+    this.end_txt=wx.createAnimation({
+      duration:260,
+      delay:400,
+      timingFunction:'ease-out',
+    })
   },
 
   /**
@@ -40,7 +52,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+
 
 
 
@@ -57,7 +69,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-   clearInterval(this.up_timer);
+    clearInterval(this.up_timer);
   },
 
   /**
@@ -79,15 +91,30 @@ Page({
    */
   onShareAppMessage: function () {
   },
-  upTime(){
-    const self=this;
-    self.up_timer=setInterval(()=>{
-      const start_time='2018/04/18 10:00';
-      const long_time=new Date().getTime()-new Date(start_time).getTime();
+  upTime() {
+    const self = this;
+    self.up_timer = setInterval(() => {
+      const start_time = '2018/04/18 10:00';
+      const long_time = new Date().getTime() - new Date(start_time).getTime();
       self.setData({
-        long_time:parseInt(long_time/1000)
+        long_time: parseInt(long_time / 1000)
       });
-    },1000)
+    }, 1000)
+  },
+  swiperChange(e) {
+    const self=this;
+    const current = e.detail.current
+    switch (current) {
+      case 5:
+      self.wang.scale(1).rotate(0).step();
+      self.end_txt.opacity(1).step();
+      self.setData({
+        wang_animate: self.wang.export(),
+        end_txt:self.end_txt.export()
+      });
+   
+        break;
+    }
   },
   getUserInfo() {
     const self = this;
@@ -95,31 +122,32 @@ Page({
       url: '/api/get_current_user',
       tip: '获取用户信息失败',
       success: (res) => {
-        const start_time='2018/04/18 10:00';
-        const long_time=new Date().getTime()-new Date(start_time).getTime();
-        let n =new NumberAnimate({
-          from: parseInt(long_time/1000),
+        const start_time = '2018/04/18 10:00';
+        const long_time = new Date().getTime() - new Date(start_time).getTime();
+        let n = new NumberAnimate({
+          from: parseInt(long_time / 1000),
           speed: 1200,
           decimals: 0,
           refreshTime: 50,
           onUpdate: () => {
             self.setData({
-              long_time:n.tempValue
+              long_time: n.tempValue
             });
           },
           onComplete: () => {
-             self.upTime();
+            self.upTime();
+          
           }
-      });
-    
-      self.setData({
-        user_info:res
-      });
-      self.getDinner();
-      self.getDraw();
-      self.getUserBet();
-  
-      self.getShopMoney();
+        });
+
+        self.setData({
+          user_info: res
+        });
+        self.getDinner();
+        self.getDraw();
+        self.getUserBet();
+
+        self.getShopMoney();
       }
     });
   },
@@ -135,9 +163,9 @@ Page({
           }).slice(0, 3),
           dinner_sum: res.all_num,
           dinner_all_money: res.all_money,
-          dinner_day0:res.day0.map((item,idx)=>{
-            item.dinner_list=JSON.parse(item.dinner_list);
-            item.create_time=customDate(item.create_time)
+          dinner_day0: res.day0.map((item, idx) => {
+            item.dinner_list = JSON.parse(item.dinner_list);
+            item.create_time = customDate(item.create_time)
             return item;
           })
         });
@@ -152,7 +180,8 @@ Page({
       success: (res) => {
         self.setData({
           draw_count: res.draw_count,
-          draw_list: res.list
+          draw_list: res.list,
+          draw_all_money:res.all_money
         });
       }
     });

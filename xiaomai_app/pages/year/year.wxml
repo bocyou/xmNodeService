@@ -1,82 +1,145 @@
 <!-- pages/year/year.wxml -->
-<swiper 
-indicator-dots="{{true}}" 
-autoplay="{{false}}" 
-duration="{{360}}"
-vertical="{{false}}"
-class="box"
->
+<swiper indicator-dots="{{true}}" autoplay="{{false}}" duration="{{360}}" vertical="{{false}}" class="box" bindchange="swiperChange">
     <swiper-item>
         <view class="block user">
-           <view>
-             <view class="user_face bg" style="background-image:url({{user_info.wx_img}});"></view>
-             <view class="txt">从2018年4月18日起小麦与您共同走过</view>
-             <view class="txt"><text class="numbers">{{long_time}}</text>秒</view>
-             <view class="tip"> 左滑查看详细内容</view>
-           </view>
-            
+            <view>
+                <view class="user_face bg" style="background-image:url({{user_info.wx_img}});"></view>
+                <view class="txt">从2018年4月18日起小麦与您共同走过</view>
+                <view class="txt">
+                    <text class="numbers">{{long_time}}</text>
+                    秒
+                </view>
+                <view class="tip">左滑查看详细内容</view>
+            </view>
         </view>
     </swiper-item>
     <swiper-item>
         <view class="block dinner">
-            <view>在小麦订餐{{dinner_sum}}次,共补差价{{dinner_all_money}}元。</view>
-            <view>最长点</view>
-            <view wx:for="{{dinner_list}}" wx:key="{{item}}">{{item.list.name}}-点了{{item.num}}次</view>
-            <block wx:if="{{dinner_day0.length>0}}">
-             <view >
-               <block wx:if="{{dinner_day0.length>=10}}">
-               哪有什么加班费，从来只有加班到废！
-               </block>
-               <block wx:elif="{{dinner_day0.length>1&&dinner_day0.length<5}}">
-                 加班等于还未失业，除此之外，我再也找不到其它理由安慰你。
-               </block>
-                <block wx:elif="{{dinner_day0.length<101&&dinner_day0.length>=5}}">
-                 加班等于还未失业，除此之外，我再也找不到其它理由安慰你。
-               </block>
-             </view>
-
-             <view>在周日点了</view>
-            <view wx:for="{{dinner_day0}}" wx:key="{{item}}">
-               <view>{{item.create_time}}</view>
-               <view wx:for="{{item.dinner_list}}" wx:key="{{item}}">
-                 {{item.num}}份{{item.list.name}}
-                 
-               </view>
-            </view>
-            </block>
-        </view>
-    </swiper-item>
-    <swiper-item>
-        <view class="block">
             <view>
-            在小麦刮卡{{draw_count}}次
-            <block wx:if="{{draw_count>190}}">
-             
-            </block>
-            <block wx:elif="{{130<draw_count<190}}">
-               正常
-            </block>
-            <block wx:elif="{{draw_count}}"></block>
+                <view class="txt">
+                    在小麦订餐
+                    <text class="txt-num">{{dinner_sum}}</text>
+                    次,共补差价
+                    <text class="txt-num">{{dinner_all_money}}</text>
+                    元
+                </view>
+                <view class="txt" style="margin-top:80rpx;">最常点</view>
+                <view class="black-txt" wx:for="{{dinner_list}}" wx:key="{{item}}">
+                    {{item.list.name}}-
+                    <text class="txt-num">{{item.num}}</text>
+                    次
+                </view>
+                <block wx:if="{{dinner_day0.length>0}}">
+                    <view class="txt" style="margin-top:80rpx;">
+                        截止到今天您一共在周日点了
+                        <text class="txt-num">{{dinner_day0.length}}</text>
+                        次餐
+                    </view>
+                    <view class="txt">小麦只想对您说</view>
+                    <view class="black-txt">
+                        <block wx:if="{{dinner_day0.length>=10}}">哪有什么加班费，从来只有加班到废！</block>
+                        <block wx:elif="{{dinner_day0.length>1&&dinner_day0.length<5}}">
+                            加班等于还未失业，除此之外，我再也找不到其它理由安慰你。
+                        </block>
+                        <block wx:elif="{{dinner_day0.length<101&&dinner_day0.length>=5}}">
+                            好好睡一觉吧 明天还要加班
+                        </block>
+                    </view>
+                    <view class="txt" style="margin-top:80rpx;">在周日点了</view>
+                    <view class="txt" style="margin-top:40rpx;" wx:for="{{dinner_day0}}" wx:key="{{item}}">
+                        <view class="date">{{item.create_time}}</view>
+                        <view wx:for="{{item.dinner_list}}" wx:key="{{item}}">
+                            <text class="txt-num">{{item.num}}</text>
+                            份{{item.list.name}}
+                        </view>
+                    </view>
+                </block>
             </view>
-            <view>白吃白喝：{{draw_list[0].num}}</view>
-            <view>8元：{{draw_list[7].num}}</view>
         </view>
     </swiper-item>
     <swiper-item>
-        <view class="block">
-            押注{{bet_list.length}}次 
-            <block wx:if="{{bet_win.length>0}}">
-                中奖记录
-                <view wx:for="{{bet_win}}" wx:key="{{index}}"></view>
-            </block>
-            <block wx:else>没有中过奖</block>
+        <view class="block draw-block">
+            <view>
+                <view class="txt">
+                    在小麦刮卡
+                    <text class="txt-num">{{draw_count}}</text>
+                    次,共<text class="txt-num">{{draw_all_money}}</text>元
+                </view>
+                <view class="black-txt" style="margin-bottom:80rpx;">
+                    <block wx:if="{{draw_count>190}}">您如此着迷于刮卡，小麦祝您身体健康！合家欢乐！</block>
+                    <block wx:elif="{{130<draw_count&&draw_count<190}}">生命的价值在于不断超越自我,继续加油！</block>
+                    <block wx:elif="{{60<=draw_count&&draw_count<=130}}">
+                        价值不是你拥有多少，而是你留下多少。显然你对小麦的价值还有待提高！
+                    </block>
+                    <block wx:elif="{{draw_count<60}}">如果您不是新来的，那就代表小麦对您失去信心了！</block>
+                </view>
+                <view class="txt">
+                    白吃白喝-
+                    <text class="txt-num">{{draw_list[0].num}}</text>
+                    次
+                </view>
+                <view class="txt">
+                    8元-
+                    <text class="txt-num">{{draw_list[7].num}}</text>
+                    次
+                </view>
+            </view>
         </view>
     </swiper-item>
     <swiper-item>
-        <view class="block">消费{{shop_data.length}}次，
-  共计{{shop_money}}元</view>
+        <view class="block towords-block">
+            <view>
+                <view class="txt" style="margin-bottom:80rpx;">
+                    在拓词猜猜看押注
+                    <text class="txt-num">{{bet_list.length}}</text>
+                    次
+                </view>
+                <block wx:if="{{bet_win.length>0}}">
+                    <view class="txt">中奖记录</view>
+                    <view wx:for="{{bet_win}}" wx:key="{{index}}"></view>
+                </block>
+                <block wx:else>
+                    <block wx:if="{{bet_list.length>0}}">
+                        <view class="txt">没有中过奖</view>
+                        <view class="black-txt">
+                            <block wx:if="{{bet_list.length>0&&bet_list.length<=20}}">
+                                知道为什么没中奖吗？傻瓜，多押几次！
+                            </block>
+                            <block wx:elif="{{bet_list.length>20&&bet_list.length<40}}">
+                                很想知道，你的运气在那耗光了！
+                            </block>
+                            <block wx:elif="{{bet_list.length>=40}}">
+                                走过这样的一条路，需要勇气，运气既然不行，那就试试勇气吧！
+                            </block>
+                        </view>
+                    </block>
+                    <block wx:else>由于您从没有参与过拓词猜猜看，所以这个功能被拿掉了。</block>
+                </block>
+            </view>
+        </view>
     </swiper-item>
-     <swiper-item>
-        <view class="block">END</view>
+    <swiper-item>
+        <view class="block shop-block">
+            <view>
+                <view class="txt">
+                    在小卖部消费
+                    <text class="txt-num">{{shop_data.length}}</text>
+                    次
+                </view>
+                <view class="txt">
+                    共计
+                    <text class="txt-num">{{shop_money}}</text>
+                    元
+                </view>
+            </view>
+        </view>
+    </swiper-item>
+    <swiper-item>
+        <view class="block end-block">
+            <view>
+                <view class="mr-wang bg" animation="{{wang_animate}}" />
+                <view class="end-txt" animation="{{end_txt}}">2019,继续伴您左右</view>
+            </view>
+        </view>
     </swiper-item>
 </swiper>

@@ -124,7 +124,7 @@ Page({
             success: (res) => {
                 if (res.length > 0) {
                     self.setData({
-                        bill_ary: data.result.map(function (item, idx) {
+                        bill_ary: res.map(function (item, idx) {
                             item.create_time = new Date(item.create_time).Format('MM月dd日');
                             item.deduction=(item.deduction==null?0:item.deduction);
                             return item

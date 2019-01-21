@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 });
 
 
-var billWork = {
+const billWork = {
     postBill: function () {
 //查询上周是否分发过账单
         mysql.sql('SELECT * FROM user_bill WHERE YEARWEEK(create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
@@ -333,6 +333,12 @@ const send_news = schedule.scheduleJob({hour: 10, minute: 00, dayOfWeek: 1}, fun
     //billWork.clearFormId();
 });
 
+
+router.post('/post_bill', function (req, res, next) {
+
+    billWork.postBill();
+
+});
 
 
 //每周五6点发送分享提醒
