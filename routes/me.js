@@ -240,7 +240,7 @@ router.post('/get_user_bill', function (req, res, next) {
                     if (result.length == 0) {
                         res.status(200).send( {code: 200, result: [], message: "此用户无拖欠账单"})
                     } else {
-                        res.status(200).send( {code: 200, result: result, message: "获取此用户账单成功"})
+                        res.status(200).send( {code: 200, result: [], message: "获取此用户账单成功"})
                     }
 
                 } else {
