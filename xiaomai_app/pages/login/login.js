@@ -79,7 +79,7 @@ Page({
                 param.wx_code = res.code;
                 wx.getUserInfo({
                   success: res => {
-                    app.globalData.userInfo = res.userInfo;
+                    app.userInfo = res.userInfo;
                     param.userInfo = JSON.stringify(res.userInfo);
                     wx.request({
                       url: util.api+'/api/user_login', //仅为示例，并非真实的接口地址
@@ -101,7 +101,7 @@ Page({
                           //登录成功
                          
                           //缓存后台传来的sessionKey
-                          var userInfo = app.globalData.userInfo;
+                          var userInfo = app.userInfo;
                           userInfo.session = data.session;
                           userInfo.towords_phone=data.towords_phone;
                           wx.setStorageSync('userInfo', userInfo);

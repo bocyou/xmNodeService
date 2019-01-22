@@ -166,7 +166,7 @@ Page({
               });
             }
 
-            param.userInfo = app.globalData.userInfo;
+            param.userInfo = app.userInfo;
 
             postData(param);
 

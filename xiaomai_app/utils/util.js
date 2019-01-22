@@ -1,6 +1,6 @@
-const app=getApp();
+const app = getApp();
 import Request from 'request';
-const {version} =require('config');
+const { version } = require('config');
 const ws_api ='wss://xiaomai.towords.com/wss';
 const api ='https://xiaomai.towords.com/xm';
 /* const api = 'http://192.168.2.128:8080/xm';
@@ -16,10 +16,10 @@ const checkPermission = function (callback) {
         callback(app.userInfo);
     } else {
         const userInfo = wx.getStorageSync('userInfo');
-        if(userInfo){
+        if (userInfo) {
             callback(userInfo);
-        }else{
-            wx.redirectTo({url: '/pages/login/login'})
+        } else {
+            wx.redirectTo({ url: '/pages/login/login' })
         }
     }
 };
@@ -53,10 +53,10 @@ Date.prototype.Format = function (fmt) { //
 };
 
 const customDate = function (time, str) {
-    if(str){
+    if (str) {
         return new Date(time).Format(str);
 
-    }else{
+    } else {
         return new Date(time).Format('yyyy/MM/dd HH:mm')
     }
 }
@@ -69,7 +69,7 @@ const requestAuth = function (opt) {
             params: opt.params,
             url: opt.url,
             session: session,
-      
+
             success: (data) => {
                 if (data.code === 200) {
                     checkFunction(opt.success, data.result)
@@ -81,7 +81,7 @@ const requestAuth = function (opt) {
                     if (opt.success) {
                         wx.showToast({
                             title: opt.tip ? opt.tip : '获取数据失败',
-                            icon:"none"
+                            icon: "none"
                         });
                     }
 
@@ -163,24 +163,24 @@ var checkAuthorize = function () {
     })
 }
 
-const sec_to_time = function(s) {
+const sec_to_time = function (s) {
     var t;
-    if(s > -1){
-        var hour = Math.floor(s/3600);
-        var min = Math.floor(s/60) % 60;
+    if (s > -1) {
+        var hour = Math.floor(s / 3600);
+        var min = Math.floor(s / 60) % 60;
         var sec = s % 60;
-        if(hour < 10&&hour>0) {
-            t = '0'+ hour + "小时";
-        }else if(hour==0){
-            t='';
+        if (hour < 10 && hour > 0) {
+            t = '0' + hour + "小时";
+        } else if (hour == 0) {
+            t = '';
         } else {
             t = hour + "小时";
         }
 
-        if(min < 10){t += "0";}
+        if (min < 10) { t += "0"; }
         t += min + "分";
-        if(sec < 10){t += "0";}
-        t += sec.toFixed(0)+'秒';
+        if (sec < 10) { t += "0"; }
+        t += sec.toFixed(0) + '秒';
     }
     return t;
 };
@@ -194,6 +194,6 @@ module.exports = {
     api: api,
     ws_api: ws_api,
     checkPermission: checkPermission,
-    requestAuth:requestAuth,
-    sec_to_time:sec_to_time
+    requestAuth: requestAuth,
+    sec_to_time: sec_to_time
 }
