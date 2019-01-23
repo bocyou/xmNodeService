@@ -148,27 +148,20 @@ Page({
             content: '确定已付款给王老师了？',
             success: function (res) {
                 if (res.confirm) {
-                    util.request({
-                        url: util.api + '/me/user_pay_bill', param: {bill_id: bill_id}, complete: function (res) {
-                            //获取当前用户账单信息
-                            var data = res.data;
-                            if (data.code == 200) {
-                                wx.showToast({
-                                    title: '确认成功',
-                                    icon: 'none',
-                                    duration: 2000
-                                })
-                                self.getBill();
-
-                            } else {
-                                wx.showToast({
-                                    title: '确认失败',
-                                    icon: 'none',
-                                    duration: 2000
-                                })
-                            }
+                    requestAuth({
+                        url: '/me/user_pay_bill',
+                        params: {bill_id: bill_id},
+                        tip: '确认失败',
+                        success: (res) => {
+                            wx.showToast({
+                                title: '确认成功',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                            self.getBill();
                         }
-                    });
+                      });
+        
                 } else if (res.cancel) {
                     console.log('用户点击取消')
                 }
@@ -179,27 +172,19 @@ Page({
     payBegMoney: function (e) {
         var self = this;
         var bill_id = e.currentTarget.dataset.billid;
-        util.request({
-            url: util.api + '/me/user_pay_bill', param: {bill_id: bill_id}, complete: function (res) {
-
-                var data = res.data;
-                if (data.code == 200) {
-                    wx.showToast({
-                        title: '确认成功',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                    self.getBill();
-
-                } else {
-                    wx.showToast({
-                        title: '确认失败',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                }
+        requestAuth({
+            url: '/me/user_pay_bill',
+            params: {bill_id: bill_id},
+            tip: '确认失败',
+            success: (res) => {
+                wx.showToast({
+                    title: '确认成功',
+                    icon: 'none',
+                    duration: 2000
+                })
+                self.getBill();
             }
-        });
+          });
 
     },
     refreshFace:function(){
@@ -214,22 +199,15 @@ Page({
                             var userInfo = res.userInfo;
 
                             var avatarUrl = userInfo.avatarUrl;
-                            util.request({
-                                url: util.api + '/me/refresh_user_face', param: {user_img: avatarUrl}, complete: function (res) {
-                                    //获取当前用户账单信息
-                                    var data = res.data;
-                                    if (data.code == 200) {
-                                        self.getUserInfo();
-
-                                    } else {
-                                        wx.showToast({
-                                            title:'更新失败',
-                                            icon:'none',
-                                            duration:'2000'
-                                        });
-                                    }
+                            requestAuth({
+                                url: '/me/refresh_user_face',
+                                tip: '刷新失败',
+                                params:{user_img:avatarUrl},
+                                success: (res) => {
+                                    self.getUserInfo();
                                 }
-                            });
+                              });
+                      
                         },
                         fail:function(res){
                             wx.showToast({
