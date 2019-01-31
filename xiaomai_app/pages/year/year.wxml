@@ -63,7 +63,9 @@
                 <view class="txt">
                     在小麦刮卡
                     <text class="txt-num">{{draw_count}}</text>
-                    次,共<text class="txt-num">{{draw_all_money}}</text>元
+                    次,共
+                    <text class="txt-num">{{draw_all_money}}</text>
+                    元
                 </view>
                 <view class="black-txt" style="margin-bottom:80rpx;">
                     <block wx:if="{{draw_count>190}}">您如此着迷于刮卡，小麦祝您身体健康！合家欢乐！</block>
@@ -89,31 +91,38 @@
     <swiper-item>
         <view class="block towords-block">
             <view>
-                <view class="txt" style="margin-bottom:80rpx;">
-                    在拓词猜猜看押注
-                    <text class="txt-num">{{bet_list.length}}</text>
-                    次
-                </view>
-                <block wx:if="{{bet_win.length>0}}">
-                    <view class="txt">中奖记录</view>
-                    <view wx:for="{{bet_win}}" wx:key="{{index}}"></view>
-                </block>
-                <block wx:else>
-                    <block wx:if="{{bet_list.length>0}}">
+                <block wx:if="{{bet_list.length>0}}">
+                    <!-- 押注过 -->
+                    <view class="txt">
+                        在拓词猜猜看押注
+                        <text class="txt-num">{{bet_list.length}}</text>
+                        次
+                    </view>
+                    <block wx:if="{{bet_win.length>0}}">
+                        <!-- 中过奖 -->
+                        <view class="txt">中奖纪录</view>
+                        <view class="black-txt" wx:for="{{bet_win}}" wx:key="item"></view>
+                    </block>
+                    <block wx:else>
+                        <!-- 没有中过奖 -->
                         <view class="txt">没有中过奖</view>
                         <view class="black-txt">
                             <block wx:if="{{bet_list.length>0&&bet_list.length<=20}}">
                                 知道为什么没中奖吗？傻瓜，多押几次！
                             </block>
                             <block wx:elif="{{bet_list.length>20&&bet_list.length<40}}">
-                                很想知道，你的运气在那耗光了！
+                                 走过这样的一条路，需要勇气，运气既然不行，那就试试勇气吧！
                             </block>
                             <block wx:elif="{{bet_list.length>=40}}">
                                 走过这样的一条路，需要勇气，运气既然不行，那就试试勇气吧！
                             </block>
                         </view>
                     </block>
-                    <block wx:else>由于您从没有参与过拓词猜猜看，所以这个功能被拿掉了。</block>
+                </block>
+                <block wx:else>
+                    <!-- 没有押注过 -->
+                    <view class="black-txt">从来没有参与过拓词猜猜看</view>
+                    <view class="txt">今年想参加也没有了</view>
                 </block>
             </view>
         </view>

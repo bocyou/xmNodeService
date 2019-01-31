@@ -53,11 +53,7 @@ Page({
    */
   onShow: function () {
 
-
-
-
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -89,7 +85,19 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    return {
+      title: '小麦祝您新年快乐',
+      path: 'pages/year/year',
+      imageUrl: 'https://official-web.oss-cn-beijing.aliyuncs.com/mini_program/xiaomai/newyear.jpg',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+
   },
   upTime() {
     const self = this;
