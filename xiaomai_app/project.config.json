@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 17,
+			"current": 18,
 			"list": [
 				{
 					"id": -1,
@@ -144,6 +144,12 @@
 					"pathName": "pages/shake/shake",
 					"query": "money=1",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "拓词数据统计",
+					"pathName": "pages/fight_for_money/fight_for_money",
+					"scene": null
 				}
 			]
 		}

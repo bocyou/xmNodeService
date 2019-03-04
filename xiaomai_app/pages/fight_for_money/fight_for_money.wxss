@@ -1,0 +1,19 @@
+/* pages/fight_for_money/fight_for_money.wxss */
+.block{
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    margin:60rpx 0;
+}
+
+.block .des{
+    text-align: center;
+    font-size:26rpx;
+    color:#717171;
+}
+
+.block .num{
+    font-size:62rpx;
+    font-family: 'Fette-Engschrift';
+    text-align: center;
+}

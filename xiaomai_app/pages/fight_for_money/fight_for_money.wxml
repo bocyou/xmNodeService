@@ -1,0 +1,147 @@
+<!-- pages/fight_for_money/fight_for_money.wxml -->
+<view class="block">
+    <view>
+        <view class="num">{{info.today_order_amount}}</view>
+        <view class="des">本月交易金额</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_android_order_amount}}</view>
+        <view class="des">本月目标</view>
+    </view>
+    <view>
+        <view class="num">{{info.current_month_every_person_gain_money_amount}}</view>
+        <view class="des">每人可分钱数</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.current_month_android_income_amount}}</view>
+        <view class="des">安卓本月交易金额</view>
+    </view>
+    <view>
+        <view class="num">{{info.current_month_ios_income_amount}}</view>
+        <view class="des">苹果本月交易金额</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.vip_member_total_number}}</view>
+        <view class="des">vip总数</view>
+    </view>
+    <view>
+        <view class="num">{{info.vip_member_valid_number}}</view>
+        <view class="des">有效vip用户</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_login_user_number}}</view>
+        <view class="des">今日用户登陆人数</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_login_android_user_number}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_login_ios_user_number}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_new_vip_member_number}}</view>
+        <view class="des">今日新增vip人数</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_new_android_vip_member_number}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_new_ios_vip_member_number}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_new_vip_member_number}}</view>
+        <view class="des">今日新增vip人数</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_new_android_vip_member_number}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_new_ios_vip_member_number}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_register_user_number}}</view>
+        <view class="des">今日注册用户</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_register_android_user_number}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_register_ios_user_number}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_order_number}}</view>
+        <view class="des">今日订单数</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_android_order_number}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_ios_order_number}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_order_amount}}</view>
+        <view class="des">今日交易金额</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_android_order_amount}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_ios_order_amount}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_order_amount}}</view>
+        <view class="des">今日交易金额</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_android_order_amount}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_ios_order_amount}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
+        <view class="num">{{info.today_renew_vip_member_number}}</view>
+        <view class="des">今日续费vip</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_renew_android_vip_member_number}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_renew_ios_vip_member_number}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>

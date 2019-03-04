@@ -19,7 +19,8 @@
     "pages/pay/pay",
     "pages/dine_together/dine_together",
     "pages/year/year",
-    "pages/shake/shake"
+    "pages/shake/shake",
+    "pages/fight_for_money/fight_for_money"
   ],
   "requiredBackgroundModes":["audio"],
   "window": {

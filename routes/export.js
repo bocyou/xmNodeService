@@ -5,7 +5,7 @@ const mysql = require('../lib/mysql');
 const checkSession = require('../middlewares/check_session').checkSession;
 
 
-var now = new Date(); //当前日期
+var now = new Date('2019-02-06'); //当前日期
 var nowDayOfWeek = now.getDay()-1; //今天本周的第几天
 var nowDay = now.getDate(); //当前日
 var nowMonth = now.getMonth(); //当前月
@@ -29,9 +29,10 @@ function getLastWeekEndDate() {
     let weekEndDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 1);
     return (weekEndDate).Format('yyyy-MM-dd');
 }
+
 router.get('/',function(req,res){
     //导出上周订餐信息
-    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
+    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -2 WEEK),1)', function (err, result) {
         if (err) {
             console.log(err);
            console.log('获取数据失败');
@@ -40,6 +41,7 @@ router.get('/',function(req,res){
 
             let data = [['姓名','部门','金额','订餐次数']];
             let ary=result;
+            console.log(result);
             ary.sort((a,b)=>{
                 return a.user_id-b.user_id;
             });
@@ -68,7 +70,7 @@ router.get('/',function(req,res){
 });
 router.get('/dinner_info',function(req,res){
     //导出上周订餐详细信息
-    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
+    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -2 WEEK),1)', function (err, result) {
         if (err) {
             console.log(err);
             console.log('获取数据失败');
