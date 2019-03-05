@@ -5,7 +5,6 @@ App({
         var self = this;
      /*   wx.getSystemInfo({
             success: function (res) {
-                console.log(res);
                 self.globalData.system_info=res;
             }
         })*/
@@ -22,7 +21,6 @@ App({
             url: '/api/get_version_status',
             success: (data) => {
                 if (data.code === 200) {
-                   console.log(data);
                    self.version_status=data.result;
                    if(self.versionStatus){
                        self.versionStatus(data.result);
@@ -38,7 +36,6 @@ App({
 
             updateManager.onCheckForUpdate(function (res) {
                 // 请求完新版本信息的回调
-                console.log(res.hasUpdate)
             });
             updateManager.onUpdateReady(function () {
                 wx.showModal({

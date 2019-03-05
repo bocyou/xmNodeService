@@ -23,7 +23,7 @@
 
     </navigator>
 
-    <navigator open-type="navigateTo" class="app-entry shake" url="../shake/shake">
+    <navigator open-type="navigateTo" class="app-entry shake" url="../fight_for_money/fight_for_money">
         <view class="content">
 
         </view>

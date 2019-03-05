@@ -35,7 +35,6 @@ Page({
      requestAuth({
        url:'/fight_for_money/get_data',
        success:function(res){
-          console.log(res);
           self.setData({
             info:res
           })
