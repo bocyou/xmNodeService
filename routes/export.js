@@ -32,7 +32,7 @@ function getLastWeekEndDate() {
 
 router.get('/',function(req,res){
     //导出上周订餐信息
-    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -2 WEEK),1)', function (err, result) {
+    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
         if (err) {
             console.log(err);
            console.log('获取数据失败');
@@ -69,7 +69,7 @@ router.get('/',function(req,res){
 });
 router.get('/dinner_info',function(req,res){
     //导出上周订餐详细信息
-    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -2 WEEK),1)', function (err, result) {
+    mysql.findtest('order_food_user', 'users', 'where tab1.status=1 and YEARWEEK(tab1.create_time,1) = YEARWEEK(DATE_ADD(now(),INTERVAL -1 WEEK),1)', function (err, result) {
         if (err) {
             console.log(err);
             console.log('获取数据失败');
