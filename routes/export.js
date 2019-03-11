@@ -5,7 +5,7 @@ const mysql = require('../lib/mysql');
 const checkSession = require('../middlewares/check_session').checkSession;
 
 
-var now = new Date('2019-02-06'); //当前日期
+var now = new Date(); //当前日期
 var nowDayOfWeek = now.getDay()-1; //今天本周的第几天
 var nowDay = now.getDate(); //当前日
 var nowMonth = now.getMonth(); //当前月
@@ -41,7 +41,6 @@ router.get('/',function(req,res){
 
             let data = [['姓名','部门','金额','订餐次数']];
             let ary=result;
-            console.log(result);
             ary.sort((a,b)=>{
                 return a.user_id-b.user_id;
             });
