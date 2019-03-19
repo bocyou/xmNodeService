@@ -15,6 +15,20 @@
 </view>
 <view class="block">
     <view>
+        <view class="num">{{info.today_order_amount}}</view>
+        <view class="des">今日交易金额</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_android_order_amount}}</view>
+        <view class="des">安卓</view>
+    </view>
+    <view>
+        <view class="num">{{info.today_ios_order_amount}}</view>
+        <view class="des">苹果</view>
+    </view>
+</view>
+<view class="block">
+    <view>
         <view class="num">{{info.current_month_android_income_amount}}</view>
         <view class="des">安卓本月交易金额</view>
     </view>
@@ -107,15 +121,27 @@
 
 <view class="block">
     <view>
-        <view class="num">{{info.today_order_amount}}</view>
-        <view class="des">今日交易金额</view>
+        <view class="num">{{info.today_new_devil_camp_order_amount}}</view>
+        <view class="des">魔鬼营今日收入</view>
     </view>
     <view>
-        <view class="num">{{info.today_android_order_amount}}</view>
-        <view class="des">安卓</view>
+        <view class="num">{{info.today_new_devil_camp_order_number}}</view>
+        <view class="des">魔鬼营今日订单数</view>
     </view>
-    <view>
-        <view class="num">{{info.today_ios_order_amount}}</view>
-        <view class="des">苹果</view>
+     <view>
+        <view class="num">{{info.valid_devil_camp_order_total_num}}</view>
+        <view class="des">魔鬼营报名人数</view>
     </view>
 </view>
+<view class="block">
+    <view>
+        <view class="num">{{info.custom_book_order_total_number}}</view>
+        <view class="des">自定义单词书总销量</view>
+    </view>
+    <view>
+        <view class="num">{{info.custom_book_order_amount}}</view>
+        <view class="des">自定义单词书总收入</view>
+    </view>
+</view>
+
+
