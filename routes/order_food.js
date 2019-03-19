@@ -226,6 +226,96 @@ router.post('/get_dinner_num', checkSession, function (req, res, next) {
 
 
 });
+function sumUserDinner(result){
+    var dinner_all_list = [];
+    result.map(function (item, idx) {
+        var dinner_list = {};
+        item.dinner_list = JSON.parse(decodeURIComponent(item.dinner_list));
+        dinner_list.food_list = item.dinner_list;
+        var sum_price = 0;
+        dinner_all_list = dinner_all_list.concat(dinner_list.food_list);
+        dinner_list.food_list.forEach(function (item2, idx2) {
+            sum_price += (item2.list.price * item2.num);
+        });
+        dinner_list.sum_price = sum_price;
+        item.dinner_list = dinner_list;
+    });
+
+
+    var statis_all_list = [];
+    dinner_all_list.sort(function (a, b) {
+        return a.list.id - b.list.id;
+    });
+
+
+    for (var i = 0; i < dinner_all_list.length;) {
+        var repeat_num = 0; //此菜重复的次数用于统计
+        var sum_num = 0; //此菜总数量
+        for (var j = i; j < dinner_all_list.length; j++) {
+
+            if (dinner_all_list[i].list.id == dinner_all_list[j].list.id) {
+
+                sum_num += dinner_all_list[j].num;
+                repeat_num++;
+
+            }
+        }
+
+        statis_all_list.push({
+            info: dinner_all_list[i].list,
+            repeat_num: repeat_num,
+            sum_num: sum_num
+        });
+        i += repeat_num; //比较之后从不同的项后再次开始比较
+    }
+    return statis_all_list;
+}
+
+//查找某天订餐信息
+router.post('/search_dinner_info', checkSession, function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    //获取今日状态为1的订餐列表
+
+    const search_date=new Date(req.body.date).Format("yyyy-MM-dd");
+    console.log(search_date);
+
+    mysql.sql(`SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1" AND  date_format(create_time,'%Y-%m-%d')="${search_date}"`, function (err, result) {
+        if (err) {
+            console.log(err)
+            res.status(200).send({
+                code: 500,
+                result: {},
+                message: '获取订餐信息失败'
+            });
+        } else {
+            console.log(result);
+            if (result && result.length > 0) {
+                //统计订餐信息
+
+
+                res.status(200).send({
+                    code: 200,
+                    result: {
+                        list_all:sumUserDinner(result) ,
+                        list_info: result
+                    },
+                    message: '获取今日所有订餐人员信息成功'
+                });
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    result: {},
+                    message: '尚无订餐信息'
+                });
+            }
+        }
+
+
+    })
+
+
+});
+
 
 //获取今日有效订餐列表
 router.post('/get_today_dinner', checkSession, function (req, res, next) {
@@ -260,14 +350,10 @@ router.post('/get_today_dinner', checkSession, function (req, res, next) {
                                 dinner_list.sum_price = sum_price;
                                 item.dinner_list = dinner_list;
                             });
-
-
                             var statis_all_list = [];
                             dinner_all_list.sort(function (a, b) {
                                 return a.list.id - b.list.id;
                             });
-
-
                             for (var i = 0; i < dinner_all_list.length;) {
                                 var repeat_num = 0; //此菜重复的次数用于统计
                                 var sum_num = 0; //此菜总数量
