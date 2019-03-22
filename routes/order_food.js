@@ -92,6 +92,58 @@ router.post('/add_dinner', checkSession, function (req, res, next) {
 
 
 });
+//删除整个菜单
+router.post('/delete_menu', checkSession, function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    const req_data = req.body;
+
+    mysql.sql(`delete FROM order_food WHERE kind=${req_data.menu}`, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(200).send({
+                code: 500,
+                result: false,
+                message: '删除失败'
+            })
+        } else {
+            res.status(200).send({
+                code: 200,
+                result: true,
+                message: '删除成功'
+            })
+
+        }
+    });
+
+
+
+
+});
+//删除单个菜
+
+router.post('/delete_menu_bar', checkSession, function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    const req_data = req.body;
+
+    mysql.sql(`DELETE FROM order_food WHERE id=${req_data.id}`, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(200).send({
+                code: 500,
+                result: false,
+                message: '删除失败'
+            })
+        } else {
+            res.status(200).send({
+                code: 200,
+                result: true,
+                message: '删除成功'
+            })
+
+        }
+    });
+
+});
 
 
 router.post('/upload_dinner_img', checkSession, function (req, res, next) {
@@ -152,7 +204,6 @@ router.post('/upload_dinner_img', checkSession, function (req, res, next) {
                         /*   var result = yield client.list({
                                'max-keys': 5
                            });*/
-                        console.log(result);
                         res.status(200).send({code: 200, result: result.url.replace(/http:/ig, ''), message: '上传成功'});
                         fs.unlinkSync(fileUrl);
                     }).catch(function (err) {
@@ -277,18 +328,15 @@ router.post('/search_dinner_info', checkSession, function (req, res, next) {
     //获取今日状态为1的订餐列表
 
     const search_date=new Date(req.body.date).Format("yyyy-MM-dd");
-    console.log(search_date);
 
     mysql.sql(`SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1" AND  date_format(create_time,'%Y-%m-%d')="${search_date}"`, function (err, result) {
         if (err) {
-            console.log(err)
             res.status(200).send({
                 code: 500,
                 result: {},
                 message: '获取订餐信息失败'
             });
         } else {
-            console.log(result);
             if (result && result.length > 0) {
                 //统计订餐信息
 
@@ -324,7 +372,6 @@ router.post('/get_today_dinner', checkSession, function (req, res, next) {
 
     work.getUsingDinner({
         success: (data) => {
-            console.log(data);
             if (data && data.length > 0) {
                 let order_fooding_id = data[0].id;
                 mysql.sql('SELECT * FROM order_food_user tab1 JOIN users tab2 ON tab1.user_id = tab2.id WHERE status="1"  AND order_fooding_id="' + order_fooding_id + '"', function (err, result) {
@@ -440,11 +487,8 @@ router.post('/get_today_using', checkSession, function (req, res, next) {
 //获取所有菜单order_food
 router.post('/all_dinner_list', checkSession, function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-
-
     mysql.search(req, res, next, 'order_food', function (rows, fields) {
         if (fields) {
-
             //list1:[],list2[]
             rows.sort(function (a, b) {
                 return a.kind - b.kind;
