@@ -145,6 +145,7 @@ app.use('/xm/dinner_together',lottery.router);
 app.use('/xm/year',require('./routes/year'));
 app.use('/xm/shake',shakeRouter);
 app.use('/xm/fight_for_money',require('./routes/fight_for_money'));
+app.use('/towords/articles',require('./routes/towords/articles'));
 
 
 app.use('/api',require('./routes/api'));
