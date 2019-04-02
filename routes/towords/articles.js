@@ -66,20 +66,25 @@ router.post('/find_article',function(req,res){
 
     try{
         const id=req.body.id;
-        mysql.find_one('towords_article', 'id', [id], function (result,err) {
-            if (err) {
-                console.log(err);
+        if(id){
+            mysql.find_one('towords_article', 'id', [id], function (result,err) {
+                if (err) {
+                    console.log(err);
 
-                res.status(200).send({code: 500, result: {}, massage: '获取文章失败'})
+                    res.status(200).send({code: 500, result: {}, massage: '获取文章失败'})
 
-            } else {
-                let data=result[0];
-                data.share_info=JSON.parse(data.share_info);
-                data.topic_info=JSON.parse(data.topic_info);
-                res.status(200).send({code: 200, result: data, massage: '获取文章成功'})
-            }
+                } else {
+                    let data=result[0];
+                    data.share_info=JSON.parse(data.share_info);
+                    data.topic_info=JSON.parse(data.topic_info);
+                    res.status(200).send({code: 200, result: data, massage: '获取文章成功'})
+                }
 
-        });
+            });
+        }else{
+            res.status(200).send({code: 500, result: {}, massage: '参数错误'})
+        }
+
     }catch (e) {
         res.status(200).send({code: 500, result: {}, massage: e})
     }
