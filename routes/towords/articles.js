@@ -17,22 +17,27 @@ router.get('/', function (req, res) {
 
 router.post('/add_article',function(req,res){
     res.header("Access-Control-Allow-Origin", "*");
-    const data=req.body;
-     data.share_info=data.share_info?JSON.stringify(data.share_info):JSON.stringify('{}');
-     data.topic_info=data.topic_info?JSON.stringify(data.topic_info):JSON.stringify('{}');
-     let def={
-         create_time:new Date()
-     };
-     const params=Object.assign(def,data);
+
     try{
-        console.log(data);
-        mysql.insert_one('towords_article', params, function (result, err) {
-            if (err) {
-                res.status(200).send({code: 500, result: false, message: "添加失败"})
-            } else {
-                res.status(200).send({code: 200, result: true, message: "添加成功"})
-            }
-        });
+        const data=req.body;
+        data.share_info=data.share_info?JSON.stringify(data.share_info):JSON.stringify('{}');
+        data.topic_info=data.topic_info?JSON.stringify(data.topic_info):JSON.stringify('{}');
+        let def={
+            create_time:new Date()
+        };
+        const params=Object.assign(def,data);
+        if(params.content_html&&params.page_title&&params.page_des){
+            mysql.insert_one('towords_article', params, function (result, err) {
+                if (err) {
+                    res.status(200).send({code: 500, result: false, message: "添加失败"})
+                } else {
+                    res.status(200).send({code: 200, result: true, message: "添加成功"})
+                }
+            });
+        }else{
+            res.status(200).send({code: 500, result: {}, massage: '参数错误'})
+        }
+
     }catch (e) {
         res.status(200).send({code: 500, result: {}, massage: e})
     }
@@ -70,7 +75,7 @@ router.post('/find_article',function(req,res){
                 let data=result[0];
                 data.share_info=JSON.parse(data.share_info);
                 data.topic_info=JSON.parse(data.topic_info);
-                res.status(200).send({code: 200, result: result[0], massage: '获取文章成功'})
+                res.status(200).send({code: 200, result: data, massage: '获取文章成功'})
             }
 
         });
