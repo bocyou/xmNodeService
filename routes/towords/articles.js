@@ -67,8 +67,9 @@ router.post('/find_article',function(req,res){
     try{
         const id=req.body.id;
         mysql.find_one('towords_article', 'id', [id], function (result,err) {
- console.log(err);
             if (err) {
+                console.log(err);
+
                 res.status(200).send({code: 500, result: {}, massage: '获取文章失败'})
 
             } else {
