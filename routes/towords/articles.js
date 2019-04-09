@@ -20,9 +20,9 @@ router.post('/add_article',function(req,res){
 
     try{
         const data=req.body;
-        data.share_info=data.share_info?data.share_info:JSON.stringify('{}');
-        data.topic_info=data.topic_info?data.topic_info:JSON.stringify('{}');
         let def={
+            share_info:JSON.stringify({}),
+            topic_info:JSON.stringify({}),
             create_time:new Date()
         };
         const params=Object.assign(def,data);
