@@ -20,8 +20,8 @@ router.post('/add_article',function(req,res){
 
     try{
         const data=req.body;
-        data.share_info=data.share_info?JSON.stringify(data.share_info):JSON.stringify('{}');
-        data.topic_info=data.topic_info?JSON.stringify(data.topic_info):JSON.stringify('{}');
+        data.share_info=data.share_info?data.share_info:JSON.stringify('{}');
+        data.topic_info=data.topic_info?data.topic_info:JSON.stringify('{}');
         let def={
             create_time:new Date()
         };
@@ -41,7 +41,6 @@ router.post('/add_article',function(req,res){
     }catch (e) {
         res.status(200).send({code: 500, result: {}, massage: e})
     }
-
 });
 
 router.post('/get_article_list',function(req,res){
@@ -52,7 +51,7 @@ router.post('/get_article_list',function(req,res){
             if (err) {
                 res.status(200).send({code: 500, result: [], message: "获取列表失败"})
             } else {
-                res.status(200).send({code: 200, result: result.map((item)=>{item.topic_info=JSON.parse(item.topic_info);item.share_info=JSON.parse(item.share_info);return item}), message: "获取列表成功"})
+                res.status(200).send({code: 200, result: result, message: "获取列表成功"})
             }
         });
     }catch (e) {
@@ -75,8 +74,7 @@ router.post('/find_article',function(req,res){
 
                 } else {
                     let data=result[0];
-                    data.share_info=JSON.parse(data.share_info);
-                    data.topic_info=JSON.parse(data.topic_info);
+
                     res.status(200).send({code: 200, result: data, massage: '获取文章成功'})
                 }
 
