@@ -65,10 +65,16 @@ router.post('/get_step2',function(req,res){
             res.status(200).send({code: 500, result: [], message: "获取step2单词失败"});
         }else{
             const $ = cheerio.load(body);
+            const html_str=$('.submit-bar').html();
+            if(html_str){
+                const user_id=html_str.replace(/\s/ig,'').match(/values\['user_id'\]=\d+/ig).toString().split('=')[1];
 
-            const user_id=$('.submit-bar').html().replace(/\s/ig,'').match(/values\['user_id'\]=\d+/ig).toString().split('=')[1];
+                res.status(200).send({code: 200, result:{words:createWords($),user_id:user_id} , message: "success:获取step2单词"})
+            }else{
+                res.status(200).send({code: 500, result: [], message: "解析单词内容失败，请刷新重试"});
+            }
 
-            res.status(200).send({code: 200, result:{words:createWords($),user_id:user_id} , message: "success:获取step2单词"})
+
         }
 
     });
