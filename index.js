@@ -146,7 +146,7 @@ app.use('/xm/year',require('./routes/year'));
 app.use('/xm/shake',shakeRouter);
 app.use('/xm/fight_for_money',require('./routes/fight_for_money'));
 app.use('/towords/articles',require('./routes/towords/articles'));
-
+app.use('/towords/word_test',require('./routes/towords/word_test'));
 
 app.use('/api',require('./routes/api'));
 app.use('/order_food',require('./routes/order_food'));
