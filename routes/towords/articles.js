@@ -93,7 +93,7 @@ router.post('/find_article', function (req, res) {
 
 router.post('/update_article', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    const article_info = req.body;
+    const article_info =req.body;
 
     const schema = Joi.object().keys({
         id: Joi.required()
@@ -106,12 +106,17 @@ router.post('/update_article', function (req, res) {
             let params_ary=[];
             params_keys.forEach((item,idx)=>{
                 if(article_info[item]){
-                   params_ary.push(`${item}="${article_info[item]}"`)
+                   if(item=='share_info'||item=='topic_info'){
+                       params_ary.push(`${item}='${article_info[item]}'`);
+                   }else{
+                       params_ary.push(`${item}="${article_info[item]}"`);
+                   }
                 }
 
              });
             mysql.sql(`update towords_article set ${params_ary.join(',')},update_time="${new Date().Format('yy-MM-dd HH:mm:ss')}" WHERE id=${article_info.id}`, function (err, result) {
                 if (err) {
+
                     res.json({result: false, message: `error:${err}`, code: 500});
                 } else {
                     res.json({result: true, message: `success:更新文章内容`, code: 200});
