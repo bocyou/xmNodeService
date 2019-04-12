@@ -11,8 +11,8 @@ module.exports={
 		password : 'dbuser4test_dsxm_20171014',
 		port:'3306',
 		database : 'ts_xiaomai',
-        charset:'UTF8MB4_GENERAL_CI',
-        stringifyObjects:true
+        charset:'UTF8MB4_GENERAL_CI'
+
 	/*	schema: {
 			tableName: 'custom_sessions_table_name',
 			columnNames: {

@@ -169,7 +169,15 @@ router.post('/user_login', function (req, res, next) {
                 mysql.find_one('users', 'open_id', userInfo.openid, function (user_result) {
                     if (user_result && user_result.length > 0) {
                         //已经注册
-                        //存入一条session记录
+                        console.log({
+                            session_key: randomSession,
+                            expires: expires,
+                            create_time: new Date(),
+                            open_id: userInfo.openid,
+                            user_id: user_result[0].id,
+                            area: user_result[0].area
+                        });
+
                         mysql.insert_one('custom_session', {
                             session_key: randomSession,
                             expires: expires,
@@ -178,6 +186,7 @@ router.post('/user_login', function (req, res, next) {
                             user_id: user_result[0].id,
                             area: user_result[0].area
                         }, function (result, err) {
+
                             if (result) {
                                 //session存入数据库
                                 res.status(200).send({
@@ -191,7 +200,6 @@ router.post('/user_login', function (req, res, next) {
                                 res.status(200).send({code: 200, result: false, message: '新建session失败'})
                             }
                         });
-
                     } else {
                         res.status(200).send({code: 200, result: -1, message: '该用户尚未注册'});
                     }
