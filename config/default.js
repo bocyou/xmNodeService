@@ -12,7 +12,6 @@ module.exports={
 		port:'3306',
 		database : 'ts_xiaomai',
         charset:'UTF8MB4_GENERAL_CI'
-
 	/*	schema: {
 			tableName: 'custom_sessions_table_name',
 			columnNames: {

@@ -93,7 +93,11 @@ router.post('/find_article', function (req, res) {
 
 router.post('/update_article', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    const article_info =req.body;
+   // const article_info =req.body;
+    const article_info ={
+        id:24,
+        content_html:'<h2 class="123"></h2>'
+    };
 
     const schema = Joi.object().keys({
         id: Joi.required()
@@ -103,25 +107,30 @@ router.post('/update_article', function (req, res) {
             res.json({result: false, message: err.details[0].message, code: 400});
         } else {
             const params_keys = ['content_html','md','page_title','page_des','share_info','topic_info'];
-            let params_ary=[];
+            let params_obj={};
             params_keys.forEach((item,idx)=>{
                 if(article_info[item]){
-                   if(item=='share_info'||item=='topic_info'){
-                       params_ary.push(`${item}='${article_info[item]}'`);
-                   }else{
-                       params_ary.push(`${item}="${article_info[item]}"`);
-                   }
+                    params_obj[item]=article_info[item]
                 }
 
              });
-            mysql.sql(`update towords_article set ${params_ary.join(',')},update_time="${new Date().Format('yy-MM-dd HH:mm:ss')}" WHERE id=${article_info.id}`, function (err, result) {
+            mysql.updateOne('towords_article', article_info.id,params_obj,(error,result,fields)=>{
+                console.log(error);
+                if(error){
+                    res.json({result: false, message: `error:${error}`, code: 500});
+                }else{
+                    res.json({result: true, message: `success:更新文章内容`, code: 200});
+                }
+            });
+
+           /* mysql.sql(`update towords_article set ${params_ary.join(',')},update_time="${new Date().Format('yy-MM-dd HH:mm:ss')}" WHERE id=${article_info.id}`, function (err, result) {
                 if (err) {
 
                     res.json({result: false, message: `error:${err}`, code: 500});
                 } else {
                     res.json({result: true, message: `success:更新文章内容`, code: 200});
                 }
-            })
+            })*/
         }
 
     });
