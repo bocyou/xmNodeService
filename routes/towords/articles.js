@@ -104,7 +104,9 @@ router.post('/update_article', function (req, res) {
             res.json({result: false, message: err.details[0].message, code: 400});
         } else {
             const params_keys = ['content_html','md','page_title','page_des','share_info','topic_info'];
-            let params_obj={};
+            let params_obj={
+                update_time:new Date()
+            };
             params_keys.forEach((item,idx)=>{
                 if(article_info[item]){
                     params_obj[item]=article_info[item]
