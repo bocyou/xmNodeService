@@ -94,10 +94,7 @@ router.post('/find_article', function (req, res) {
 router.post('/update_article', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
    // const article_info =req.body;
-    const article_info ={
-        id:24,
-        content_html:'<h2 class="123"></h2>'
-    };
+    const article_info =req.body;
 
     const schema = Joi.object().keys({
         id: Joi.required()
