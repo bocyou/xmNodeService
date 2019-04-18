@@ -103,7 +103,7 @@ router.post('/update_article', function (req, res) {
         if (err) {
             res.json({result: false, message: err.details[0].message, code: 400});
         } else {
-            const params_keys = ['content_html','md','page_title','page_des','share_info','topic_info'];
+            const params_keys = ['content_html','md','page_title','page_des','share_info','topic_info','custom_btn'];
             let params_obj={
                 update_time:new Date()
             };
