@@ -20,7 +20,8 @@ router.post('/add_article', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
 
     try {
-        const data = req.body;
+        const data =req.body;
+        console.log(data);
         let def = {
             share_info: JSON.stringify({}),
             topic_info: JSON.stringify({}),
@@ -30,6 +31,7 @@ router.post('/add_article', function (req, res) {
         if (params.content_html && params.page_title && params.page_des) {
             mysql.insert_one('towords_article', params, function (result, err) {
                 if (err) {
+                    console.log(err);
                     res.status(200).send({code: 500, result: false, message: "添加失败"})
                 } else {
                     res.status(200).send({code: 200, result: true, message: "添加成功"})
@@ -69,7 +71,6 @@ router.post('/find_article', function (req, res) {
         if (id) {
             mysql.find_one('towords_article', 'id', [id], function (result, err) {
                 if (err) {
-                    console.log(err);
 
                     res.status(200).send({code: 500, result: {}, massage: '获取文章失败'})
 
