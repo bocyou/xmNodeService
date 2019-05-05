@@ -11,6 +11,8 @@
 	"libVersion": "2.4.3",
 	"appid": "wxff898caf09a11846",
 	"projectname": "xiaomaiapp",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

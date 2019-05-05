@@ -144,4 +144,29 @@
     </view>
 </view>
 
+<view class="block">
+    <view>
+        <view class="num">{{info.partner_total_history_number}}</view>
+        <view class="des">同桌历史对数</view>
+    </view>
+    <view>
+        <view class="num">{{info.partner_normal_number}}</view>
+        <view class="des">有效同桌对数</view>
+    </view>
+      <view>
+        <view class="num">{{info.partner_success_number}}</view>
+        <view class="des">完成同桌挑战</view>
+    </view>
+  
+</view>
+<view class="block">
+      <view>
+        <view class="num">{{info.partner_break_up_number}}</view>
+        <view class="des">因未打卡分手</view>
+    </view>
+      <view>
+        <view class="num">{{info.partner_plus_expired_number}}</view>
+        <view class="des">因会员到期分手</view>
+    </view>
+</view>
 

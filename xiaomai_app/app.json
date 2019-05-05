@@ -22,7 +22,9 @@
     "pages/shake/shake",
     "pages/fight_for_money/fight_for_money"
   ],
-  "requiredBackgroundModes":["audio"],
+  "requiredBackgroundModes": [
+    "audio"
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -31,7 +33,7 @@
   },
   "tabBar": {
     "selectedColor": "#515151",
-    "color":"#cdcdcd",
+    "color": "#cdcdcd",
     "list": [
       {
         "iconPath": "/img/home1.png",
@@ -46,5 +48,6 @@
         "text": "我的"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }
